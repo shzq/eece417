@@ -163,6 +163,32 @@ function postAjaxRequest(postMsg, markerID, guestbookName, rspMsgList) {
 	}	
 }
 
+function newSpotAjaxRequest() {
+	alert("postAjaxRequest");
+	try {
+		xmlHttpReq = new XMLHttpRequest();
+		xmlHttpReq.onreadystatechange = httpCallBackFunction_postAjaxRequest;
+		var url = "/sign";
+		var price = $("#price").value();
+    	var location = $("#location").value();
+    	var startdate = $("#startdate").value();
+    	var enddate = $("endate").value();
+		xmlHttpReq.open("POST", url, true);
+		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
+		
+		var postMsgValue = document.getElementById(postMsg).value;
+		var markerIDValue = markerID; 
+		var guestbookNameValue = guestbookName; 
+    	
+		xmlHttpReq.send("price="+price+"&location="+location+"&startdate="+startdate+"&enddate="+enddate);
+    	
+    	//alert();
+    	
+	} catch (e) {
+    	alert("Error: " + e);
+	}	
+}
+
 function httpCallBackFunction_postAjaxRequest() {
 	//alert("httpCallBackFunction_postAjaxRequest");
 	

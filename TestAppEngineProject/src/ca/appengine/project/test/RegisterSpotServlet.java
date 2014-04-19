@@ -32,27 +32,24 @@ public class RegisterSpotServlet extends HttpServlet {
         
         String price = req.getParameter("price");
         String location = req.getParameter("location");
-        String availablilityStartDate = req.getParameter("availablilityStartDate");
-        String availabilityEndDate = req.getParameter("availabilityEndDate");
-        String spotHost = req.getParameter("spotHost");
+        String availablilityStartDate = req.getParameter("startdate");
+        String availabilityEndDate = req.getParameter("enddate");
        
-        Key locationKey = KeyFactory.createKey("UBCEECE417spotDB", location);
+        Key locationKey = KeyFactory.createKey("UBCEECE417parkspot", location);
         //Date date = new Date();
-        Entity greeting = new Entity("UBCEECE417spotLocations", locationKey);
+        Entity spot = new Entity("UBCEECE417parkspot", locationKey);
         
-        greeting.setProperty("user", user);
-        //greeting.setProperty("date", date);
-        greeting.setProperty("price", price);
-        greeting.setProperty("location", location);
-        greeting.setProperty("availablilityStartDate", availablilityStartDate);
-        greeting.setProperty("availabilityEndDate", availabilityEndDate);
-        greeting.setProperty("spotHost", spotHost);
+        spot.setProperty("user", user);
+        spot.setProperty("price", price);
+        spot.setProperty("location", location);
+        spot.setProperty("startdate", availablilityStartDate);
+        spot.setProperty("startdate", availabilityEndDate);
        
         DatastoreService spotdatastore = DatastoreServiceFactory.getDatastoreService();
-        spotdatastore.put(greeting);	
+        spotdatastore.put(spot);	
         
         // Test
-        String htmlString = "<div>" + user + " " + price + " " + location + " " + availablilityStartDate + " " + availabilityEndDate + " " + spotHost + "</div>";      
+        String htmlString = "<div>" + user + " " + price + " " + location + " " + availablilityStartDate + " " + availabilityEndDate + " " + "</div>";      
         System.out.println(htmlString);  
         //resp.setContentType("text/html");
         //resp.getWriter().println(htmlString);

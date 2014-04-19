@@ -61,7 +61,7 @@
 	        <button type="submit" class="btn btn-default">Submit</button>
 	      </form>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#">Link</a></li>
+	        <li><a href="http://park-spot.appspot.com/_ah/logout?continue=https://www.google.com/accounts/Logout%3Fcontinue%3Dhttps://appengine.google.com/_ah/logout%253Fcontinue%253Dhttp://park-spot.appspot.com%26service%3Dah">Logout</a></li>
 	        
 	      </ul>
 	    </div><!-- /.navbar-collapse -->

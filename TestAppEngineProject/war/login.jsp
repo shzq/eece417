@@ -73,7 +73,7 @@
     		//document.getElementById('email').innerHTML = email;
     		//toggleElement('profile');
     		alert("Successfully logged in as " + email);
-    		window.location.href = "pickdate.jsp";
+    		window.location.href = "home.jsp";
 			document.getElementById('signinButton').setAttribute('style', 'display: none');
   		}
     </script>
@@ -83,13 +83,11 @@
 	<div class="container">
 		<body>
 		
-			<h2 style="text-align: center;">&nbsp;</h2>
-			<h2 style="text-align: center;">&nbsp;</h2>
-			<h2 style="text-align: center;">
-				<span
-					style="font-family: lucida sans unicode, lucida grande, sans-serif;">Park
-					Spot</span>
-			</h2>
+			<h1 style="text-align: center;">&nbsp;</h1>
+			<h1 style="text-align: center;">&nbsp;</h1>
+			<h1 style="text-align: center;">
+				ParkSpot
+			</h1>
 			<p>&nbsp;</p>
 			<p style="text-align: center;">
 				<span

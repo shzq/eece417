@@ -167,7 +167,7 @@ function newSpotAjaxRequest() {
 	alert("postAjaxRequest");
 	try {
 		xmlHttpReq = new XMLHttpRequest();
-		xmlHttpReq.onreadystatechange = httpCallBackFunction_postAjaxRequest;
+		xmlHttpReq.onreadystatechange = httpCallBackFunction_newSpotAjaxRequest;
 		var url = "/sign";
 		var price = $("#price").value();
     	var location = $("#location").value();
@@ -187,6 +187,18 @@ function newSpotAjaxRequest() {
 	} catch (e) {
     	alert("Error: " + e);
 	}	
+}
+
+function httpCallBackFunction_newSpotAjaxRequest() {
+	if (xmlHttpReq.readyState == 1){
+		//updateStatusMessage("<blink>Opening HTTP...</blink>");
+	}else if (xmlHttpReq.readyState == 2){
+		//updateStatusMessage("<blink>Sending query...</blink>");
+	}else if (xmlHttpReq.readyState == 3){ 
+		//updateStatusMessage("<blink>Receiving...</blink>");
+	}else if (xmlHttpReq.readyState == 4){
+			alert("DONE!");	
+	}		
 }
 
 function httpCallBackFunction_postAjaxRequest() {

@@ -163,6 +163,44 @@ function postAjaxRequest(postMsg, markerID, guestbookName, rspMsgList) {
 	}	
 }
 
+function newSpotAjaxRequest() {
+	alert("postAjaxRequest");
+	try {
+		xmlHttpReq = new XMLHttpRequest();
+		xmlHttpReq.onreadystatechange = httpCallBackFunction_newSpotAjaxRequest;
+		var url = "/sign";
+		var price = $("#price").value();
+    	var location = $("#location").value();
+    	var startdate = $("#startdate").value();
+    	var enddate = $("endate").value();
+		xmlHttpReq.open("POST", url, true);
+		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
+		
+		var postMsgValue = document.getElementById(postMsg).value;
+		var markerIDValue = markerID; 
+		var guestbookNameValue = guestbookName; 
+    	
+		xmlHttpReq.send("price="+price+"&location="+location+"&startdate="+startdate+"&enddate="+enddate);
+    	
+    	//alert();
+    	
+	} catch (e) {
+    	alert("Error: " + e);
+	}	
+}
+
+function httpCallBackFunction_newSpotAjaxRequest() {
+	if (xmlHttpReq.readyState == 1){
+		//updateStatusMessage("<blink>Opening HTTP...</blink>");
+	}else if (xmlHttpReq.readyState == 2){
+		//updateStatusMessage("<blink>Sending query...</blink>");
+	}else if (xmlHttpReq.readyState == 3){ 
+		//updateStatusMessage("<blink>Receiving...</blink>");
+	}else if (xmlHttpReq.readyState == 4){
+			alert("DONE!");	
+	}		
+}
+
 function httpCallBackFunction_postAjaxRequest() {
 	//alert("httpCallBackFunction_postAjaxRequest");
 	

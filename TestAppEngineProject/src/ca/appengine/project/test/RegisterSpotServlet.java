@@ -10,6 +10,8 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
@@ -32,27 +34,32 @@ public class RegisterSpotServlet extends HttpServlet {
         
         String price = req.getParameter("price");
         String location = req.getParameter("location");
-        String availablilityStartDate = req.getParameter("availablilityStartDate");
-        String availabilityEndDate = req.getParameter("availabilityEndDate");
-        String spotHost = req.getParameter("spotHost");
-       
-        Key locationKey = KeyFactory.createKey("UBCEECE417spotDB", location);
-        //Date date = new Date();
-        Entity greeting = new Entity("UBCEECE417spotLocations", locationKey);
+        String availabilityStartDateStr = req.getParameter("startdate");
+        String availabilityEndDateStr = req.getParameter("enddate");
+        Date availabilityStartDate = new Date();
+        Date availabilityEndDate = new Date();
+        try {
+        	availabilityStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(availabilityStartDateStr);
+        	availabilityEndDate = new SimpleDateFormat("MM/dd/yyyy").parse(availabilityEndDateStr);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
-        greeting.setProperty("user", user);
-        //greeting.setProperty("date", date);
-        greeting.setProperty("price", price);
-        greeting.setProperty("location", location);
-        greeting.setProperty("availablilityStartDate", availablilityStartDate);
-        greeting.setProperty("availabilityEndDate", availabilityEndDate);
-        greeting.setProperty("spotHost", spotHost);
+        Key locationKey = KeyFactory.createKey("UBCEECE417parkspot", location);
+        Entity spot = new Entity("UBCEECE417parkspot", locationKey);
+        
+        spot.setProperty("user", user);
+        spot.setProperty("price", price);
+        spot.setProperty("location", location);
+        spot.setProperty("startdate", availabilityStartDate);
+        spot.setProperty("startdate", availabilityEndDate);
        
         DatastoreService spotdatastore = DatastoreServiceFactory.getDatastoreService();
-        spotdatastore.put(greeting);	
+        spotdatastore.put(spot);	
         
         // Test
-        String htmlString = "<div>" + user + " " + price + " " + location + " " + availablilityStartDate + " " + availabilityEndDate + " " + spotHost + "</div>";      
+        String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      
         System.out.println(htmlString);  
         //resp.setContentType("text/html");
         //resp.getWriter().println(htmlString);

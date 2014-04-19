@@ -134,17 +134,21 @@
 	    <div class="well" align="center">
 	      <form action="/results" method="get" class="form">
 	         <div class="form-group">
-               <input type="text" class="form-control" name="location" id="location" placeholder="Enter a city" value="${fn:escapeXml(location)}">
+               <input type="text" class="form-control" name="location" id="location" placeholder="Enter a city" >
              </div>
              <div class="input-group form-group">
                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
-               <input type="text" class="form-control" name="startdate" id="startdate" placeholder="From" value="${fn:escapeXml(startdate)}">
+               <input type="text" class="form-control" name="startdate" id="startdate" placeholder="From" >
              </div>
              <div class="input-group form-group">
                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> 
-               <input type="text" class="form-control" name="endate" id="enddate" placeholder="To" value="${fn:escapeXml(enddate)}">
+               <input type="text" class="form-control" name="endate" id="enddate" placeholder="To" >
              </div>
-       	     <input id="post-btn" class="btn btn-success text-center" type="submit" value="Search" align="center" />
+             <div class="input-group form-group">
+               <span class="input-group-addon">$</span> 
+               <input type="text" class="form-control" name="endate" id="enddate" placeholder="Price">
+             </div>
+       	     <input id="post-btn" class="btn btn-success text-center" type="submit" value="Submit" align="center" />
           </form>
         </div>
         </div>

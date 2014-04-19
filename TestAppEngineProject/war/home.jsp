@@ -27,12 +27,15 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>    
     <script type="text/javascript">
+      
     $(function() {
     	$( "#startdate" ).datepicker();
     });
     $(function() {
     	$( "#enddate" ).datepicker();
     });
+    
+    
     </script>  
   </head>
   <body>
@@ -61,9 +64,28 @@
 	        <button type="submit" class="btn btn-default">Submit</button>
 	      </form>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="http://park-spot.appspot.com/_ah/logout?continue=https://www.google.com/accounts/Logout%3Fcontinue%3Dhttps://appengine.google.com/_ah/logout%253Fcontinue%253Dhttp://park-spot.appspot.com%26service%3Dah">Logout</a></li>
+	        <li>
+<%
+    UserService userService = UserServiceFactory.getUserService();
+    User user = userService.getCurrentUser();
+    if (user != null) {
+      pageContext.setAttribute("user", user);
+%>	        
+<p>Hello, ${fn:escapeXml(user.nickname)}, <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a></p>
+
+<%
+    } else {
+%>
+<a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
+
+<% 
+	}
+%>
+
 	        
-	      </ul>
+	        
+	        </li>
+	        </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>

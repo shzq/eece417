@@ -20,7 +20,8 @@
 <%@ page import="java.io.IOException"%>
 <%@ page import="java.text.SimpleDateFormat" %> 
 <%@ page import="java.text.ParseException" %> 
-<%@ page import="java.util.Date" %> 
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.DateFormat"%> 
 
 <!DOCTYPE html>
 <html>
@@ -156,7 +157,7 @@
 							<div class="input-group form-group">
 								<span class="input-group-addon"><span
 									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="endate" id="enddate"
+									class="form-control" name="enddate" id="enddate"
 									placeholder="To" value="${fn:escapeXml(enddate)}">
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
@@ -166,6 +167,100 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="container">
+	<%
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+    // Run an ancestor query to ensure we see the most up-to-date
+    // view of the Greetings belonging to the selected Guestbook.
+    String location = (String) request.getParameter("location");
+    String startDateStr = (String) request.getParameter("startdate");
+    String endDateStr = (String) request.getParameter("enddate");
+    Date startDate = new Date();
+    Date endDate = new Date();
+    try {
+    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("startdate"));
+        endDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("enddate"));
+    } catch(Exception e) {
+    	
+    }
+   	System.out.println(location +","+startDateStr+","+endDateStr);
+    Filter startDateFilter = new FilterPredicate("startdate",
+    											 FilterOperator.GREATER_THAN_OR_EQUAL,
+    											 startDate);
+
+    Filter endDateFilter = new FilterPredicate("enddate",
+    											 FilterOperator.LESS_THAN_OR_EQUAL,
+    											 endDate);
+    Filter queryFilter = CompositeFilterOperator.and(startDateFilter, endDateFilter);
+    
+    Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
+	List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
+	
+	Query endDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(endDateFilter);
+	List<Entity> endDateResults = datastore.prepare(endDateQuery).asList(FetchOptions.Builder.withDefaults());
+	
+	List<Entity> spotsList = startDateResults;
+	spotsList.retainAll(endDateResults);
+	
+    if(location != null)
+    {
+    %>
+      <h1 class="page-header">Search Results</h1>
+    <%
+    	if(spotsList.isEmpty())
+    	{
+    	%>
+    	 <p>Sorry, no matching results were found.</p>
+    	<%
+    	}
+    	else 
+    	{
+    		for(Entity spot:spotsList) 
+    		{
+    			System.out.print(spot.toString());
+    			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
+    			String sdStr = df.format(spot.getProperty("startdate"));
+    			String edStr = df.format(spot.getProperty("enddate"));
+    			pageContext.setAttribute("host", spot.getProperty("user"));
+    			pageContext.setAttribute("resultsStartDate", sdStr);
+    			pageContext.setAttribute("resultsEndDate", edStr);
+    			pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
+    			pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
+   		%>
+       	 <div class="panel panel-default">
+		   <div class="panel-body">
+		   	 <p class="lead">
+		   	   <small>
+		   	     Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
+		   	   </small>
+		   	 </p>
+		     <p class="lead">
+		        <small class="pull-left">
+		     	  Available from <strong>${fn:escapeXml(resultsStartDate)}</strong> to <strong>${fn:escapeXml(resultsEndDate)}</strong>
+		     	</small>
+		     	<small class="pull-right"> @ <strong>$ ${fn:escapeXml(resultsPrice)}</strong> per day</small>
+		     </p>
+		   </div>
+		   <div class="panel-footer">
+		     <p>
+		       <em>Hosted by: ${fn:escapeXml(user.nickname)}</em>
+		       <a class="btn btn-primary pull-right" href="#" id="spot-${fn:escapeXml(user.nickname)}">Reserve This Spot!</a>
+		     </p>
+		     
+		   </div>
+		 </div>
+       	<%	
+    		}
+    	}
+    }
+    	
+	%>
+	  <br/>
+	  <br/>
+	  <br/>
+	  <hr/>
 	</div>
 	
 	<!-- Don't insert code below this line -->

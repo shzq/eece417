@@ -185,7 +185,7 @@
 							<div class="input-group form-group">
 								<span class="input-group-addon"><span
 									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="endate" id="enddate"
+									class="form-control" name="enddate" id="enddate"
 									placeholder="To">
 							</div>
 							<div class="input-group form-group">

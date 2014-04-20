@@ -32,10 +32,10 @@ public class QueryForwardServlet extends HttpServlet {
 			throws IOException, ServletException {
 		System.out.println(req.getParameter("location"));
 		System.out.println(req.getParameter("startdate"));
-		System.out.println(req.getParameter("endate"));
+		System.out.println(req.getParameter("enddate"));
 		String location = req.getParameter("location");
 		String startDateStr = req.getParameter("startdate");
-		String endDateStr = req.getParameter("endate");
+		String endDateStr = req.getParameter("enddate");
 	
 		ServletContext sc = getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher("/results.jsp");

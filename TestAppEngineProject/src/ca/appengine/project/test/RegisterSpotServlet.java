@@ -46,8 +46,8 @@ public class RegisterSpotServlet extends HttpServlet {
 			e.printStackTrace();
 		}
         
-        Key locationKey = KeyFactory.createKey("UBCEECE417parkspot", location);
-        Entity spot = new Entity("UBCEECE417parkspot", locationKey);
+        Key key = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+        Entity spot = new Entity("UBCEECE417parkspot", key);
         System.out.println(user.getEmail());
         spot.setProperty("user", user);
         spot.setProperty("price", price);

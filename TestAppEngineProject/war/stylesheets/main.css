@@ -49,3 +49,7 @@ body {
 .home-search-form {
 	padding-top: 10px;
 }
+
+.inline {
+	display: inline;
+}

@@ -79,7 +79,7 @@
 					<div class="input-group col-sm-3 no-padding">
 						<span class="input-group-addon"><span
 							class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-							class="form-control" name="endate" id="enddate" placeholder="To">
+							class="form-control" name="enddate" id="enddate" placeholder="To">
 					</div>
 					<div class="col-sm-2 no-padding">
 						<input id="post-btn" class="btn btn-success" type="submit"

@@ -65,8 +65,7 @@
 	<div class="container">
 		<h1>Welcome</h1>
 		<div class="well" align="center">
-			<form action="/results" method="get" class="form-horizontal"
-				role="form">
+			<form action="/results" method="get" class="form-horizontal home-search-form" role="form">
 				<div class="form-group">
 					<div class="col-sm-4 no-padding">
 						<input type="text" class="form-control" name="location"

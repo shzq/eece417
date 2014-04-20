@@ -1,17 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="java.util.List"%>
-<%@ page import="com.google.appengine.api.users.User"%>
-<%@ page import="com.google.appengine.api.users.UserService"%>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page
-	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
-<%@ page import="com.google.appengine.api.datastore.Query"%>
-<%@ page import="com.google.appengine.api.datastore.Entity"%>
-<%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
-<%@ page import="com.google.appengine.api.datastore.Key"%>
-<%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.google.appengine.api.users.User" %>   
+<%@ page import="com.google.appengine.api.users.UserService" %>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
+<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory" %>
+<%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
+<%@ page import="com.google.appengine.api.datastore.Query" %>
+<%@ page import="com.google.appengine.api.datastore.Entity" %>
+<%@ page import="com.google.appengine.api.datastore.FetchOptions" %>
+<%@ page import="com.google.appengine.api.datastore.Key" %>
+<%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
+<%@ page import="com.google.appengine.api.datastore.Query.FilterPredicate" %>
+<%@ page import="com.google.appengine.api.datastore.Query.Filter" %>
+<%@ page import="com.google.appengine.api.datastore.Query.FilterOperator" %>
+<%@ page import="com.google.appengine.api.datastore.Query.CompositeFilterOperator" %>
+<%@ page import="com.google.appengine.api.datastore.PreparedQuery" %>
+
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.io.IOException"%>
+<%@ page import="java.text.SimpleDateFormat" %> 
+<%@ page import="java.text.ParseException" %> 
+<%@ page import="java.util.Date" %> 
 
 <!DOCTYPE html>
 <html>
@@ -156,6 +165,40 @@
 			</div>
 		</div>
 	</div>
+	
+	<%
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Key parkspot = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+    // Run an ancestor query to ensure we see the most up-to-date
+    // view of the Greetings belonging to the selected Guestbook.
+   	Date startDate = new Date();
+    Date endDate = new Date();    
+    try{
+    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) pageContext.getAttribute("startdate"));
+    	endDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) pageContext.getAttribute("enddate"));
+    } catch(Exception e) {
+    	
+    }
+    Filter startDateFilter = new FilterPredicate("startdate", 
+    											 FilterOperator.GREATER_THAN_OR_EQUAL,
+    											 startDate);
+    Filter endDateFilter = new FilterPredicate("enddate",
+    										   FilterOperator.LESS_THAN_OR_EQUAL,
+    										   endDate);
+    Filter dateFilter = CompositeFilterOperator.and(startDateFilter, endDateFilter);
+    Query query = new Query("UBCEECE417parkspot", parkspot).setFilter(dateFilter);
+
+    PreparedQuery pq = datastore.prepare(query);
+    List<Entity> spots = pq.asList(FetchOptions.Builder.withDefaults());
+ 
+        %>
+        <div>
+          <h4>No matches were found.</h4>
+        </div>
+        <%
+      
+       
+%>
 	
 	<!-- Don't insert code below this line -->
 	<%

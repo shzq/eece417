@@ -164,22 +164,18 @@ function postAjaxRequest(postMsg, markerID, guestbookName, rspMsgList) {
 }
 
 function newSpotAjaxRequest() {
-	alert("postAjaxRequest");
+	//alert("postAjaxRequest");
 	try {
 		xmlHttpReq = new XMLHttpRequest();
 		xmlHttpReq.onreadystatechange = httpCallBackFunction_newSpotAjaxRequest;
-		var url = "/sign";
-		var price = $("#price").value();
-    	var location = $("#location").value();
-    	var startdate = $("#startdate").value();
-    	var enddate = $("endate").value();
+		var url = "/registerspot";
+		var price = document.getElementById("price").value;
+    	var location = document.getElementById("location").value;
+    	var startdate = document.getElementById("startdate").value;
+    	var enddate = document.getElementById("enddate").value
 		xmlHttpReq.open("POST", url, true);
 		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 		
-		var postMsgValue = document.getElementById(postMsg).value;
-		var markerIDValue = markerID; 
-		var guestbookNameValue = guestbookName; 
-    	
 		xmlHttpReq.send("price="+price+"&location="+location+"&startdate="+startdate+"&enddate="+enddate);
     	
     	//alert();
@@ -190,14 +186,36 @@ function newSpotAjaxRequest() {
 }
 
 function httpCallBackFunction_newSpotAjaxRequest() {
+	console.log("callback!");
 	if (xmlHttpReq.readyState == 1){
+		console.log("1");
 		//updateStatusMessage("<blink>Opening HTTP...</blink>");
 	}else if (xmlHttpReq.readyState == 2){
+		console.log("2");
 		//updateStatusMessage("<blink>Sending query...</blink>");
 	}else if (xmlHttpReq.readyState == 3){ 
+		console.log("3");
 		//updateStatusMessage("<blink>Receiving...</blink>");
 	}else if (xmlHttpReq.readyState == 4){
-			alert("DONE!");	
+		console.log("4");
+		var xmlDoc = null;
+
+		if(xmlHttpReq.responseXML){
+			xmlDoc = xmlHttpReq.responseXML;			
+		}else if(xmlHttpReq.responseText){
+			var parser = new DOMParser();
+		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/html");		 		
+		}
+		
+		if(xmlDoc){				
+			alert(xmlHttpReq.responseText);			
+			document.getElementById("price").value = "";
+	    	document.getElementById("location").value = "";
+	    	document.getElementById("startdate").value = "";
+	    	document.getElementById("enddate").value = "";
+		}else{
+			alert("No data.");
+		}	
 	}		
 }
 
@@ -230,32 +248,8 @@ function httpCallBackFunction_postAjaxRequest() {
 	}		
 }
 
-function ShowAddSpot() {
-	document.getElementById("panel1").style.display = 'block';
-}
-
-function AddSpot(map) {
-	document.getElementById("panel1").style.display = 'none';
-	if (globalInfoWind != null) {
-		globalInfoWind.close();
-	}
-	newSpotCount++;
-	var newSpotInfoWind = new google.maps.InfoWindow();
-	var price = document.getElementById('price').value;	
-	var newSpotMarker = new google.maps.Marker({
-		position: newSpotLatLng,
-		map: map,
-		animation: google.maps.Animation.DROP,
-	})
-	newSpotInfoWind.setContent("Your new spot #" + newSpotCount);
-	newSpotInfoWind.open(map, newSpotMarker);
-	globalInfoWind = newSpotInfoWind;
-	prices[newSpotCount] = price; // assuming we store the price in prices array
-	dynAddedMarker[newSpotCount] = newSpotMarker;
-	
-	google.maps.event.addListener(newSpotMarker, 'click', function() {
-		openMarkerInfoWind(this);
-	})
+function AddSpotInfo(city) {	
+	document.getElementById("location").value = city;
 }
 
 function openMarkerInfoWind(marker) {

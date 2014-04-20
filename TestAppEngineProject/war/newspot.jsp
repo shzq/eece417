@@ -57,6 +57,13 @@
 	    /** Global Variables **/
 	    var globalInfoWind = null;
 	    var newSpotLatLng;
+	    var geocoder;
+	    var geocodeStatusCond = false;
+	    var geocodeStatus;
+	    var addrMarkers = [];
+	    var addrInfoWindows = [];
+	    var newSpotMarker;
+	    var newSpotInfoWind;
 	    /** ----------------- **/
 	    
 		function initialize() {
@@ -114,7 +121,7 @@
 			
 			// Open info window everywhere we click on the map
 		    var addSpotInfoWind = new google.maps.InfoWindow();
-			var geocoder = new google.maps.Geocoder();
+			geocoder = new google.maps.Geocoder();
 		    google.maps.event.addListener(map, 'click', function(event) {
 										  if (globalInfoWind != null) {
 											  globalInfoWind.close();
@@ -195,7 +202,7 @@
 						<form action="" method="post" class="form">
 							<div class="form-group">
 								<input type="text" class="form-control" name="location"
-									id="location" placeholder="Enter a city">
+									id="location" placeholder="Enter a city" onblur="checkInputAddr()">
 							</div>
 							<div class="input-group form-group">
 								<span class="input-group-addon"><span

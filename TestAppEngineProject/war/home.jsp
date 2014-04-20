@@ -18,13 +18,11 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <meta charset="utf-8">
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-<link type="text/css" rel="stylesheet"
-	href="/stylesheets/bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script
-	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
+<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">

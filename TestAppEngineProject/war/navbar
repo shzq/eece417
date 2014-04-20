@@ -15,7 +15,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="/newspot.jsp">List Your Spot</a></li>
-				<li><a href="/spotdetails.jsp">Spotdetails</a></li>
+				<li><a href="/spotdetails?location=Vancouver&startdate=04%2F16%2F2014&endate=04%2F24%2F2014&host=barbrastreisand&price=8">Spot Details</a></li>
 			</ul>
 			<form class="navbar-form navbar-left" role="search">
 				<div class="form-group">
@@ -34,8 +34,9 @@
 					%>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${fn:escapeXml(user.nickname)} <b class="caret"></b></a>
           			<ul class="dropdown-menu">
-          				<li><a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign
-							out</a></li>
+          				<li><a href="#">Account Management</a></li>
+          				<li role="presentation" class="divider"></li>
+          				<li><a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign out</a></li>
 					</ul>
 
 					

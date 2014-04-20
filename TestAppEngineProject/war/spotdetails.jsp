@@ -3,7 +3,8 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page
+	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
@@ -26,9 +27,11 @@
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript"	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
 <script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
-    </script>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
+<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+</script>
 <script type="text/javascript"> 
     window.onload = lg;	
     	function lg()
@@ -118,9 +121,9 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 	%>
-	<%@ include file="navbar" %>
+	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
-	
+
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8">
@@ -130,9 +133,19 @@
 				<div class="search-container">
 					<div class="well" align="center">
 						<form action="/spotdetails" method="get" class="form">
-							<div class="form-group">
-								Spot Details:
-								<ul><span style="text-align:left" class="form-control" id="location">${fn:escapeXml(location)}</span></ul>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title" style="text-align: left">Host</h3>
+								</div>
+								<div class="panel-body" style="text-align: left">
+									${fn:escapeXml(host)}</div>
+							</div>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title" style="text-align: left">Location</h3>
+								</div>
+								<div class="panel-body" style="text-align: left">
+									${fn:escapeXml(location)}</div>
 							</div>
 							<div class="input-group form-group">
 								<span class="input-group-addon"><span
@@ -146,21 +159,25 @@
 									class="form-control" name="endate" id="enddate"
 									placeholder="To" value="${fn:escapeXml(enddate)}">
 							</div>
-							<div class="form-group">
-								<ul><span style="text-align:left" class="form-control" id="price">$${fn:escapeXml(price)}</span></ul>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title" style="text-align: left">Price</h3>
+								</div>
+								<div class="panel-body" style="text-align: left">
+									$${fn:escapeXml(price)}</div>
 							</div>
-							<div class="form-group">
-								<ul><span style="text-align:left" class="form-control" id="host">${fn:escapeXml(host)}</span></ul>
-							</div>
+
+
 							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Back"/>
+								type="submit" value="Back" />
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
+
 	<!-- Don't insert code below this line -->
 	<%
     }

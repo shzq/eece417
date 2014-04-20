@@ -60,7 +60,7 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 	%>
-	<%@include file="navbar.jsp" %>
+	<%@ include file="navbar" %>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 	
 	

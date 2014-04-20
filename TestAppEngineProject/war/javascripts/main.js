@@ -251,14 +251,3 @@ function httpCallBackFunction_postAjaxRequest() {
 function AddSpotInfo(city) {	
 	document.getElementById("location").value = city;
 }
-
-function openMarkerInfoWind(marker) {
-	
-	if (globalInfoWind != null) {
-		globalInfoWind.close();
-	}
-	var spotId = dynAddedMarker.indexOf(marker);
-	markerInfoWind = new google.maps.InfoWindow();
-	markerInfoWind.setContent("Spot #" + spotId + "<br>Your spot price is: " + prices[spotId] );
-	markerInfoWind.open(map, marker);
-}

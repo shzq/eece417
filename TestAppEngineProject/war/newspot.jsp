@@ -53,7 +53,12 @@
 	    $(function() {
 	    	$( "#enddate" ).datepicker();
 	    });
-
+		
+	    /** Global Variables **/
+	    var globalInfoWind = null;
+	    var newSpotLatLng;
+	    /** ----------------- **/
+	    
 		function initialize() {
 					
 			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
@@ -106,7 +111,32 @@
 			  infowindow.open(map, marker);
 			  getAjaxRequest();   
 			});        
-					
+			
+			// Open info window everywhere we click on the map
+		    var addSpotInfoWind = new google.maps.InfoWindow();
+			var geocoder = new google.maps.Geocoder();
+		    google.maps.event.addListener(map, 'click', function(event) {
+										  if (globalInfoWind != null) {
+											  globalInfoWind.close();
+										  }
+										  var newSpotAddr;
+										  newSpotLatLng = event.latLng;
+										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status){
+											  if (status == google.maps.GeocoderStatus.OK) {
+												  if (results[1]) {
+													  newSpotAddr = results[1].formatted_address;
+													  newSpotCity = results[1].address_components[0].long_name + ", " + results[1].address_components[1].long_name;
+													  var chooseNewSpotContent = newSpotAddr + '<br><input type="button" value="Add a Spot Here!" onclick="AddSpotInfo(newSpotCity)""/>';
+					                                  addSpotInfoWind.setContent(chooseNewSpotContent);
+					                                  addSpotInfoWind.setPosition(newSpotLatLng);
+					                                  addSpotInfoWind.open(map);
+					                                  globalInfoWind = addSpotInfoWind;
+												  }
+											  }
+
+		                                  }); 
+		    });
+			
 			// Load the selected markers			
 			loadMarkers();       
 		}      

@@ -132,6 +132,7 @@
 	<%@include file="navbar.jsp" %>
 	
 	<div class="container">
+		<h1 class="page-header">Find A Spot</h1>
 		<div class="row">
 			<div class="col-lg-8">
 				<div id="map-canvas"></div>
@@ -171,7 +172,8 @@
     Key parkspot = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
     // Run an ancestor query to ensure we see the most up-to-date
     // view of the Greetings belonging to the selected Guestbook.
-   	Date startDate = new Date();
+   	String location = (String) pageContext.getAttribute("location");
+    Date startDate = new Date();
     Date endDate = new Date();    
     try{
     	startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) pageContext.getAttribute("startdate"));
@@ -190,15 +192,17 @@
 
     PreparedQuery pq = datastore.prepare(query);
     List<Entity> spots = pq.asList(FetchOptions.Builder.withDefaults());
- 
-        %>
+ 	if(location != null) {
+ 		if(spots.isEmpty()) {
+	%>
+        <h1 class="page-header">Search Result</h1>
         <div>
           <h4>No matches were found.</h4>
         </div>
-        <%
-      
-       
-%>
+    <%
+ 		}
+ 	}   
+	%>
 	
 	<!-- Don't insert code below this line -->
 	<%

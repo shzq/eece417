@@ -155,6 +155,7 @@
 	<%@include file="navbar.jsp" %>
 	
 	<div class="container">
+		<h1 class="page-header">List A Spot</h1>
 		<div class="row">
 			<div class="col-lg-8">
 				<div id="map-canvas"></div>

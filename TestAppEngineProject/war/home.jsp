@@ -55,14 +55,14 @@
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
-	        <li><a href="/newspot.jsp">List Your Spot</a></li>
+	        <li><a href="/newspot.jsp">List A Spot</a></li>
 	      </ul>
-	      <form class="navbar-form navbar-left" role="search">
-	        <div class="form-group">
-	          <input type="text" class="form-control" placeholder="Search">
-	        </div>
-	        <button type="submit" class="btn btn-default">Submit</button>
-	      </form>
+	      <ul class="nav navbar-nav">
+	        <li><a href="/results.jsp">Find A Spot</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav">
+	        <li><a href="#">View Your Spots</a></li>
+	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	        <li>
 <%
@@ -81,9 +81,6 @@
 <% 
 	}
 %>
-
-	        
-	        
 	        </li>
 	        </ul>
 	    </div><!-- /.navbar-collapse -->
@@ -91,9 +88,9 @@
 	</nav>
 
 	<div class="container">
-	  <h1>Welcome</h1>
+	  <h1 class="page-header">Welcome</h1>
 	  <div class="well" align="center">
-      <form action="/results" method="get" class="form-horizontal" role="form">
+      <form action="/results" method="get" class="form-horizontal home-search-form" role="form">
 		<div class="form-group">
 		   <div class="col-sm-4 no-padding">
              <input type="text" class="form-control" name="location" id="location" placeholder="Enter a city">

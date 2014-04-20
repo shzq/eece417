@@ -110,21 +110,39 @@
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
-	        <li><a href="/newspot.jsp">List Your Spot</a></li>
+	        <li><a href="/newspot.jsp">List A Spot</a></li>
 	      </ul>
-	      <form class="navbar-form navbar-left" role="search">
-	        <div class="form-group">
-	          <input type="text" class="form-control" placeholder="Search">
-	        </div>
-	        <button type="submit" class="btn btn-default">Submit</button>
-	      </form>
+	      <ul class="nav navbar-nav">
+	        <li><a href="/results.jsp">Find A Spot</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav">
+	        <li><a href="#">View Your Spots</a></li>
+	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="#">Link</a></li>
-	      </ul>
+	        <li>
+<%
+    UserService userService = UserServiceFactory.getUserService();
+    User user = userService.getCurrentUser();
+    if (user != null) {
+      pageContext.setAttribute("user", user);
+%>	        
+<p>Hello, ${fn:escapeXml(user.nickname)}, <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a></p>
+
+<%
+    } else {
+%>
+<a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
+
+<% 
+	}
+%>
+	        </li>
+	        </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	<div class="container">
+	<h1 class="page-header">Find A Spot</h1>
 	<div class="row">
 	  <div class="col-lg-8">
 	    <div id="map-canvas"></div>
@@ -149,7 +167,7 @@
         </div>
         </div>
 	  </div>
-	 </div> 
+	 </div>
 	 </div>
   </body>
 </html>

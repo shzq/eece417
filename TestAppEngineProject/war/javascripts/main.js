@@ -249,7 +249,7 @@ function httpCallBackFunction_postAjaxRequest() {
 }
 
 function ShowAddSpot() {
-	document.getElementById("panel1").style.display = 'block';
+	alert("In ShowAddSpot()");	
 }
 
 function AddSpot(map) {

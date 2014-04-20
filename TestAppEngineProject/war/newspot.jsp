@@ -39,6 +39,7 @@
 	    /** Global Variables **/
 	    var globalInfoWind = null;
 	    var newSpotLatLng;
+	    var newSpotCity;
 	    /** ----------------- **/
 	    
 		function initialize() {
@@ -107,7 +108,8 @@
 											  if (status == google.maps.GeocoderStatus.OK) {
 												  if (results[1]) {
 													  newSpotAddr = results[1].formatted_address;
-													  var chooseNewSpotContent = newSpotAddr + '<br><input type="button" value="Add a Spot Here!" onclick="ShowAddSpot()""/>';
+													  newSpotCity = results[1].address_components[0].long_name + ", " + results[1].address_components[1].long_name;
+													  var chooseNewSpotContent = newSpotAddr + '<br><input type="button" value="Add a Spot Here!" onclick="AddSpotInfo(newSpotCity)""/>';
 					                                  addSpotInfoWind.setContent(chooseNewSpotContent);
 					                                  addSpotInfoWind.setPosition(newSpotLatLng);
 					                                  addSpotInfoWind.open(map);

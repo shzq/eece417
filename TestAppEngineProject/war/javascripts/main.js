@@ -248,32 +248,8 @@ function httpCallBackFunction_postAjaxRequest() {
 	}		
 }
 
-function ShowAddSpot() {
-	alert("In ShowAddSpot()");	
-}
-
-function AddSpot(map) {
-	document.getElementById("panel1").style.display = 'none';
-	if (globalInfoWind != null) {
-		globalInfoWind.close();
-	}
-	newSpotCount++;
-	var newSpotInfoWind = new google.maps.InfoWindow();
-	var price = document.getElementById('price').value;	
-	var newSpotMarker = new google.maps.Marker({
-		position: newSpotLatLng,
-		map: map,
-		animation: google.maps.Animation.DROP,
-	})
-	newSpotInfoWind.setContent("Your new spot #" + newSpotCount);
-	newSpotInfoWind.open(map, newSpotMarker);
-	globalInfoWind = newSpotInfoWind;
-	prices[newSpotCount] = price; // assuming we store the price in prices array
-	dynAddedMarker[newSpotCount] = newSpotMarker;
-	
-	google.maps.event.addListener(newSpotMarker, 'click', function() {
-		openMarkerInfoWind(this);
-	})
+function AddSpotInfo(city) {	
+	document.getElementById("location").value = city;
 }
 
 function openMarkerInfoWind(marker) {

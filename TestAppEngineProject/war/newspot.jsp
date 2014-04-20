@@ -153,6 +153,8 @@
 %>
 
 	<%@include file="navbar.jsp" %>
+	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
+	
 	
 	<div class="container">
 		<div class="row">
@@ -185,8 +187,7 @@
 									placeholder="Price">
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Submit" align="center"
-								onclick="newSpotAjaxRequest()" />
+								type="submit" value="Submit" onclick="newSpotAjaxRequest()" />
 						</form>
 					</div>
 				</div>

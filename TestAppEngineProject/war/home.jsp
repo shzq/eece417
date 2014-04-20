@@ -59,14 +59,15 @@
     user = userService.getCurrentUser();
     if (user != null) {
       pageContext.setAttribute("user", user);
-%>
+	%>
 	<%@include file="navbar.jsp" %>
-
+	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
+	
+	
 	<div class="container">
 		<h1>Welcome</h1>
 		<div class="well" align="center">
-			<form action="/results" method="get" class="form-horizontal"
-				role="form">
+			<form action="/results" method="get" class="form-horizontal">
 				<div class="form-group">
 					<div class="col-sm-4 no-padding">
 						<input type="text" class="form-control" name="location"

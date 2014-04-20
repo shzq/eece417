@@ -3,8 +3,7 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page
-	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
@@ -119,8 +118,8 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 	%>
-	
 	<%@include file="navbar.jsp" %>
+	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 	
 	<div class="container">
 		<div class="row">
@@ -149,7 +148,7 @@
 									placeholder="To" value="${fn:escapeXml(enddate)}">
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Search" align="center" />
+								type="submit" value="Search"/>
 						</form>
 					</div>
 				</div>

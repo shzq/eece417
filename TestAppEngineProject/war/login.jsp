@@ -29,7 +29,6 @@
   <body>
 
 	<div class="container">
-		<body>
 
 			<h1 style="text-align: center;">&nbsp;</h1>
 			<h1 style="text-align: center;">&nbsp;</h1>
@@ -41,7 +40,6 @@
 					onClick="lg();" height="35" width="150" style="cursor:pointer" />
 			</p>
 
-		</body>
 	</div>
 	<!-- container end -->
 	

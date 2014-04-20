@@ -16,6 +16,7 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="/newspot.jsp">List Your Spot</a></li>
+				<li><a href="/spotdetails.jsp">Spotdetails</a></li>
 			</ul>
 			<form class="navbar-form navbar-left" role="search">
 				<div class="form-group">
@@ -24,23 +25,24 @@
 				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
 			<ul class="nav navbar-nav navbar-right">
+
 				<li>
 					<%
-    userService = UserServiceFactory.getUserService();
-    user = userService.getCurrentUser();
-    if (user != null) {
-      pageContext.setAttribute("user", user);
-%>
+						userService = UserServiceFactory.getUserService();
+						user = userService.getCurrentUser();
+						if (user != null) {
+							pageContext.setAttribute("user", user);
+					%>
 					<p>Hello, ${fn:escapeXml(user.nickname)}</p>
 					<p style="text-align: right;">
-						<a href="<%= userService.createLogoutURL("/login.jsp") %>">Sign
+						<a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign
 							out</a>
 					</p> <%
-    } else {
-%> <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign
-						in</a> <% 
-	}
-%>
+ 	} else {
+ %> <a href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
+						in</a> <%
+ 	}
+ %>
 				</li>
 			</ul>
 		</div>

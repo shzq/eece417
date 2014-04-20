@@ -133,6 +133,7 @@
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 	
 	<div class="container">
+	    <h1 class="page-header">Find a Spot</h1>
 		<div class="row">
 			<div class="col-lg-8">
 				<div id="map-canvas"></div>

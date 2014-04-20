@@ -62,7 +62,7 @@
 	
 	
 	<div class="container">
-		<h1>Welcome</h1>
+	    <h1 class="page-header">Welcome</h1>
 		<div class="well" align="center">
 			<form action="/results" method="get" class="form-horizontal home-search-form">
 				<div class="form-group">

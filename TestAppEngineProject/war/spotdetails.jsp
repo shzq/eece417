@@ -125,12 +125,13 @@
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 
 	<div class="container">
+		<h1 class="page-header">Spot Details</h1>
 		<div class="row">
 			<div class="col-lg-8">
 				<div id="map-canvas"></div>
 			</div>
 			<div class="col-lg-4">
-				<div class="search-container">
+				<div class="container">
 					<div class="well" align="center">
 						<form action="/spotdetails" method="get" class="form">
 							<div class="panel panel-primary">

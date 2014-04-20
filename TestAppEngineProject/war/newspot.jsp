@@ -164,6 +164,7 @@
 	
 	
 	<div class="container">
+		<h1 class="page-header">List a Spot</h1>
 		<div class="row">
 			<div class="col-lg-8">
 				<div id="map-canvas"></div>
@@ -171,7 +172,6 @@
 			<div class="col-lg-4">
 				<div class="search-container">
 					<div class="well" align="center">
-						<form action="" method="post" class="form">
 							<div class="form-group">
 								<input type="text" class="form-control" name="location"
 									id="location" placeholder="Enter a city" onblur="checkInputAddr()">
@@ -195,7 +195,6 @@
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
 								type="submit" value="Submit" onclick="newSpotAjaxRequest()" />
-						</form>
 					</div>
 				</div>
 			</div>

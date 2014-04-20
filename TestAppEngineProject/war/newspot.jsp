@@ -162,32 +162,30 @@
 			<div class="col-lg-4">
 				<div class="search-container">
 					<div class="well" align="center">
-						<form action="" method="post" class="form">
-							<div class="form-group">
-								<input type="text" class="form-control" name="location"
-									id="location" placeholder="Enter a city">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="startdate" id="startdate"
-									placeholder="From">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="endate" id="enddate"
-									placeholder="To">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon">$</span> <input type="text"
-									class="form-control" name="price" id="price"
-									placeholder="Price">
-							</div>
-							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Submit" align="center"
-								onclick="newSpotAjaxRequest()" />
-						</form>
+						<div class="form-group">
+							<input type="text" class="form-control" name="location"
+								id="location" placeholder="Enter a city">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="startdate" id="startdate"
+								placeholder="From">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="endate" id="enddate"
+								placeholder="To">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon">$</span> <input type="text"
+								class="form-control" name="price" id="price"
+								placeholder="Price">
+						</div>
+						<input id="post-btn" class="btn btn-success text-center"
+							type="submit" value="Submit" align="center"
+							onclick="newSpotAjaxRequest()" />
 					</div>
 				</div>
 			</div>

@@ -33,7 +33,6 @@
 	    $(function() {
 	    	$( "#enddate" ).datepicker();
 	    });
-
 		function initialize() {
 					
 			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
@@ -133,7 +132,6 @@
 	  <div class="col-lg-4">
 	    <div class="search-container">
 	    <div class="well" align="center">
-	      <form action="" method="post" class="form">
 	         <div class="form-group">
                <input type="text" class="form-control" name="location" id="location" placeholder="Enter a city" >
              </div>
@@ -150,7 +148,6 @@
                <input type="text" class="form-control" name="price" id="price" placeholder="Price">
              </div>
        	     <input id="post-btn" class="btn btn-success text-center" type="submit" value="Submit" align="center" onclick="newSpotAjaxRequest()"/>
-          </form>
         </div>
         </div>
 	  </div>

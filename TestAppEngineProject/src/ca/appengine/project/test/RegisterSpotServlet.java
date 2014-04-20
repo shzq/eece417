@@ -48,23 +48,26 @@ public class RegisterSpotServlet extends HttpServlet {
         
         Key locationKey = KeyFactory.createKey("UBCEECE417parkspot", location);
         Entity spot = new Entity("UBCEECE417parkspot", locationKey);
-        
+        System.out.println(user.getEmail());
         spot.setProperty("user", user);
         spot.setProperty("price", price);
         spot.setProperty("location", location);
         spot.setProperty("startdate", availabilityStartDate);
-        spot.setProperty("startdate", availabilityEndDate);
+        spot.setProperty("enddate", availabilityEndDate);
        
         DatastoreService spotdatastore = DatastoreServiceFactory.getDatastoreService();
         spotdatastore.put(spot);	
         
         // Test
         String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      
-        System.out.println(htmlString);  
+        System.out.println(htmlString); 
+        String responseString = "Your spot was successfully registered!";
         //resp.setContentType("text/html");
         //resp.getWriter().println(htmlString);
         // Test
-        
+        resp.setContentType("text/html");
+        resp.getWriter().println(responseString);        
+
         //resp.sendRedirect("/queryprocessor/?markerID="+markerID+"&guestbookName="+guestbookName);
     }
 }

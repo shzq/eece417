@@ -231,9 +231,11 @@
     		for(Entity spot:spotsList) 
     		{
     			System.out.print(spot.toString());
+    			System.out.print(spot.getKey());
     			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
     			String sdStr = df.format(spot.getProperty("startdate"));
     			String edStr = df.format(spot.getProperty("enddate"));
+    			pageContext.setAttribute("spotID", spot.getKey().getId());
     			pageContext.setAttribute("host", spot.getProperty("user"));
     			pageContext.setAttribute("resultsStartDate", sdStr);
     			pageContext.setAttribute("resultsEndDate", edStr);
@@ -257,7 +259,7 @@
 		   <div class="panel-footer">
 		     <p>
 		       <em>Hosted by: ${fn:escapeXml(user.nickname)}</em>
-		       <a class="btn btn-primary pull-right" href="#" id="spot-${fn:escapeXml(user.nickname)}">Reserve This Spot!</a>
+		       <a class="btn btn-primary pull-right" href="/spotdetails?id=${fn:escapeXml(spotID)}" id="spot-${fn:escapeXml(spotID)}">Reserve This Spot!</a>
 		     </p>
 		     
 		   </div>

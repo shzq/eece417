@@ -15,6 +15,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,24 +31,32 @@ public class SpotQueryForwardServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
-		System.out.println(req.getParameter("location"));
-		System.out.println(req.getParameter("startdate"));
-		System.out.println(req.getParameter("endate"));
-		System.out.println(req.getParameter("price"));
-		System.out.println(req.getParameter("host"));
-		String location = req.getParameter("location");
-		String startDateStr = req.getParameter("startdate");
-		String endDateStr = req.getParameter("endate");
-		String price = req.getParameter("price");
-		String host = req.getParameter("host");
-	
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+		String id = req.getParameter("id");
+		Key key = KeyFactory.createKey("UBCEECE417parkspot", id);
+		Query query = new Query("UBCEECE417parkspot", dsKey);
+		Filter filter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
+											FilterOperator.GREATER_THAN,
+											key);
+		
+		query.setFilter(filter);
+        List<Entity> result = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
+        Entity spot = null;
+        for(Entity s:result) {
+	       if (s.getKey().getId() == Long.parseLong(id)) {
+	    	   spot = s;
+	    	   break;
+	       }  
+        }
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		ServletContext sc = getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher("/spotdetails.jsp");
-		req.setAttribute("location", location);
-		req.setAttribute("startdate", startDateStr);
-		req.setAttribute("enddate", endDateStr);
-		req.setAttribute("price", price);
-		req.setAttribute("host", host);
+		req.setAttribute("location", spot.getProperty("location"));
+		req.setAttribute("startdate", df.format(spot.getProperty("startdate")));
+		req.setAttribute("enddate", df.format(spot.getProperty("enddate")));
+		req.setAttribute("price", spot.getProperty("price"));
+		req.setAttribute("host", spot.getProperty("user"));
 		rd.forward(req, resp);
 	}    
 }

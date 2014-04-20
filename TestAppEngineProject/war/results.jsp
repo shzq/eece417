@@ -175,25 +175,31 @@
     // Run an ancestor query to ensure we see the most up-to-date
     // view of the Greetings belonging to the selected Guestbook.
     String location = (String) request.getParameter("location");
-    String startDateStr = (String) request.getParameter("startdate");
-    String endDateStr = (String) request.getParameter("enddate");
-    Date startDate = new Date();
-    Date endDate = new Date();
+    String startDateStr = (String) request.getAttribute("startdate");
+    String endDateStr = (String) request.getAttribute("enddate");
+    Date startDate = null;
+    Date endDate = null;
     try {
-    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("startdate"));
-        endDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("enddate"));
+    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDateStr);        
     } catch(Exception e) {
-    	
+    	e.printStackTrace();
     }
+    try{
+    	endDate = new SimpleDateFormat("MM/dd/yyyy").parse(endDateStr);
+    } catch(Exception e) {
+    	e.printStackTrace();
+    }
+    System.out.println("startDate="+startDate);
+ 	System.out.println("enddate="+endDate);
    	System.out.println(location +","+startDateStr+","+endDateStr);
+ 
     Filter startDateFilter = new FilterPredicate("startdate",
-    											 FilterOperator.GREATER_THAN_OR_EQUAL,
+    											 FilterOperator.LESS_THAN_OR_EQUAL,
     											 startDate);
 
     Filter endDateFilter = new FilterPredicate("enddate",
-    											 FilterOperator.LESS_THAN_OR_EQUAL,
+    											 FilterOperator.GREATER_THAN_OR_EQUAL,
     											 endDate);
-    Filter queryFilter = CompositeFilterOperator.and(startDateFilter, endDateFilter);
     
     Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
 	List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
@@ -202,7 +208,12 @@
 	List<Entity> endDateResults = datastore.prepare(endDateQuery).asList(FetchOptions.Builder.withDefaults());
 	
 	List<Entity> spotsList = startDateResults;
-	spotsList.retainAll(endDateResults);
+	if(startDate == null) {
+		spotsList = endDateResults;
+	}
+	else if(endDate != null){
+		spotsList.retainAll(endDateResults);
+	}
 	
     if(location != null)
     {
@@ -257,9 +268,7 @@
     }
     	
 	%>
-	  <br/>
-	  <br/>
-	  <br/>
+	 
 	  <hr/>
 	</div>
 	

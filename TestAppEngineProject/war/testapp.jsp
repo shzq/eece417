@@ -127,8 +127,8 @@
         guestbookName = "default";
     }
     pageContext.setAttribute("guestbookName", guestbookName);
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
+    userService = UserServiceFactory.getUserService();
+    user = userService.getCurrentUser();
     if (user != null) {
       pageContext.setAttribute("user", user);
 %>

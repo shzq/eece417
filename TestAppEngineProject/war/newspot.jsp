@@ -30,6 +30,7 @@
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
+<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript"> 
     	window.onload = lg;	
     	function lg()

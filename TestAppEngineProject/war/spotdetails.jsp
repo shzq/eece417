@@ -26,8 +26,8 @@
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript"
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
+<script type="text/javascript"	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
+<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
     </script>
 <script type="text/javascript"> 
     window.onload = lg;	
@@ -118,58 +118,7 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 	%>
-	<nav class="navbar navbar-default" role="navigation">
-	<div class="container-fluid">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/home.jsp">ParkSpot</a>
-		</div>
-
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse"
-			id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li><a href="/newspot.jsp">List Your Spot</a></li>
-				<li><a href="/spotdetails.jsp">Spotdetails</a></li>
-			</ul>
-			<form class="navbar-form navbar-left" role="search">
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
-				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form>
-			<ul class="nav navbar-nav navbar-right">
-
-				<li>
-					<%
-						userService = UserServiceFactory.getUserService();
-						user = userService.getCurrentUser();
-						if (user != null) {
-							pageContext.setAttribute("user", user);
-					%>
-					<p>Hello, ${fn:escapeXml(user.nickname)}</p>
-					<p style="text-align: right;">
-						<a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign
-							out</a>
-					</p> <%
- 	} else {
- %> <a href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
-						in</a> <%
- 	}
- %>
-				</li>
-			</ul>
-		</div>
-		<!-- /.navbar-collapse -->
-	</div>
-	<!-- /.container-fluid -->
-</nav>
+	<%@ include file="navbar" %>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 	
 	<div class="container">
@@ -183,7 +132,7 @@
 						<form action="/spotdetails" method="get" class="form">
 							<div class="form-group">
 								Spot Details:
-								<ul>te<span style="text-align:left" class="form-control" id="location">${fn:escapeXml(location)}</span></ul>
+								<ul><span style="text-align:left" class="form-control" id="location">${fn:escapeXml(location)}</span></ul>
 							</div>
 							<div class="input-group form-group">
 								<span class="input-group-addon"><span
@@ -196,6 +145,12 @@
 									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
 									class="form-control" name="endate" id="enddate"
 									placeholder="To" value="${fn:escapeXml(enddate)}">
+							</div>
+							<div class="form-group">
+								<ul><span style="text-align:left" class="form-control" id="price">$${fn:escapeXml(price)}</span></ul>
+							</div>
+							<div class="form-group">
+								<ul><span style="text-align:left" class="form-control" id="host">${fn:escapeXml(host)}</span></ul>
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
 								type="submit" value="Back"/>

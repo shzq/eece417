@@ -33,15 +33,21 @@ public class SpotQueryForwardServlet extends HttpServlet {
 		System.out.println(req.getParameter("location"));
 		System.out.println(req.getParameter("startdate"));
 		System.out.println(req.getParameter("endate"));
+		System.out.println(req.getParameter("price"));
+		System.out.println(req.getParameter("host"));
 		String location = req.getParameter("location");
 		String startDateStr = req.getParameter("startdate");
 		String endDateStr = req.getParameter("endate");
+		String price = req.getParameter("price");
+		String host = req.getParameter("host");
 	
 		ServletContext sc = getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher("/spotdetails.jsp");
 		req.setAttribute("location", location);
 		req.setAttribute("startdate", startDateStr);
 		req.setAttribute("enddate", endDateStr);
+		req.setAttribute("price", price);
+		req.setAttribute("host", host);
 		rd.forward(req, resp);
 	}    
 }

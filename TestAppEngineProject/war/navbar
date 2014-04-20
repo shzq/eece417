@@ -12,8 +12,7 @@
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse"
-			id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="/newspot.jsp">List Your Spot</a></li>
 				<li><a href="/spotdetails.jsp">Spotdetails</a></li>
@@ -26,23 +25,22 @@
 			</form>
 			<ul class="nav navbar-nav navbar-right">
 
-				<li>
+				<li class="dropdown">
 					<%
 						userService = UserServiceFactory.getUserService();
 						user = userService.getCurrentUser();
 						if (user != null) {
 							pageContext.setAttribute("user", user);
 					%>
-					<p>Hello, ${fn:escapeXml(user.nickname)}</p>
-					<p style="text-align: right;">
-						<a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign
-							out</a>
-					</p> <%
- 	} else {
- %> <a href="<%=userService.createLoginURL(request.getRequestURI())%>">Sign
-						in</a> <%
- 	}
- %>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${fn:escapeXml(user.nickname)} <b class="caret"></b></a>
+          			<ul class="dropdown-menu">
+          				<li><a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign
+							out</a></li>
+					</ul>
+
+					
+					
+					<%	} %> 
 				</li>
 			</ul>
 		</div>

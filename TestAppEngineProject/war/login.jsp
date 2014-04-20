@@ -39,6 +39,14 @@
 					src="https://developers.google.com/+/images/branding/sign-in-buttons/Red-signin_Long_base_44dp.png"
 					onClick="lg();" height="35" width="150" style="cursor:pointer" />
 			</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p style="text-align: center; font-style:italic">"Simply the best way for exchanging parking spots"</p>
+			<p style="text-align: center; text-indent: 17em">- Matei Ripeanu</p>
+			
+			
+			
 
 	</div>
 	<!-- container end -->

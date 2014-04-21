@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -33,6 +34,10 @@ public class QuerySpotServlet extends HttpServlet {
 		    Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
 
 		    String location = (String) req.getParameter("location");
+		    String neighborhood = (String) req.getParameter("neighborhood");
+		    String locality = (String) req.getParameter("locality");
+		    String aL2 = (String) req.getParameter("aL2");
+		    String nationality = (String) req.getParameter("country");
 		    String startDateStr = (String) req.getParameter("startdate");
 		    String endDateStr = (String) req.getParameter("enddate");
 		    Date startDate = null;
@@ -47,9 +52,6 @@ public class QuerySpotServlet extends HttpServlet {
 		    } catch(Exception e) {
 		    	e.printStackTrace();
 		    }
-		    System.out.println("startDate="+startDate);
-		 	System.out.println("enddate="+endDate);
-		   	System.out.println(location +","+startDateStr+","+endDateStr);
 		 
 		    Filter startDateFilter = new FilterPredicate("startdate",
 		    											 FilterOperator.LESS_THAN_OR_EQUAL,
@@ -61,6 +63,11 @@ public class QuerySpotServlet extends HttpServlet {
 		    Filter isReservedFilter = new FilterPredicate("isReserved",
 		    											  FilterOperator.EQUAL,
 		    											  false);
+		    Filter neighborhoodFilter = new FilterPredicate("neighborhood", FilterOperator.EQUAL, neighborhood);
+		    Filter localityFilter = new FilterPredicate("locality", FilterOperator.EQUAL, locality);
+		    Filter aL2Filter = new FilterPredicate("admin_level_2", FilterOperator.EQUAL, aL2);
+		    Filter nationalityFilter = new FilterPredicate("country", FilterOperator.EQUAL, nationality);
+		    
 		    
 		    Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
 			List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
@@ -79,56 +86,84 @@ public class QuerySpotServlet extends HttpServlet {
 				spotsList.retainAll(endDateResults);
 			}
 			
+			Query nationalityQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(nationalityFilter);
+	    	List<Entity> nationalityResults = datastore.prepare(nationalityQuery).asList(FetchOptions.Builder.withDefaults());
+			
+			Query neighborhoodQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(neighborhoodFilter);
+		    List<Entity> neighborhoodResults = datastore.prepare(neighborhoodQuery).asList(FetchOptions.Builder.withDefaults());
+		    
+	    	Query localityQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(localityFilter);
+		    List<Entity> localityResults = datastore.prepare(localityQuery).asList(FetchOptions.Builder.withDefaults());
+
+	    	Query aL2Query = new Query("UBCEECE417parkspot", dsKey).setFilter(aL2Filter);
+	    	List<Entity> aL2Results= datastore.prepare(aL2Query).asList(FetchOptions.Builder.withDefaults());
+		    
+			List<Entity> locationList = neighborhoodResults;
+			if(neighborhoodResults.isEmpty()) {
+				System.out.println("loc");
+				locationList = localityResults;
+			}
+			else if(localityResults.isEmpty()) {
+				System.out.println("al2");
+				locationList = aL2Results;
+			}
+			else if(aL2Results.isEmpty()) {
+				System.out.println("country");
+				locationList = nationalityResults;
+			}
+			spotsList.retainAll(locationList);
+		    
+			
 			String responseHTMLString = "<h1 class=\"page-header\">Search Results</h1>";
 			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
 			
-		    if(location != null){
-		    	if(spotsList.isEmpty()) {
-		    		responseHTMLString += "<p>Sorry, no matching results were found.</p>";
-		    	} else {
-		    		for(Entity spot : spotsList) {
-		    			String sdStr = df.format(spot.getProperty("startdate"));
-		    			String edStr = df.format(spot.getProperty("enddate"));
-		    			String stNumber = (String) spot.getProperty("stNumber");
-	    		        String stName = (String) spot.getProperty("stName");
-	    		        String nbhood = (String) spot.getProperty("neighborhood");
-	    		        String locality = (String) spot.getProperty("locality");
-	    		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
-	    		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
-	    		        String adminLevel1 = (String) spot.getProperty("admin_level_1");
-	    		        String country = (String) spot.getProperty("country");
-		    			responseHTMLString += "<div class=\"panel panel-default\">";
-		    			responseHTMLString += "<div class=\"panel-body\">";
-		    			responseHTMLString += "<p class=\"lead\"><small> Location: <strong>";
-		    			if(!stNumber.equals("null")) 
-		    				responseHTMLString += stNumber + ", ";
-		    			if(!stName.equals("null")) 
-		    				responseHTMLString += stName + ", ";
-		    			if(!nbhood.equals("null") && !nbhood.equals(""))
-		    				responseHTMLString += nbhood + ", "; 
-		    			if(!locality.equals("null") && !locality.equals(""))
-		    				responseHTMLString += locality + ", ";
-		    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
-		    				responseHTMLString += adminLevel3 + ", ";
-		    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
-		    				responseHTMLString += adminLevel2 + ", ";
-		    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
-		    				responseHTMLString += adminLevel1 + ", ";
-		    			if(!country.equals("null") && !country.equals(""))
-		    				responseHTMLString += country + " ";
+		  
+	    	if(spotsList.isEmpty()) {
+	    		responseHTMLString += "<p>Sorry, no matching results were found.</p><hr>";
+	    	} else {
+	    		for(Entity spot : spotsList) {
+	    			String sdStr = df.format(spot.getProperty("startdate"));
+	    			String edStr = df.format(spot.getProperty("enddate"));
+	    			String stNumber = (String) spot.getProperty("stNumber");
+    		        String stName = (String) spot.getProperty("stName");
+    		        String nbhood = (String) spot.getProperty("neighborhood");
+    		        String loc = (String) spot.getProperty("locality");
+    		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
+    		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
+    		        String adminLevel1 = (String) spot.getProperty("admin_level_1");
+    		        String country = (String) spot.getProperty("country");
+	    			responseHTMLString += "<div class=\"panel panel-default\">";
+	    			responseHTMLString += "<div class=\"panel-body\">";
+	    			responseHTMLString += "<p class=\"lead\"><small> Location: <strong>";
+	    			if(!stNumber.equals("null")) 
+	    				responseHTMLString += stNumber + ", ";
+	    			if(!stName.equals("null")) 
+	    				responseHTMLString += stName + ", ";
+	    			if(!nbhood.equals("null") && !nbhood.equals(""))
+	    				responseHTMLString += nbhood + ", "; 
+	    			if(!loc.equals("null") && !loc.equals(""))
+	    				responseHTMLString += loc + ", ";
+	    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
+	    				responseHTMLString += adminLevel3 + ", ";
+	    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
+	    				responseHTMLString += adminLevel2 + ", ";
+	    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
+	    				responseHTMLString += adminLevel1 + ", ";
+	    			if(!country.equals("null") && !country.equals(""))
+	    				responseHTMLString += country + " ";
 
-		    			
-		    			responseHTMLString += "</strong></small></p>";
-		    			responseHTMLString += "<p class=\"lead\"><small class=\"pull-left\"> Available from <strong>"+sdStr+"</strong>"
-		    								+ " to <strong>"+edStr+"</strong>"
-		    								+ "</small> <small class=\"pull-right\"> @ <strong>$"+spot.getProperty("price")+"</strong> per day</small></p></div>";
-		    			responseHTMLString += "<div class=\"panel-footer\"><p><em>Hosted by: "+spot.getProperty("user")+"</em>"
-		    								+ "<a class=\"btn btn-primary pull-right\" href=\"/spotdetails?id="+spot.getKey().getId()+"\" id=\"spot-"+spot.getKey().getId()+"\">"
-		    								+ "Reserve This Spot!</a></p></div></div><hr />";
-		    			
-		    		}
-		    	}
-		    }
+	    			
+	    			responseHTMLString += "</strong></small></p>";
+	    			responseHTMLString += "<p class=\"lead\"><small class=\"pull-left\"> Available from <strong>"+sdStr+"</strong>"
+	    								+ " to <strong>"+edStr+"</strong>"
+	    								+ "</small> <small class=\"pull-right\"> @ <strong>$"+spot.getProperty("price")+"</strong> per day</small></p></div>";
+	    			responseHTMLString += "<div class=\"panel-footer\"><p><em>Hosted by: "+spot.getProperty("user")+"</em>"
+	    								+ "<a class=\"btn btn-primary pull-right\" href=\"/spotdetails?id="+spot.getKey().getId()+"\" id=\"spot-"+spot.getKey().getId()+"\">"
+	    								+ "Reserve This Spot!</a></p></div></div><hr />";
+	    			
+	    		}
+	    	}
+		    
 	        resp.setContentType("text/html");
 	        //resp.setCharacterEncoding("UTF-8");
 	        System.out.println(responseHTMLString);

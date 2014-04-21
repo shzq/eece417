@@ -175,6 +175,12 @@ function newSpotAjaxRequest() {
 			xmlHttpReq.open("POST", url, true);
 			xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 			
+			console.log("nbhood= " + nbhood);
+			console.log("locality= " + locality);
+			console.log("aL1= " + aL1);
+			console.log("aL2= " + aL2);
+			console.log("aL3= " + aL3);
+			
 			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+"&aL1="+aL1+"&country="+country+"&lat="+lat+"&lng="+lng+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
 			
 			newSpot = null;
@@ -210,7 +216,9 @@ function cancelspotAjaxRequest(spotID) {
 function querySpotsAjaxRequest() {
 	var myNbhood = null;
 	var myLocality = null;
+	var myAdmin_level_1 = null;
 	var myAdmin_level_2 = null;
+	var myAdmin_level_3 = null;
 	var myCountry = null;
 	try {
 		xmlHttpReq = new XMLHttpRequest();
@@ -238,26 +246,38 @@ function querySpotsAjaxRequest() {
 					}
 				}
 				for (var i = 0; i < addrCompLength; i++) {
+					if ($.inArray("administrative_area_level_1", myFirstResult.address_components[i].types) >= 0) {
+						myAdmin_level_1 = myFirstResult.address_components[i].short_name;
+					}
+				}
+				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("administrative_area_level_2", myFirstResult.address_components[i].types) >= 0) {
 						myAdmin_level_2 = myFirstResult.address_components[i].short_name;
 					}
 				}
+				for (var i = 0; i < addrCompLength; i++) {
+					if ($.inArray("administrative_area_level_3", myFirstResult.address_components[i].types) >= 0) {
+						myAdmin_level_3 = myFirstResult.address_components[i].short_name;
+					}
+				} 
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("country", myFirstResult.address_components[i].types) >= 0) {
 						myCountry = myFirstResult.address_components[i].short_name;
 					}
 				}
 				
+				
 				console.log("myNbhood = " + myNbhood);
 				console.log("myLocality = " + myLocality);
+				console.log("myAdmin_level_1 = " + myAdmin_level_1);
 				console.log("myAdmin_level_2 = " + myAdmin_level_2);
+				console.log("myAdmin_level_3 = " + myAdmin_level_3);
 				console.log("myCountry = " + myCountry);
 				
 				xmlHttpReq.open("POST", url, true);
 				xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 				
-				console.log("neighborhood="+myNbhood+"&locality="+myLocality+"&aL2="+myAdmin_level_2+"&country="+myCountry+"&startdate="+startdate+"&enddate="+enddate);
-				xmlHttpReq.send("neighborhood="+myNbhood+"&locality="+myLocality+"&aL2="+myAdmin_level_2+"&country="+myCountry+"&startdate="+startdate+"&enddate="+enddate);
+				xmlHttpReq.send("neighborhood="+myNbhood+"&locality="+myLocality+"&aL2="+myAdmin_level_2+"&aL1="+myAdmin_level_1+"&aL3="+myAdmin_level_3+"&country="+myCountry+"&startdate="+startdate+"&enddate="+enddate);
 				
 			} else {
 				myGeocodeStat = false;

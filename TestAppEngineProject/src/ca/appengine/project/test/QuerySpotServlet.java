@@ -37,6 +37,8 @@ public class QuerySpotServlet extends HttpServlet {
 		    String neighborhood = (String) req.getParameter("neighborhood");
 		    String locality = (String) req.getParameter("locality");
 		    String aL2 = (String) req.getParameter("aL2");
+		    String aL1 = (String) req.getParameter("aL1");
+		    String aL3 = (String) req.getParameter("aL3");
 		    String nationality = (String) req.getParameter("country");
 		    String startDateStr = (String) req.getParameter("startdate");
 		    String endDateStr = (String) req.getParameter("enddate");
@@ -66,6 +68,8 @@ public class QuerySpotServlet extends HttpServlet {
 		    Filter neighborhoodFilter = new FilterPredicate("neighborhood", FilterOperator.EQUAL, neighborhood);
 		    Filter localityFilter = new FilterPredicate("locality", FilterOperator.EQUAL, locality);
 		    Filter aL2Filter = new FilterPredicate("admin_level_2", FilterOperator.EQUAL, aL2);
+		    Filter aL3Filter = new FilterPredicate("admin_level_3", FilterOperator.EQUAL, aL3);
+		    Filter aL1Filter = new FilterPredicate("admin_level_1", FilterOperator.EQUAL, aL1);
 		    Filter nationalityFilter = new FilterPredicate("country", FilterOperator.EQUAL, nationality);
 		    
 		    
@@ -97,20 +101,40 @@ public class QuerySpotServlet extends HttpServlet {
 
 	    	Query aL2Query = new Query("UBCEECE417parkspot", dsKey).setFilter(aL2Filter);
 	    	List<Entity> aL2Results= datastore.prepare(aL2Query).asList(FetchOptions.Builder.withDefaults());
+
+	    	Query aL1Query = new Query("UBCEECE417parkspot", dsKey).setFilter(aL1Filter);
+	    	List<Entity> aL1Results= datastore.prepare(aL1Query).asList(FetchOptions.Builder.withDefaults());
+
+	    	Query aL3Query = new Query("UBCEECE417parkspot", dsKey).setFilter(aL3Filter);
+	    	List<Entity> aL3Results= datastore.prepare(aL3Query).asList(FetchOptions.Builder.withDefaults());
 		    
-			List<Entity> locationList = neighborhoodResults;
-			if(neighborhoodResults.isEmpty()) {
+			List<Entity> locationList = null;
+			if(!neighborhood.equals("null")) {
+				System.out.println("nbd");
+				locationList = neighborhoodResults;
+			}
+			else if(!locality.equals("null")) {
 				System.out.println("loc");
 				locationList = localityResults;
 			}
-			else if(localityResults.isEmpty()) {
+			else if(!aL3.equals("null")) {
+				System.out.println("al3");
+				locationList = aL3Results;
+			}
+			else if(!aL2.equals("null")) {
 				System.out.println("al2");
 				locationList = aL2Results;
 			}
-			else if(aL2Results.isEmpty()) {
+			else if(!aL1.equals("null")) {
+				System.out.println("al1");
+				locationList = aL1Results;
+			}
+			else if(!nationality.equals("null")) {
 				System.out.println("country");
 				locationList = nationalityResults;
 			}
+		
+			
 			spotsList.retainAll(locationList);
 		    
 			

@@ -72,9 +72,6 @@ public class RegisterSpotServlet extends HttpServlet {
         	resp.getWriter().println(responseString);        
         	return;
         }
-        System.out.println("a3="+adminLevel3);
-        System.out.println("a2="+adminLevel2);
-        System.out.println("a1="+adminLevel1);
         
         Key key = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
         Entity spot = new Entity("UBCEECE417parkspot", key);

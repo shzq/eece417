@@ -182,7 +182,7 @@
 		});        
 			
 		// Open info window everywhere we click on the map
-	    var addSpotInfoWind = new google.maps.InfoWindow();
+	    var clickedSpotInfoWind = new google.maps.InfoWindow();
 		geocoder = new google.maps.Geocoder();
 	    google.maps.event.addListener(map, 'click', function(event) {
 									  if (globalInfoWind != null) {

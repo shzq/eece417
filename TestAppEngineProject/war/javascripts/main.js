@@ -151,6 +151,7 @@ function newSpotAjaxRequest() {
 		alert("Sorry, we could not find your location. Please check that you input the right address.");
 	} else if (newSpot == null){
 		alert("Please confirm your new spot location before you proceed.");
+		return;
 	} 
 	else {
 		try {
@@ -491,15 +492,21 @@ function NewSpot() {
 
 function checkInputAddr() {
 	if (showNewSpots == true) {
-		
+		if (globalInfoWind != null) {
+			globalInfoWind.close();
+		}
+		// remove previously displayed markers
 		for (var i = 0; i < addrMarkers.length; i++) {
 			addrMarkers[i].setMap(null);
 		}
-		addrMarkers = [];
+		// set addrMarkers and addrInfoWindows back to empty array
+		addrMarkers = []; 
+		addrInfoWindows = [];
 		var inputAddr = document.getElementById("location").value;
 		var bounds = new google.maps.LatLngBounds();
 		geocoder.geocode( { 'address': inputAddr}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
+				console.log(results);
 					for (var i = 0; i < results.length; i++) {
 						// set up marker for each result
 						var marker = new google.maps.Marker({
@@ -516,7 +523,9 @@ function checkInputAddr() {
 						
 						infoWindow.setContent(content);
 						infoWindow.open(map, marker);
-						
+						google.maps.event.addListener(marker, 'click', function() {
+							showClickedAddrMarkerInfoWind(this);
+						});
 						addrMarkers.push(marker);
 						addrInfoWindows.push(infoWindow);
 					}
@@ -527,6 +536,11 @@ function checkInputAddr() {
 			}
 		});
 	}
+}
+
+function showClickedAddrMarkerInfoWind(marker) {
+	var markerID = addrMarkers.indexOf(marker);
+	addrInfoWindows[markerID].open(map, marker);
 }
 
 function displayInputAddr() {
@@ -571,21 +585,18 @@ function displayInputAddr() {
 
 function confirmNewSpot(chosenMarkerId) {
 	showNewSpots = false;
+	var myResult = newSpotResults[chosenMarkerId];
+	newSpotResults = [];
 	newSpotMarker = addrMarkers[chosenMarkerId];
 	newSpotInfoWind = addrInfoWindows[chosenMarkerId];
-	addrMarkers.splice(chosenMarkerId, 1);
-	var myResult = newSpotResults[chosenMarkerId];
-	newSpotResults.splice(chosenMarkerId, 1);
+	
 	for (var i = 0; i < addrMarkers.length; i++) {
+		if (i != chosenMarkerId)
 			addrMarkers[i].setMap(null);
 	}
-	addrMarkers = [];
-	addrInfoWindows = [];
-	newSpotResults = [];
-	
-	console.log(myResult);
 	
 	newSpot = new NewSpot();
+	
 	for (var i = 0; i < myResult.address_components.length; i++) {
 		if ($.inArray("street_number", myResult.address_components[i].types) >= 0) {
 			newSpot.street_number = myResult.address_components[i].short_name;
@@ -609,17 +620,16 @@ function confirmNewSpot(chosenMarkerId) {
 	newSpot.lat = myResult.geometry.location.lat();
 	newSpot.lng = myResult.geometry.location.lng();
 	
-	var content = newSpotInfoWind.getContent().split("<br>")[0];
-	newSpotInfoWind.setContent(content  + '<br><input type="button" class="btn btn-warning btn-sm" value="Cancel" onClick="cancelNewSpot()"/>');
-	
-	google.maps.event.addListener(newSpotMarker, 'click', function() {
-		newSpotInfoWind.open(map, newSpotMarker);
-	});	
+	var content = addrInfoWindows[chosenMarkerId].getContent().split("<br>")[0];
+	addrInfoWindows[chosenMarkerId].setContent(content  + '<br><input type="button" class="btn btn-warning btn-sm" value="Cancel" onClick="cancelNewSpot(' + chosenMarkerId + ')"/>');
 }
 
-function cancelNewSpot() {
-	newSpotMarker.setMap(null);
+function cancelNewSpot(addrMarkerId) {
+	addrMarkers[addrMarkerId].setMap(null);
+	addrMarkers = [];
+	addrInfoWindows = [];
 	newSpotMarker = null;
+	newSpotInfoWind = null;
 	newSpot = null;
 	showNewSpots = true;
 }

@@ -29,6 +29,8 @@
     </script>
 <script type="text/javascript">
     window.onload = lg;	
+    var daysToAdd = 0;
+    
     	function lg()
     	{
     		<%UserService userService = UserServiceFactory.getUserService();
@@ -38,14 +40,63 @@
 				alert("Please log in before using ParkSpot");
 				window.location.href = "login.jsp";
 			<%}%>
+			
+			var today = new Date();
+		    var tdd = today.getDate();
+		    var tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		    var ty = today.getFullYear();
+		    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		    console.log(tmm);
+		    console.log(tdformat);
+			$("#startdate").datepicker("option", "minDate", tdformat);
+			document.getElementById("startdate").value = tdformat;
+			
+			//change date to date+1 for minimum date of the end date
+			today.setDate(today.getDate() + daysToAdd);
+			tdd = today.getDate();
+		    tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		    ty = today.getFullYear();
+		    tdformat = tmm + '/'+ tdd + '/'+ ty;
+			$("#enddate").datepicker("option", "minDate", tdformat);
+			
 	    }
     
-    $(function() {
-    	$( "#startdate" ).datepicker();
-    });
-    $(function() {
-    	$( "#enddate" ).datepicker();
-    });
+    $(document).ready(function () {
+		    
+		    var today = new Date();
+		    var tdd = today.getDate();
+		    var tmm = today.getMonth()+1;
+		    var ty = today.getFullYear();
+		    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		    $("#startdate").datepicker({
+		        onSelect: function (selected) {
+		            var dtMax = new Date(selected);
+		            dtMax.setDate(dtMax.getDate() + daysToAdd); 
+		            var dd = dtMax.getDate();
+		            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+		            var y = dtMax.getFullYear();
+		            var dtFormatted = mm + '/'+ dd + '/'+ y;
+		            if(dtMax < today)
+		            {
+		            	$("#startdate").datepicker("option", "minDate", tdformat);
+		            }
+	            	$("#enddate").datepicker("option", "minDate", dtFormatted);
+		        }
+		    });
+		    
+		    $("#enddate").datepicker({
+		        onSelect: function (selected) {
+		            var dtMax = new Date(selected);
+		            dtMax.setDate(dtMax.getDate() - daysToAdd); 
+		            var dd = dtMax.getDate();
+		           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+		            var y = dtMax.getFullYear();
+		            var dtFormatted = mm + '/'+ dd + '/'+ y;
+		            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+		            console.log(dtFormatted);
+		        }
+		    });
+		});
     
     
     </script>

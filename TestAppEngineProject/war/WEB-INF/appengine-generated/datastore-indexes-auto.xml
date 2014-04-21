@@ -1,14 +1,51 @@
+<<<<<<< HEAD
 <!-- Indices written at Sun, 20 Apr 2014 20:40:57 PDT -->
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<!-- Indices written at Sun, 20 Apr 2014 21:29:59 PDT -->
+=======
+<!-- Indices written at Sun, 20 Apr 2014 20:51:54 PDT -->
+>>>>>>> refs/remotes/origin/master
+=======
+<!-- Indices written at Sun, 20 Apr 2014 21:21:48 PDT -->
+>>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master
 
 <datastore-indexes>
 
+<<<<<<< HEAD
     <!-- Used 1 time in query history -->
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="UBCEECE417parkspot" ancestor="true" source="auto">
+        <property name="user" direction="asc"/>
+        <property name="startdate" direction="desc"/>
+=======
+    <!-- Used 27 times in query history -->
+=======
+    <!-- Used 39 times in query history -->
+>>>>>>> refs/remotes/origin/master
+    <datastore-index kind="UBCEECE417parkspot" ancestor="true" source="auto">
+        <property name="enddate" direction="asc"/>
+>>>>>>> refs/remotes/origin/master
+    </datastore-index>
+
+    <!-- Used 39 times in query history -->
+>>>>>>> refs/remotes/origin/master
     <datastore-index kind="UBCEECE417parkspot" ancestor="true" source="auto">
         <property name="startdate" direction="asc"/>
     </datastore-index>
 
+<<<<<<< HEAD
     <!-- Used 1 time in query history -->
+=======
+    <!-- Used 11 times in query history -->
+>>>>>>> refs/remotes/origin/master
     <datastore-index kind="UBCEECE417parkspot" ancestor="true" source="auto">
+        <property name="isReserved" direction="asc"/>
         <property name="enddate" direction="asc"/>
     </datastore-index>
 

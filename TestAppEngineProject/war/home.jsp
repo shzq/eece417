@@ -3,7 +3,8 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page
+	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
@@ -18,53 +19,110 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <meta charset="utf-8">
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="/stylesheets/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
+<script
+	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script
+	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
 <script type="text/javascript">
-    window.onload = lg;	
-    	function lg()
-    	{
-    		<%UserService userService = UserServiceFactory.getUserService();
+    window.onload = lg;    
+    var daysToAdd = 0;
+    
+   	function lg()
+   	{
+   		<%UserService userService = UserServiceFactory.getUserService();
 			User user = userService.getCurrentUser();
 
 			if (user == null) {%>
-				alert("Please log in before using ParkSpot");
-				window.location.href = "login.jsp";
-			<%}%>
-	    }
+			alert("Please log in before using ParkSpot");
+			window.location.href = "login.jsp";
+		<%}%>
+		
+		var today = new Date();
+		var tdd = today.getDate();
+		var tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		var ty = today.getFullYear();
+		var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		console.log(tmm);
+		console.log(tdformat);
+		$("#startdate").datepicker("option", "minDate", tdformat);
+		document.getElementById("startdate").value = tdformat;
+		
+		//change date to date+1 for minimum date of the end date
+		today.setDate(today.getDate() + daysToAdd);
+		tdd = today.getDate();
+		tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		ty = today.getFullYear();
+		tdformat = tmm + '/'+ tdd + '/'+ ty;
+		$("#enddate").datepicker("option", "minDate", tdformat);
+    }
     
-    $(function() {
-    	$( "#startdate" ).datepicker();
-    });
-    $(function() {
-    	$( "#enddate" ).datepicker();
-    });
+   
+   $(document).ready(function () {
+	    
+	    var today = new Date();
+	    var tdd = today.getDate();
+	    var tmm = today.getMonth()+1;
+	    var ty = today.getFullYear();
+	    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+	    $("#startdate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() + daysToAdd); 
+	            var dd = dtMax.getDate();
+	            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            if(dtMax < today)
+	            {
+	            	$("#startdate").datepicker("option", "minDate", tdformat);
+	            }
+            	$("#enddate").datepicker("option", "minDate", dtFormatted);
+	        }
+	    });
+	    
+	    $("#enddate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() - daysToAdd); 
+	            var dd = dtMax.getDate();
+	           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+	            console.log(dtFormatted);
+	        }
+	    });
+	});
     
     
     </script>
 </head>
 <body>
 	<%
-    userService = UserServiceFactory.getUserService();
-    user = userService.getCurrentUser();
-    if (user != null) {
-      pageContext.setAttribute("user", user);
+		userService = UserServiceFactory.getUserService();
+		user = userService.getCurrentUser();
+		if (user != null) {
+			pageContext.setAttribute("user", user);
 	%>
-	<%@ include file="navbar" %>
+	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
-	
-	
+
+
 	<div class="container">
-	    <h1 class="page-header">Welcome</h1>
+		<h1 class="page-header">Welcome</h1>
 		<div class="well" align="center">
-			<form action="/results" method="get" class="form-horizontal home-search-form">
+			<form action="/results" method="get"
+				class="form-horizontal home-search-form">
 				<div class="form-group">
 					<div class="col-sm-4 no-padding">
 						<input type="text" class="form-control" name="location"
@@ -93,8 +151,8 @@
 
 
 	<!-- Don't insert code below this line -->
-	<% 
-	}
+	<%
+		}
 	%>
 </body>
 </html>

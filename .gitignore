@@ -1,2 +1,6 @@
 
 TestAppEngineProject/war/WEB-INF/appengine-generated/local_db.bin
+
+*.class
+
+TestAppEngineProject/war/WEB-INF/appengine-generated/datastore-indexes-auto.xml

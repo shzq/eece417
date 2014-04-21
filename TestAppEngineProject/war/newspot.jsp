@@ -22,37 +22,87 @@
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script
+	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
-<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript"
+	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript"> 
     	window.onload = lg;	
-    	function lg()
-    	{
-    		<%
-    		UserService userService = UserServiceFactory.getUserService();
-			User user = userService.getCurrentUser();
-	
-			if (user == null) {%>
-				alert("Please log in before using ParkSpot");
-				window.location.href = "login.jsp";
-			<%
-			}
-			%>
-	    }
+    	var daysToAdd = 1; //force the spot to be available for at least a day
+    	
+   	function lg()
+   	{
+   		<%
+   		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		if (user == null) {%>
+			alert("Please log in before using ParkSpot");
+			window.location.href = "login.jsp";
+		<%
+		}
+		%>
+		
+		var today = new Date();
+		var tdd = today.getDate();
+		var tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		var ty = today.getFullYear();
+		var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		console.log(tmm);
+		console.log(tdformat);
+		$("#startdate").datepicker("option", "minDate", tdformat);
+		document.getElementById("startdate").value = tdformat;
+		
+		//change date to date+1 for minimum date of the end date
+		today.setDate(today.getDate() + daysToAdd);
+		tdd = today.getDate();
+		tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		ty = today.getFullYear();
+		tdformat = tmm + '/'+ tdd + '/'+ ty;
+		$("#enddate").datepicker("option", "minDate", tdformat);			
+    }
     
     
-	    $(function() {
-	    	$( "#startdate" ).datepicker();
+   	$(document).ready(function () {
+	    
+	    var today = new Date();
+	    var tdd = today.getDate();
+	    var tmm = today.getMonth()+1;
+	    var ty = today.getFullYear();
+	    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+	    $("#startdate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() + daysToAdd); 
+	            var dd = dtMax.getDate();
+	            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            if(dtMax < today)
+	            {
+	            	$("#startdate").datepicker("option", "minDate", tdformat);
+	            }
+            	$("#enddate").datepicker("option", "minDate", dtFormatted);
+	        }
 	    });
-	    $(function() {
-	    	$( "#enddate" ).datepicker();
+	    
+	    $("#enddate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() - daysToAdd); 
+	            var dd = dtMax.getDate();
+	            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+	        }
 	    });
 		
 	    /** Global Variables **/
@@ -70,6 +120,8 @@
 	    /** ----------------- **/
 	    
 		function initialize() {
+		map = new google.maps.Map(document.getElementById("map-canvas"),
+		  mapOptions);		
 					
 			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
 		   
@@ -122,14 +174,15 @@
 			  getAjaxRequest();   
 			});        
 			
-			// Open info window everywhere we click on the map
-		    var clickedSpotInfoWind = new google.maps.InfoWindow();
-			geocoder = new google.maps.Geocoder();
-		    google.maps.event.addListener(map, 'click', function(event) {
-										  if (globalInfoWind != null) {
-											  globalInfoWind.close();
-										  }
-										  newSpotLatLng = event.latLng;
+		// Open info window everywhere we click on the map
+	    var addSpotInfoWind = new google.maps.InfoWindow();
+		geocoder = new google.maps.Geocoder();
+	    google.maps.event.addListener(map, 'click', function(event) {
+									  if (globalInfoWind != null) {
+										  globalInfoWind.close();
+									  }
+									  var newSpotAddr;
+									  newSpotLatLng = event.latLng;
 										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status){
 											  if (status == google.maps.GeocoderStatus.OK) {
 												  clickedSpotInfoWind.setContent(results[0].formatted_address);
@@ -137,14 +190,14 @@
 												  clickedSpotInfoWind.open(map);
 					                              globalInfoWind = clickedSpotInfoWind;
 											  }
-		                                  }); 
-		    });
-			
-			// Load the selected markers			
-			loadMarkers();       
-		}      
- 	
-		google.maps.event.addDomListener(window, 'load', initialize);
+										  }
+		});
+		
+		// Load the selected markers			
+		loadMarkers();       
+	}      
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </head>
 <body>

@@ -207,33 +207,31 @@
 			<div class="col-lg-4">
 				<div class="search-container">
 					<div class="well" align="center">
-						<form action="/results" method="get" class="form">
-							<div class="form-group">
-								<input type="text" class="form-control" name="location"
-									id="location" placeholder="Enter a city"
-									value="${fn:escapeXml(location)}">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="startdate" id="startdate"
-									placeholder="From" value="${fn:escapeXml(startdate)}">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="enddate" id="enddate"
-									placeholder="To" value="${fn:escapeXml(enddate)}">
-							</div>
-							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Search" />
-						</form>
+						<div class="form-group">
+							<input type="text" class="form-control" name="location"
+								id="location" placeholder="Enter a city"
+								value="${fn:escapeXml(location)}">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="startdate" id="startdate"
+								placeholder="From" value="${fn:escapeXml(startdate)}">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="enddate" id="enddate"
+								placeholder="To" value="${fn:escapeXml(enddate)}">
+						</div>
+						<input id="post-btn" class="btn btn-success text-center"
+							type="submit" value="Search" onclick="querySpotsAjaxRequest()"/>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" id="search-result-container">
 		<%
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
@@ -331,7 +329,7 @@
 					<em>Hosted by: ${fn:escapeXml(user.nickname)}</em> <a
 						class="btn btn-primary pull-right"
 						href="/spotdetails?id=${fn:escapeXml(spotID)}"
-						id="spot-${fn:escapeXml(spotID)}">Reserve This Spot!</a>
+						id="spot-${fn:escapeXml(spotID)}" >Reserve This Spot!</a>
 				</p>
 
 			</div>
@@ -339,11 +337,13 @@
 		<%	
     		}
     	}
+		%>
+		<hr/>
+		<%
     }
     	
 	%>
 
-		<hr />
 	</div>
 
 	<!-- Don't insert code below this line -->

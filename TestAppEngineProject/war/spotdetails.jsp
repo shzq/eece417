@@ -281,9 +281,9 @@
 								$${fn:escapeXml(price)}</div>
 						</div>
 						<button id="back-btn" class="btn btn-success text-center"
-							value="Back" onclick="goback()">Back</button>
+							type="submit"value="Back" onclick="goback()">Back</button>
 						<input id="reserve-btn" class="btn btn-primary text-center"
-							value="Reserve Spot" onclick="newReservationAjaxRequest()" /> <input
+							value="Reserve Spot" onclick="newReservationAjaxRequest()" type="submit"/> <input
 							id="price" type="hidden" value="${fn:escapeXml(price)}" /> <input
 							id="spotID" type="hidden" value="${fn:escapeXml(spotID)}" /> <input
 							id="location" type="hidden" value="${fn:escapeXml(location)}" />

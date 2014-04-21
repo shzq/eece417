@@ -80,17 +80,20 @@ public class QuerySpotServlet extends HttpServlet {
 			}
 			
 			String responseHTMLString = "<h1 class=\"page-header\">Search Results</h1>";
+			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
 			
 		    if(location != null){
 		    	if(spotsList.isEmpty()) {
 		    		responseHTMLString += "<p>Sorry, no matching results were found.</p>";
 		    	} else {
 		    		for(Entity spot : spotsList) {
+		    			String sdStr = df.format(spot.getProperty("startdate"));
+		    			String edStr = df.format(spot.getProperty("enddate"));
 		    			responseHTMLString += "<div class=\"panel panel-default\">";
 		    			responseHTMLString += "<div class=\"panel-body\">";
 		    			responseHTMLString += "<p class=\"lead\"><small> Location: <strong>"+spot.getProperty("location")+"</strong></small></p>";
-		    			responseHTMLString += "<p class=\"lead\"><small class=\"pull-left\"> Available from <strong>"+spot.getProperty("startdate")+"</strong>"
-		    								+ "to <strong>"+spot.getProperty("enddate")+"</strong>"
+		    			responseHTMLString += "<p class=\"lead\"><small class=\"pull-left\"> Available from <strong>"+sdStr+"</strong>"
+		    								+ " to <strong>"+edStr+"</strong>"
 		    								+ "</small> <small class=\"pull-right\"> @ <strong>"+spot.getProperty("price")+"</strong> per day</small></p></div>";
 		    			responseHTMLString += "<div class=\"panel-footer\"><p><em>Hosted by:"+spot.getProperty("user")+"</em>"
 		    								+ "<a class=\"btn btn-primary pull-right\" href=\"/spotdetails?id="+spot.getKey().getId()+"\" id=\"spot-"+spot.getKey().getId()+"\">"

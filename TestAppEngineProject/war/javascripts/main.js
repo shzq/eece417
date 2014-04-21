@@ -220,9 +220,26 @@ function cancelspotAjaxRequest(spotID) {
 	}
 }
 
-
-
-
+function querySpotsAjaxRequest() {
+	try {
+		xmlHttpReq = new XMLHttpRequest();
+		xmlHttpReq.onreadystatechange = httpCallBackFunction_querySpotAjaxRequest;
+		var url = "/queryspot";
+		//var price = document.getElementById("price").value;
+		var location = document.getElementById("location").value;
+		var startdate = document.getElementById("startdate").value;
+		var enddate = document.getElementById("enddate").value
+		xmlHttpReq.open("POST", url, true);
+		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
+		
+		xmlHttpReq.send("location="+location+"&startdate="+startdate+"&enddate="+enddate);
+		
+		//alert();
+		
+	} catch (e) {
+		alert("Error: " + e);
+	}
+}
 
 function newReservationAjaxRequest() {
 	try {
@@ -342,14 +359,44 @@ function httpCallBackFunction_newReservationAjaxRequest() {
 		}
 		
 		if(xmlDoc){				
-			alert(xmlHttpReq.responseText);			
+			alert(xmlHttpReq.responseText);	
+			window.location.replace("/home.jsp");
 		}else{
 			alert("No data.");
 		}	
 	}		
 }
 
+function httpCallBackFunction_querySpotAjaxRequest() {
+	if (xmlHttpReq.readyState == 1){
+		console.log("1");
+		//updateStatusMessage("<blink>Opening HTTP...</blink>");
+	}else if (xmlHttpReq.readyState == 2){
+		console.log("2");
+		//updateStatusMessage("<blink>Sending query...</blink>");
+	}else if (xmlHttpReq.readyState == 3){ 
+		console.log("3");
+		//updateStatusMessage("<blink>Receiving...</blink>");
+	}else if (xmlHttpReq.readyState == 4){
+		console.log("4");
+		var xmlDoc = null;
 
+		if(xmlHttpReq.responseXML){
+			xmlDoc = xmlHttpReq.responseXML;			
+		}else if(xmlHttpReq.responseText){
+			var parser = new DOMParser();
+		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/xml");		 		
+		}
+		
+		if(xmlDoc){				
+			$("#search-result-container").empty();
+			$("#search-result-container").html(xmlHttpReq.responseText);		
+		}else{
+			alert("No data.");
+		}	
+	}		
+	
+}
 
 function httpCallBackFunction_postAjaxRequest() {
 	//alert("httpCallBackFunction_postAjaxRequest");

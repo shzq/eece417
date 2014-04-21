@@ -70,10 +70,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     	<servlet-name>reservespot</servlet-name>
     	<url-pattern>/reservespot/*</url-pattern>
     </servlet-mapping>
-    
+    <servlet>
+    	<servlet-name>queryspot</servlet-name>
+    	<servlet-class>ca.appengine.project.test.QuerySpotServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+    	<servlet-name>queryspot</servlet-name>
+    	<url-pattern>/queryspot/*</url-pattern>
+    </servlet-mapping>
 	<welcome-file-list>
 		<!-- <welcome-file>index.html</welcome-file> -->
 		<welcome-file>login.jsp</welcome-file>
-		
 	</welcome-file-list>
 </web-app>

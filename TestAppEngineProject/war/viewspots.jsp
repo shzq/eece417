@@ -110,6 +110,10 @@
 	            	$("#startdate").datepicker("option", "minDate", tdformat);
 	            }
             	$("#enddate").datepicker("option", "minDate", dtFormatted);
+	        },
+			onClose: function (selected) {
+	        	if(selected=="")
+					$("#enddate").datepicker("option", "minDate", tdformat);
 	        }
 	    });
 	    
@@ -121,8 +125,12 @@
 	           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
 	            var y = dtMax.getFullYear();
 	            var dtFormatted = mm + '/'+ dd + '/'+ y;
-	            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+	            $("#startdate").datepicker("option", "maxDate", dtFormatted);
 	            console.log(dtFormatted);
+	        },
+	        onClose: function (selected) {
+	        	if(selected=="")
+	        		$("#startdate").datepicker("option", "maxDate", null);
 	        }
 	    });
 	});

@@ -203,10 +203,8 @@
 							pageContext.setAttribute("host", spot.getProperty("user"));
 							pageContext.setAttribute("resultsStartDate", sdStr);
 							pageContext.setAttribute("resultsEndDate", edStr);
-							pageContext.setAttribute("resultsPrice",
-									spot.getProperty("price"));
-							pageContext.setAttribute("resultsLocation",
-									spot.getProperty("location"));
+							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
+							pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
 					%>
 						<li class="dropdown-header" id='${fn:escapeXml(spotID)}'><div class="panel panel-default">
 								<!-- Default panel contents -->
@@ -260,34 +258,35 @@
 						Key reservationKey = KeyFactory.createKey("Reservation",
 									user.getEmail());
 
-							Filter userFilter = new FilterPredicate("guest",
-									FilterOperator.EQUAL, user);
+						Filter userFilter = new FilterPredicate("guest",
+								FilterOperator.EQUAL, user);
 
-							Query reservationQuery = new Query("Reservation",
-									reservationKey).setFilter(userFilter).addSort(
-									"startdate", Query.SortDirection.DESCENDING);
+						Query reservationQuery = new Query("Reservation",
+								reservationKey).setFilter(userFilter).addSort(
+								"startdate", Query.SortDirection.DESCENDING);
 
-							List<Entity> spotsList1 = datastore.prepare(reservationQuery)
-									.asList(FetchOptions.Builder.withDefaults());
+						List<Entity> spotsList1 = datastore.prepare(reservationQuery)
+								.asList(FetchOptions.Builder.withDefaults());
 
-							if (spotsList1.isEmpty())
-								System.out.println("empty");
+						if (spotsList1.isEmpty())
+							System.out.println("empty");
 
-							for (Entity spot : spotsList1) {
-								System.out.print(spot.toString());
-								DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
-								String sdStr = df.format(spot.getProperty("startdate"));
-								String edStr = df.format(spot.getProperty("enddate"));
-								pageContext.setAttribute("spotID", spot.getKey().getId());
-								pageContext.setAttribute("host", spot.getProperty("user"));
-								pageContext.setAttribute("resultsStartDate", sdStr);
-								pageContext.setAttribute("resultsEndDate", edStr);
-								pageContext.setAttribute("resultsPrice",
-										spot.getProperty("price"));
-								pageContext.setAttribute("resultsLocation",
-										spot.getProperty("location"));
+						for (Entity spot : spotsList1) {
+							System.out.print(spot.toString());
+							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
+							String sdStr = df.format(spot.getProperty("startdate"));
+							String edStr = df.format(spot.getProperty("enddate"));
+							pageContext.setAttribute("spotID", spot.getKey().getId());
+							pageContext.setAttribute("host", spot.getProperty("user"));
+							pageContext.setAttribute("resultsStartDate", sdStr);
+							pageContext.setAttribute("resultsEndDate", edStr);
+							pageContext.setAttribute("resultsPrice",
+									spot.getProperty("price"));
+							pageContext.setAttribute("resultsLocation",
+									spot.getProperty("location"));
 					%>
-						<li class="dropdown-header"><div class="panel panel-default">
+						<li class="dropdown-header">
+						  	<div class="panel panel-default">
 							<!-- Default panel contents -->
 							<div class="panel-body">
 								<h3 class="list-group-item-heading">
@@ -301,24 +300,32 @@
 										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font></div>
 								</h4>
 							</div>
-							<div class="panel-footer"><h4>Status:
+							<div class="panel-footer">
+							  <h4>
+							    Status:
 							<%	
 	      						try{
 	      							if((Boolean)(spot.getProperty("isReserved")) == false) {
 	      					%>
-	      					 <font color="#F0AD4E">Available for reservation</font> 
+	      					    <font color="#F0AD4E">Available for reservation</font> 
 	      					<% 
 	      							} else {
-	      					%> Currently reserved <% 
+	      					%> 
+	      						Currently reserved 
+	      					<% 
 	      							}
 	      						}
-	      					  	catch(Exception e){%> <font color="#F0AD4E">Reserved</font><button class="btn btn-primary pull-right">Cancel Reservation</button> <%}
-	      						%></h4>
+	      					  	catch(Exception e){
+	      					  		
+	      					  	}
+	      					%> 
+	      					  	<font color="#F0AD4E">Reserved</font><button class="btn btn-primary pull-right">Cancel Reservation</button>
+	      					  </h4>
 							</div>
 						</li>
-							<%
-								}
-							%>
+					<%
+						}
+					%>
 					</ul>
 				</div>
 			</div> <!-- container for list items end here -->

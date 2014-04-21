@@ -181,7 +181,7 @@ function newSpotAjaxRequest() {
 			console.log("aL2= " + aL2);
 			console.log("aL3= " + aL3);
 			
-			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+"&aL1="+aL1+"&country="+country+"&lat="+lat+"&lng="+lng+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
+			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+aL2+"&aL1="+aL1+"&country="+country+"&lat="+lat+"&lng="+lng+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
 			
 			newSpot = null;
 		} catch (e) {

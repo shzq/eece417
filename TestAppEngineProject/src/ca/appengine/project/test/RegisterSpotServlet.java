@@ -26,11 +26,6 @@ public class RegisterSpotServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
 
-        // We have one entity group per Guestbook with all Greetings residing
-        // in the same entity group as the Guestbook to which they belong.
-        // This lets us run a transactional ancestor query to retrieve all
-        // Greetings for a given Guestbook.  However, the write rate to each
-        // Guestbook should be limited to ~1/second.
         
         String stNumber = req.getParameter("stNumber");
         String stName = req.getParameter("stName");
@@ -45,8 +40,8 @@ public class RegisterSpotServlet extends HttpServlet {
         String price = req.getParameter("price");
         String availabilityStartDateStr = req.getParameter("startdate");
         String availabilityEndDateStr = req.getParameter("enddate");
-        Date availabilityStartDate = new Date();
-        Date availabilityEndDate = new Date();
+        Date availabilityStartDate = null;
+        Date availabilityEndDate = null;
         try {
         	availabilityStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(availabilityStartDateStr);
         	availabilityEndDate = new SimpleDateFormat("MM/dd/yyyy").parse(availabilityEndDateStr);
@@ -55,23 +50,25 @@ public class RegisterSpotServlet extends HttpServlet {
 			e.printStackTrace();
 		}
         if (availabilityStartDate == null) {
-        	System.out.println("startdate null");
         	String responseString = "Please enter a valid start date!";
         	resp.getWriter().println(responseString);    
         	return;
         }
         if (availabilityEndDate == null) {
-        	System.out.println("enddate null");
         	String responseString = "Please select a valid end date!";
         	resp.getWriter().println(responseString);        
         	return;
         }
         if (price.equals("")) {
-        	System.out.println("enddate null");
         	String responseString = "Please select a valid price!";
         	resp.getWriter().println(responseString);        
         	return;
         }
+        // for some reason the code only works with this section below
+        System.out.println("al2=" + adminLevel2);
+        System.out.println("al3=" + adminLevel3);
+        System.out.println("al1=" + adminLevel1);
+        // ----------------------------------------
         
         Key key = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
         Entity spot = new Entity("UBCEECE417parkspot", key);

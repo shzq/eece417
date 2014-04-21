@@ -146,6 +146,7 @@ public class QuerySpotServlet extends HttpServlet {
 	    		responseHTMLString += "<p>Sorry, no matching results were found.</p><hr>";
 	    	} else {
 	    		for(Entity spot : spotsList) {
+	    			System.out.println(spot);
 	    			String sdStr = df.format(spot.getProperty("startdate"));
 	    			String edStr = df.format(spot.getProperty("enddate"));
 	    			String stNumber = (String) spot.getProperty("stNumber");

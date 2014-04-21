@@ -31,19 +31,12 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <meta charset="utf-8">
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-<<<<<<< HEAD
-<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-=======
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.css" />
 <link rel="stylesheet"
 	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
->>>>>>> refs/remotes/origin/master
 <script type="text/javascript" src="/javascripts/main.js"></script>
 <script type="text/javascript"
 	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
@@ -85,7 +78,6 @@
 		$("#enddate").datepicker("option", "minDate", tdformat);
     }
     
-<<<<<<< HEAD
 //     $(".cancel-button").click(function(){
 //     	console.log("here");
 //     	alert("click");
@@ -100,10 +92,10 @@
 	$(function(){
 		$('#Host').find('SPAN').click(function(e){
 			$(this).parent().find('UL').toggle();
+		});
+		});
 	});
-	});
-});
-=======
+
     $(document).ready(function () {
 		    
 	    var today = new Date();
@@ -141,8 +133,6 @@
 	    });
 	});
     
->>>>>>> refs/remotes/origin/master
-    
     </script>
 </head>
 <body>
@@ -155,7 +145,6 @@
 	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 
-<<<<<<< HEAD
 	
 <div class="container">
    <div class="row">
@@ -172,35 +161,9 @@
 			</ul>
 		</UL>
 	</UL>
-=======
-
-
-	<div class="container">
-		<div class="row">
-			<UL id="Reservation">
-				<UL>
-					<span STYLE="color: #5F5FFF; text-decoration: underline">View
-						Reservation spots&raquo;</span>
-					<ul class="collapse">
-
-						<li class="list-group-item">North Parkade</li>
-						<li class="list-group-item">Thunderbird Parkade</li>
-						<li class="list-group-item">West Parkade</li>
-						<li class="list-group-item">Fraser River Parkade</li>
-						<li class="list-group-item">Health Sciences Parkade</li>
-						<li class="list-group-item">Rose Garden Parkade</li>
-					</ul>
-				</UL>
-			</UL>
-		</div>
->>>>>>> refs/remotes/origin/master
 	</div>
-<<<<<<< HEAD
 </div>
-=======
->>>>>>> refs/remotes/origin/master
 
-<<<<<<< HEAD
 <input type="hidden" id="spotID" value=""/>
 <div class="container">
    <div class="row">
@@ -284,51 +247,7 @@
 	</UL>
 	</div>
 </div>
-=======
 
-
-	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-				$('#Reservation').find('SPAN').click(function(e){
-					$(this).parent().find('UL').toggle();
-			});
-		});
-</script>
-
-	<div class="container">
-		<div class="row">
-			<UL id="Host">
-				<UL>
-					<span STYLE="color: #5F5FFF; text-decoration: underline">View
-						Host spots&raquo;</span>
-					<ul class="collapse">
->>>>>>> refs/remotes/origin/master
-
-<<<<<<< HEAD
-
-=======
-						<li class="list-group-item">North Parkade</li>
-						<li class="list-group-item">Thunderbird Parkade</li>
-						<li class="list-group-item">West Parkade</li>
-						<li class="list-group-item">Fraser River Parkade</li>
-						<li class="list-group-item">Health Sciences Parkade</li>
-						<li class="list-group-item">Rose Garden Parkade</li>
-					</ul>
-				</UL>
-			</UL>
-		</div>
-	</div>
-
-	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-				$('#Host').find('SPAN').click(function(e){
-					$(this).parent().find('UL').toggle();
-			});
-		});
-</script>
->>>>>>> refs/remotes/origin/master
 
 
 
@@ -338,56 +257,3 @@
 	%>
 </body>
 </html>
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
-<!--UNUSED 
-	<div class="container"> -->
-<!--      <div class="row"> -->
-<!--         <div class="span4 collapse-group"> -->
-<!--           <h2>View Your Spots</h2> -->
-<!--             <p><a class="btn" href="#">	View Reservation spots&raquo;</a></p> -->
-<!-- <!--            <p class="collapse">aaaaaaaaaaaaaaaaaaaaaaaaaaa</p> -->
--->
-
-<!--           <ul class="collapse" > -->
-
-<!--   				<li class="list-group-item">North Parkade</li> -->
-<!--   				<li class="list-group-item">Thunderbird Parkade</li> -->
-<!--   				<li class="list-group-item">West Parkade</li> -->
-<!--   				<li class="list-group-item">Fraser River Parkade</li> -->
-<!--   				<li class="list-group-item">Health Sciences Parkade</li> -->
-<!--  				<li class="list-group-item">Rose Garden Parkade</li> -->
-
-<!-- 		</ul> -->
-
-<!--         </div> -->
-<!--       </div> -->
-<!--       	</div> -->
-
-<!-- 	<script type="text/javascript"> 
-	
-// 	$('.row .btn').on('click', function(e) {
-// 	    e.preventDefault();
-// 	    var $this = $(this);
-// //	    var $collapse = $this.closest('.collapse-group').find('.collapse');
-	    
-// 	    var $collapse = $this.closest('.collapse-group').find('.collapse');
-	    
-// 	    $collapse.collapse('toggle');
-	    
-// 	});
-	
-<!--     </script> -->
->>>>>>> refs/remotes/origin/master

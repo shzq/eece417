@@ -499,12 +499,8 @@ function checkInputAddr() {
 						// set up infoWindow for each marker
 						var infoWindow = new google.maps.InfoWindow();
 						var formAddr = results[i].formatted_address;
-<<<<<<< HEAD
-						var content = formAddr + '<br><input type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
-						
-=======
 						var content = "<p>"+formAddr +"</p>"+ '<br/><input class="btn btn-info btn-sm" type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
->>>>>>> 6035c15d298ed0e51d3c81c9ce58747d0d96b615
+						
 						infoWindow.setContent(content);
 						infoWindow.open(map, marker);
 						

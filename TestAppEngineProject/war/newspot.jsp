@@ -164,23 +164,7 @@
 
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
 		setPosition(map, "map");
-
-<<<<<<< HEAD
-		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-		var icons = {
- 				parking: {
-   				icon: iconBase + 'parking_lot_maps.png'
- 				},
- 				library: {
-   				icon: iconBase + 'library_maps.png'
- 				},
- 				info: {
-   				icon: iconBase + 'info-i_maps.png'
- 				}
-		};
 			
-=======
->>>>>>> 6035c15d298ed0e51d3c81c9ce58747d0d96b615
 		// Open info window everywhere we click on the map
 	    var clickedSpotInfoWind = new google.maps.InfoWindow();
 		geocoder = new google.maps.Geocoder();

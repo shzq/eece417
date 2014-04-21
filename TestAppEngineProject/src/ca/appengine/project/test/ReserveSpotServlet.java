@@ -3,6 +3,7 @@ package ca.appengine.project.test;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
@@ -33,6 +34,7 @@ public class ReserveSpotServlet extends HttpServlet {
         // Guestbook should be limited to ~1/second.
         
         String price = req.getParameter("price");
+        String spotID = req.getParameter("id");
         String location = req.getParameter("location");
         String availabilityStartDateStr = req.getParameter("startdate");
         String availabilityEndDateStr = req.getParameter("enddate");
@@ -46,18 +48,30 @@ public class ReserveSpotServlet extends HttpServlet {
 			e.printStackTrace();
 		}
         
-        Key key = KeyFactory.createKey("UBCEECE417parkspot", location);
-        Entity reservation = new Entity("Reservation");
-        System.out.println(user.getEmail());
-        reservation.setProperty("user", user);
+        Key reservationKey = KeyFactory.createKey("Reservation", user.getEmail());
+        Key spotParentKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+        Key spotKey = KeyFactory.createKey(spotParentKey, "UBCEECE417parkspot", Long.parseLong(spotID));
+        Entity reservation = new Entity("Reservation", reservationKey);
+
+        reservation.setProperty("guest", user);
         reservation.setProperty("price", price);
         reservation.setProperty("location", location);
         reservation.setProperty("startdate", availabilityStartDate);
         reservation.setProperty("enddate", availabilityEndDate);
-        reservation.setProperty("spotID", 0);
+        reservation.setProperty("spotID", spotID);
        
-        DatastoreService spotdatastore = DatastoreServiceFactory.getDatastoreService();
-        spotdatastore.put(reservation);	
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(reservation);	
+        
+        try {
+			Entity spot = datastore.get(spotKey);
+			System.out.println("spot location="+ spot.getProperty("location"));
+			spot.setProperty("isReserved", true);
+			datastore.put(spot);
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         // Test
         String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      

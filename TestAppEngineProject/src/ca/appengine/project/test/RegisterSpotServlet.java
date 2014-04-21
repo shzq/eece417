@@ -53,6 +53,7 @@ public class RegisterSpotServlet extends HttpServlet {
         spot.setProperty("location", location);
         spot.setProperty("startdate", availabilityStartDate);
         spot.setProperty("enddate", availabilityEndDate);
+        spot.setProperty("isReserved", false);
        
         DatastoreService spotdatastore = DatastoreServiceFactory.getDatastoreService();
         spotdatastore.put(spot);	

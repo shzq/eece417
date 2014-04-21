@@ -251,6 +251,11 @@
     Filter endDateFilter = new FilterPredicate("enddate",
     											 FilterOperator.GREATER_THAN_OR_EQUAL,
     											 endDate);
+    Filter isReservedFilter = new FilterPredicate("isReserved",
+    											  FilterOperator.EQUAL,
+    											  false);
+    startDateFilter = CompositeFilterOperator.and(endDateFilter, isReservedFilter);
+    endDateFilter = CompositeFilterOperator.and(startDateFilter, isReservedFilter);
     
     Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
 	List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
@@ -282,7 +287,6 @@
     		for(Entity spot:spotsList) 
     		{
     			System.out.print(spot.toString());
-    			System.out.print(spot.getKey());
     			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
     			String sdStr = df.format(spot.getProperty("startdate"));
     			String edStr = df.format(spot.getProperty("enddate"));

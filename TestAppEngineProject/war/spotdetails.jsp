@@ -218,57 +218,55 @@
 			<div class="col-lg-4">
 				<div class="container">
 					<div class="well" align="center">
-						<form action="/spotdetails" method="get" class="form">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title" style="text-align: left">Host</h3>
-								</div>
-								<div class="panel-body" style="text-align: left">
-									${fn:escapeXml(host)}</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: left">Host</h3>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title" style="text-align: left">Location</h3>
-								</div>
-								<div class="panel-body" style="text-align: left">
-									${fn:escapeXml(location)}</div>
+							<div class="panel-body" style="text-align: left">
+								${fn:escapeXml(host)}
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title" style="text-align: left">Availability</h3>
-								</div>
-								<div class="panel-body" style="text-align: left">
-									${fn:escapeXml(startdate)}    to    ${fn:escapeXml(enddate)}</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: left">Location</h3>
 							</div>
-
-							<div class="input-group form-group">
-								<span class="input-group-addon">From:</span> <input type="text"
-									class="form-control" name="startdate" id="startdate"
-									placeholder="From" value=""> <span
-									class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span>
+							<div class="panel-body" style="text-align: left" >
+								${fn:escapeXml(location)}
 							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon">To:    </span> <input type="text"
-									class="form-control" name="enddate" id="enddate"
-									placeholder="To" value=""> <span
-									class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: left">Availability</h3>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title" style="text-align: left">Price</h3>
-								</div>
-								<div class="panel-body" style="text-align: left">
-									$${fn:escapeXml(price)}</div>
+							<div class="panel-body" style="text-align: left">
+								${fn:escapeXml(startdate)}  to  ${fn:escapeXml(enddate)}
 							</div>
-
-
-							<input id="back-btn" class="btn btn-primary text-center"
-								type="submit" value="Back" /> <input id="reserve-btn"
-								class="btn btn-success text-center" type="submit" value="Reserve Spot" />
-
-						</form>
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon">From:</span> <input type="text"
+								class="form-control" name="startdate" id="startdate"
+								placeholder="From" value=""> <span
+								class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon">To:&nbsp&nbsp&nbsp&nbsp</span> 
+							<input type="text" class="form-control" name="enddate" id="enddate" placeholder="To" value=""/> 
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: left">Price</h3>
+							</div>
+							<div class="panel-body" style="text-align: left">
+								$${fn:escapeXml(price)}</div>
+						</div>
+					    <input id="reserve-btn" class="btn btn-primary text-center" 
+					    value="Reserve Spot" onclick="newReservationAjaxRequest()" />
+						<input id="price" type="hidden" value="${fn:escapeXml(price)}" />
+						<input id="spotID" type="hidden" value="${fn:escapeXml(spotID)}" />
+						<input id="location" type="hidden" value="${fn:escapeXml(location)}" />
+						
 					</div>
 				</div>
 			</div>

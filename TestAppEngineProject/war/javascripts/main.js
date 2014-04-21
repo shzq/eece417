@@ -467,7 +467,7 @@ function checkInputAddr() {
 						// set up infoWindow for each marker
 						var infoWindow = new google.maps.InfoWindow();
 						var formAddr = results[i].formatted_address;
-						var content = formAddr + '<br><input type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
+						var content = "<p>"+formAddr +"</p>"+ '<br/><input class="btn btn-info btn-sm" type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
 						infoWindow.setContent(content);
 						infoWindow.open(map, marker);
 						
@@ -505,11 +505,11 @@ function displayInputAddr() {
 					});
 					bounds.extend(marker.position); // include marker in bounds
 					// set up infoWindow for each marker
-					var infoWindow = new google.maps.InfoWindow();
-					infoWindow.setOptions({maxWidth:500});
 					var formAddr = results[i].formatted_address;
-					var content = formAddr;
-					infoWindow.setContent(content);
+					var contentString = "<p>"+formAddr+"&nbsp&nbsp&nbsp</p>";
+
+					var infoWindow = new google.maps.InfoWindow({content:contentString});
+					//infoWindow.setContent(content);
 					infoWindow.open(map, marker);
 					
 					newSpotResults = results;

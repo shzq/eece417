@@ -77,16 +77,10 @@
 		tdformat = tmm + '/'+ tdd + '/'+ ty;
 		$("#enddate").datepicker("option", "minDate", tdformat);
     }
-    
-//     $(".cancel-button").click(function(){
-//     	console.log("here");
-//     	alert("click");
-//     	document.getElementByID("spotID").value = $(this).attr('id');
-//     	cancelspotAjaxRequest();
-//     });
 
 	$(function(){
 		$('#Reservation').find('SPAN').click(function(e){
+			console.log("click");
 			$(this).parent().find('UL').toggle();
 	});
 	$(function(){
@@ -146,25 +140,27 @@
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 
 	
-<div class="container">
-   <div class="row">
-	<UL id="Reservation">
-		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span>
-         	 <ul class="collapse" >
+<!-- <div class="container"> -->
+<!--    <div class="row"> -->
+<!-- 	<UL id="Reservation"> -->
+<!-- 		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span> -->
+<!--          	 <ul class="collapse" > -->
 				
-  				<li class="list-group-item">under construction</li>
-  				<li class="list-group-item">under construction</li>
-  				<li class="list-group-item">under construction</li>
-  				<li class="list-group-item">under construction</li>
-  				<li class="list-group-item">under construction</li>
- 				<li class="list-group-item">under construction</li>
-			</ul>
-		</UL>
-	</UL>
-	</div>
-</div>
+<!--   				<li class="list-group-item">under construction</li> -->
+<!--   				<li class="list-group-item">under construction</li> -->
+<!--   				<li class="list-group-item">under construction</li> -->
+<!--   				<li class="list-group-item">under construction</li> -->
+<!--   				<li class="list-group-item">under construction</li> -->
+<!--  				<li class="list-group-item">under construction</li> -->
+<!-- 			</ul> -->
+<!-- 		</UL> -->
+<!-- 	</UL> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
 <input type="hidden" id="spotID" value=""/>
+
+
 <div class="container">
    <div class="row">
 	<UL id="Host">
@@ -200,7 +196,6 @@
 		
 						for(Entity spot:spotsList) 
 						{
-							System.out.print(spot.toString());
 							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
 							String sdStr = df.format(spot.getProperty("startdate"));
 							String edStr = df.format(spot.getProperty("enddate"));
@@ -248,6 +243,84 @@
 	</div>
 </div>
 
+
+
+
+
+
+
+
+
+
+<div class="container">
+   <div class="row">
+	<UL id="Reservation">
+		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span>
+         	 <ul class="collapse" >
+				
+ 				<div class="container">
+				<%
+					Key reservationKey = KeyFactory.createKey("Reservation", user.getEmail());
+
+					
+ 						 Filter userFilter = new FilterPredicate("guest", FilterOperator.EQUAL, user);
+    
+    					 Query  reservationQuery = new Query("Reservation", reservationKey).setFilter(userFilter).addSort("startdate", Query.SortDirection.DESCENDING);
+    
+    					 List<Entity> spotsList1 = datastore.prepare(reservationQuery).asList(FetchOptions.Builder.withDefaults());
+						
+						if(spotsList1.isEmpty())
+							System.out.println("empty");
+		
+						for(Entity spot:spotsList1) 
+						{
+							System.out.print(spot.toString());
+							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
+							String sdStr = df.format(spot.getProperty("startdate"));
+							String edStr = df.format(spot.getProperty("enddate"));
+							pageContext.setAttribute("spotID", spot.getKey().getId());
+							pageContext.setAttribute("host", spot.getProperty("user"));
+							pageContext.setAttribute("resultsStartDate", sdStr);
+							pageContext.setAttribute("resultsEndDate", edStr);
+							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
+							pageContext.setAttribute("resultsLocation", spot.getProperty("location")); 
+				%>
+				 <li class="list-group-item" id='${fn:escapeXml(spotID)}'>
+    					 <div class="panel panel-default">
+		 					  <div class="panel-body">
+		  						 <p class="lead">
+		   						   <small>
+		   	     					Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
+		   	   						</small>
+		   						 </p>
+		   						  <p class="lead">
+		    					    <small class="pull-left">
+		     						  Available from <strong>${fn:escapeXml(resultsStartDate)}</strong> to <strong>${fn:escapeXml(resultsEndDate)}</strong>
+		     						</small>
+		     						<small class="pull-right"> @ <strong>$ ${fn:escapeXml(resultsPrice)}</strong> per day</small>
+		    					 </p>
+		   						</div>
+	   							<div class="panel-footer">
+		    				 	<p>
+<!-- 		      						 <em>Status:  rented / unrented</em> -->
+<%--     		   <em>Hosted by: ${fn:escapeXml(user.nickname)}</em> --%>
+<%-- 		       <a class="btn btn-primary pull-right" href="#" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot.</a> --%>
+		     					</p>
+		     
+		   						</div>
+		 				</div>
+				 </li>
+       			<%	
+ 						}
+  				%>
+	 
+			</div>
+ 				
+			</ul>
+		</UL>
+	</UL>
+	</div>
+</div>
 
 
 

@@ -150,10 +150,11 @@ function newSpotAjaxRequest() {
 	if (myGeocodeStat == false) {
 		alert("Sorry, we could not find your location. Please check that you input the right address.");
 	} else if (newSpot == null){
+		if (showNewSpots == true)
+			checkInputAddr();
 		alert("Please confirm your new spot location before you proceed.");
 		return;
-	} 
-	else {
+	} else {
 		try {
 			xmlHttpReq = new XMLHttpRequest();
 			xmlHttpReq.onreadystatechange = httpCallBackFunction_newSpotAjaxRequest;
@@ -222,8 +223,7 @@ function querySpotsAjaxRequest() {
 
 		querySpotGeocoder.geocode( { 'address': queryLocation}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log("results:");
-				console.log(results);
+				myGeocodeStat = true;
 				var myFirstResult = results[0];
 				var addrCompLength = myFirstResult.address_components.length;
 				console.log(myFirstResult);
@@ -260,6 +260,7 @@ function querySpotsAjaxRequest() {
 				xmlHttpReq.send("neighborhood="+myNbhood+"&locality="+myLocality+"&aL2="+myAdmin_level_2+"&country="+myCountry+"&startdate="+startdate+"&enddate="+enddate);
 				
 			} else {
+				myGeocodeStat = false;
 				alert("Sorry, we could not find the location. Please check that you enter the right location.");
 			}
 		});
@@ -506,29 +507,29 @@ function checkInputAddr() {
 		var bounds = new google.maps.LatLngBounds();
 		geocoder.geocode( { 'address': inputAddr}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log(results);
-					for (var i = 0; i < results.length; i++) {
-						// set up marker for each result
-						var marker = new google.maps.Marker({
-							map: map,
-							position: results[i].geometry.location,
-							animation: google.maps.Animation.DROP,
-							icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-						});
-						bounds.extend(marker.position); // include marker in bounds
-						// set up infoWindow for each marker
-						var infoWindow = new google.maps.InfoWindow();
-						var formAddr = results[i].formatted_address;
-						var content = "<p>"+formAddr +"</p>"+ '<br><input class="btn btn-info btn-sm" type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
-						
-						infoWindow.setContent(content);
-						infoWindow.open(map, marker);
-						google.maps.event.addListener(marker, 'click', function() {
-							showClickedAddrMarkerInfoWind(this);
-						});
-						addrMarkers.push(marker);
-						addrInfoWindows.push(infoWindow);
-					}
+				myGeocodeStat = true;
+				for (var i = 0; i < results.length; i++) {
+					// set up marker for each result
+					var marker = new google.maps.Marker({
+						map: map,
+						position: results[i].geometry.location,
+						animation: google.maps.Animation.DROP,
+						icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+					});
+					bounds.extend(marker.position); // include marker in bounds
+					// set up infoWindow for each marker
+					var infoWindow = new google.maps.InfoWindow();
+					var formAddr = results[i].formatted_address;
+					var content = "<p>"+formAddr +"</p>"+ '<br><input class="btn btn-info btn-sm" type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
+					
+					infoWindow.setContent(content);
+					infoWindow.open(map, marker);
+					google.maps.event.addListener(marker, 'click', function() {
+						showClickedAddrMarkerInfoWind(this);
+					});
+					addrMarkers.push(marker);
+					addrInfoWindows.push(infoWindow);
+				}
 				newSpotResults = results;
 				map.fitBounds(bounds);
 			} else {
@@ -553,30 +554,29 @@ function displayInputAddr() {
 	var bounds = new google.maps.LatLngBounds();
 	geocoder.geocode( { 'address': inputAddr}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
-				for (var i = 0; i < results.length; i++) {
-					// set up marker for each result
-					var marker = new google.maps.Marker({
-						map: map,
-						position: results[i].geometry.location,
-						animation: google.maps.Animation.DROP,
-						icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-					});
-					bounds.extend(marker.position); // include marker in bounds
-					// set up infoWindow for each marker
-					var formAddr = results[i].formatted_address;
-					var contentString = "<p>"+formAddr+"&nbsp&nbsp&nbsp</p>";
+			myGeocodeStat = true;
+			for (var i = 0; i < results.length; i++) {
+				// set up marker for each result
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[i].geometry.location,
+					animation: google.maps.Animation.DROP,
+					icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+				});
+				bounds.extend(marker.position); // include marker in bounds
+				// set up infoWindow for each marker
+				var formAddr = results[i].formatted_address;
+				var contentString = "<p>"+formAddr+"&nbsp&nbsp&nbsp</p>";
 
-					var infoWindow = new google.maps.InfoWindow({content:contentString});
-					//infoWindow.setContent(content);
-					infoWindow.open(map, marker);
-					
-					newSpotResults = results;
-					addrMarkers.push(marker);
-					addrInfoWindows.push(infoWindow);
-				}
-			
+				var infoWindow = new google.maps.InfoWindow({content:contentString});
+				//infoWindow.setContent(content);
+				infoWindow.open(map, marker);
+				
+				newSpotResults = results;
+				addrMarkers.push(marker);
+				addrInfoWindows.push(infoWindow);
+			}
 			map.fitBounds(bounds);
-			
 		} else {
 			myGeocodeStat = false;
 		}

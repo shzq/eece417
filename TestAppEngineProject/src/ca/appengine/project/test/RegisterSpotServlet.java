@@ -32,8 +32,16 @@ public class RegisterSpotServlet extends HttpServlet {
         // Greetings for a given Guestbook.  However, the write rate to each
         // Guestbook should be limited to ~1/second.
         
+        String stNumber = req.getParameter("stNumber");
+        String stName = req.getParameter("stName");
+        String nbhood = req.getParameter("nbhood");
+        String locality = req.getParameter("locality");
+        String adminLevel3 = req.getParameter("aL3");
+        String adminLevel2 = req.getParameter("aL2");
+        String adminLevel1 = req.getParameter("aL1");
+        String country = req.getParameter("country");
         String price = req.getParameter("price");
-        String location = req.getParameter("location");
+//        String location = req.getParameter("location");
         String availabilityStartDateStr = req.getParameter("startdate");
         String availabilityEndDateStr = req.getParameter("enddate");
         Date availabilityStartDate = new Date();
@@ -49,8 +57,15 @@ public class RegisterSpotServlet extends HttpServlet {
         Key key = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
         Entity spot = new Entity("UBCEECE417parkspot", key);
         spot.setProperty("user", user);
+        spot.setProperty("stNumber", stNumber);
+        spot.setProperty("stName", stName);
+        spot.setProperty("neighborhood", nbhood);
+        spot.setProperty("locality", locality);
+        spot.setProperty("admin_level_3", adminLevel3);
+        spot.setProperty("admin_level_2", adminLevel2);
+        spot.setProperty("admin_level_1", adminLevel1);
         spot.setProperty("price", price);
-        spot.setProperty("location", location);
+   //   spot.setProperty("location", location);
         spot.setProperty("startdate", availabilityStartDate);
         spot.setProperty("enddate", availabilityEndDate);
         spot.setProperty("isReserved", false);
@@ -59,7 +74,8 @@ public class RegisterSpotServlet extends HttpServlet {
         spotdatastore.put(spot);	
         
         // Test
-        String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      
+        String htmlString = "<div>" + user + " " + stNumber + " " + stName + " " + nbhood + " " + locality + " " + adminLevel3 + " " + adminLevel2 + " " + adminLevel1 + " " + country + " " + price + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";
+  //      String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      
         System.out.println(htmlString); 
         String responseString = "Your spot was successfully registered!";
         //resp.setContentType("text/html");

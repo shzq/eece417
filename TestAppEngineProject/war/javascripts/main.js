@@ -164,29 +164,38 @@ function postAjaxRequest(postMsg, markerID, guestbookName, rspMsgList) {
 }
 
 function newSpotAjaxRequest() {
-	//alert("postAjaxRequest");
-	if (geocodeStatusCond = false) {
-		alert("Your input address gives unsuccessful geocode because of: " + geocodeStatus);
-	} else {
+	if (myGeocodeStat == false) {
+		alert("Sorry, we could not find your location. Please check that you input the right address.");
+	} else if (newSpot == null){
+		alert("Please confirm your new spot location before you proceed.");
+	} 
+	else {
 		try {
 			xmlHttpReq = new XMLHttpRequest();
 			xmlHttpReq.onreadystatechange = httpCallBackFunction_newSpotAjaxRequest;
 			var url = "/registerspot";
+			var st_number = newSpot.street_number;
+			var st_name = newSpot.street_name;
+			var nbhood = newSpot.neighborhood;
+			var locality = newSpot.locality;
+			var aL3 = newSpot.admin_level_3;
+			var aL2 = newSpot.admin_level_2;
+			var aL1 = newSpot.admin_level_1;
+			var country = newSpot.country;
 			var price = document.getElementById("price").value;
-			var location = document.getElementById("location").value;
 			var startdate = document.getElementById("startdate").value;
 			var enddate = document.getElementById("enddate").value
 			xmlHttpReq.open("POST", url, true);
 			xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 			
-			xmlHttpReq.send("price="+price+"&location="+location+"&startdate="+startdate+"&enddate="+enddate);
+			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+"&aL1="+aL1+"&country="+country+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
 			
-			//alert();
-			
+			newSpot = null;
 		} catch (e) {
 			alert("Error: " + e);
 		}
 	}
+	showNewSpots = true;
 }
 
 function cancelspotAjaxRequest(spotID) {
@@ -371,68 +380,102 @@ function httpCallBackFunction_postAjaxRequest() {
 	}		
 }
 
-function AddSpotInfo(city) {	
-	document.getElementById("location").value = city;
+// NewSpot class
+function NewSpot() {
+	this.street_number = null;
+	this.street_name = null; // route
+	this.neighborhood = null;
+	this.locality = null;
+	this.admin_level_3 = null;
+	this.admin_level_2 = null;
+	this.admin_level_1 = null;
+	this.country = null;
 }
 
 function checkInputAddr() {
-	var inputAddr = document.getElementById("location").value;
-	var bounds = new google.maps.LatLngBounds();
-	geocoder.geocode( { 'address': inputAddr}, function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK) {
-			if (results.length > 0) {
-				for (var i  = 0; i < results.length; i++) {
-					var marker = new google.maps.Marker({
-						map: map,
-						position: results[i].geometry.location,
-						animation: google.maps.Animation.DROP,
-						icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-					});
-					bounds.extend(marker.position);
-					var infoWindow = new google.maps.InfoWindow();
-					var formAddr = results[i].formatted_address;
-					var content = formAddr + '<br><input type="button" value="Confirm Location" onClick="removeAddrMarkers('+ i + ')"/>';
-					infoWindow.setContent(content);
-					infoWindow.open(map, marker);
-					addrMarkers.push(marker);
-					addrInfoWindows.push(infoWindow);
-				}
-			} else {
-				var marker = new google.maps.Marker({
-					map: map,
-					position: results[0].geometry.location,
-					animation: google.maps.Animaiton.DROP,
-					icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-				});
-				var infoWindow = new google.maps.InfoWindow();
-				var content = results[0].formatted_address;
-				infoWindow.setContent(content);
-				infoWindow.open(map, marker);
-				newSpotMarker = marker;
-				newSpotInfoWind = infoWindow;
-			}
-			
-			map.fitBounds(bounds);
-			
-		} else {
-			
-			geocodeStatusCond = false;
-			geocodeStatus = status;
-			alert("Your input address gives unsuccessful geocode because of: " + geocodeStatus);
+	if (showNewSpots == true) {
+		
+		for (var i = 0; i < addrMarkers.length; i++) {
+			addrMarkers[i].setMap(null);
 		}
-	});
+		addrMarkers = [];
+		var inputAddr = document.getElementById("location").value;
+		var bounds = new google.maps.LatLngBounds();
+		geocoder.geocode( { 'address': inputAddr}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+					for (var i = 0; i < results.length; i++) {
+						// set up marker for each result
+						var marker = new google.maps.Marker({
+							map: map,
+							position: results[i].geometry.location,
+							animation: google.maps.Animation.DROP,
+							icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+						});
+						bounds.extend(marker.position); // include marker in bounds
+						// set up infoWindow for each marker
+						var infoWindow = new google.maps.InfoWindow();
+						var formAddr = results[i].formatted_address;
+						var content = formAddr + '<br><input type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
+						infoWindow.setContent(content);
+						infoWindow.open(map, marker);
+						
+						newSpotResults = results;
+						addrMarkers.push(marker);
+						addrInfoWindows.push(infoWindow);
+					}
+				
+				map.fitBounds(bounds);
+				
+			} else {
+				myGeocodeStat = false;
+			}
+		});
+	}
 }
 
-function removeAddrMarkers(chosenMarkerId) {
+function confirmNewSpot(chosenMarkerId) {
+	showNewSpots = false;
 	newSpotMarker = addrMarkers[chosenMarkerId];
 	newSpotInfoWind = addrInfoWindows[chosenMarkerId];
 	addrMarkers.splice(chosenMarkerId, 1);
+	var myResult = newSpotResults[chosenMarkerId];
+	newSpotResults.splice(chosenMarkerId, 1);
 	for (var i = 0; i < addrMarkers.length; i++) {
 			addrMarkers[i].setMap(null);
 	}
 	addrMarkers = [];
-	addrInfoWindows = []
+	addrInfoWindows = [];
+	newSpotResults = [];
 	
+	console.log(myResult);
+	
+	newSpot = new NewSpot();
+	for (var i = 0; i < myResult.address_components.length; i++) {
+		if ($.inArray("street_number", myResult.address_components[i].types) >= 0) {
+			newSpot.street_number = myResult.address_components[i].short_name;
+		} else if ($.inArray("route", myResult.address_components[i].types) >= 0) {
+			newSpot.street_name = myResult.address_components[i].short_name;
+		} else if ($.inArray("neighborhood", myResult.address_components[i].types) >= 0) {
+			newSpot.neighborhood = myResult.address_components[i].short_name;
+		} else if ($.inArray("locality", myResult.address_components[i].types) >= 0) {
+			newSpot.locality = myResult.address_components[i].short_name;
+		} else if ($.inArray("administrative_area_level_3", myResult.address_components[i].types) >= 0) {
+			newSpot.admin_level_3 = myResult.address_components[i].short_name;
+		} else if ($.inArray("administrative_area_level_2", myResult.address_components[i].types) >= 0) {
+			newSpot.admin_level_2 = myResult.address_components[i].short_name;
+		} else if ($.inArray("administrative_area_level_1", myResult.address_components[i].types) >= 0) {
+			newSpot.admin_level_1 = myResult.address_components[i].short_name;
+		} else if ($.inArray("country", myResult.address_components[i].types) >= 0) {
+			newSpot.country = myResult.address_components[i].short_name;
+		}
+	}
 	var content = newSpotInfoWind.getContent().split("<br>")[0];
-	newSpotInfoWind.setContent(content);
+	newSpotInfoWind.setContent(content  + '<br><input type="button" value="Cancel" onClick="cancelNewSpot()"/>');
+}
+
+function cancelNewSpot() {
+	newSpotMarker.setMap(null);
+	newSpotMarker = null;
+	newSpot = null;
+	showNewSpots = true;
 }

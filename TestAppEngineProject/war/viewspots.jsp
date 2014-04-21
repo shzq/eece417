@@ -357,6 +357,26 @@
 	</div>
 
 
+	<div class="container">
+
+		<div class="well">
+			<a id="toggler" href="#" data-toggle="collapse" class="active"
+				data-target="#demo"><i class="glyphicon glyphicon-chevron-up"></i>
+				<i class="glyphicon glyphicon-chevron-down"></i> Folder Items
+			</a>
+
+			<div id="demo" class="collapse in">
+				<ul class="nav nav-list">
+					<li class="dropdown-header">List header</li>
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#">Library</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /container -->
+
+
 
 	<!-- Don't insert code below this line -->
 	<%

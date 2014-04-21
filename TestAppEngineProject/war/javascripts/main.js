@@ -189,6 +189,28 @@ function newSpotAjaxRequest() {
 	}
 }
 
+function cancelspotAjaxRequest(spotID) {
+	try {
+		xmlHttpReq = new XMLHttpRequest();
+		xmlHttpReq.onreadystatechange = httpCallBackFunction_cancelspotAjaxRequest;
+		var url = "/cancelspot";
+		
+		var id = spotID;
+		console.log(id);
+//		var id = '${fn:escapeXml(spotID)}'; 
+		
+		xmlHttpReq.open("POST", url, true);
+		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
+		
+		xmlHttpReq.send("id="+id);
+		
+		//alert();
+		
+	} catch (e) {
+		alert("Error: " + e);
+	}
+}
+
 function httpCallBackFunction_newSpotAjaxRequest() {
 	console.log("callback!");
 	if (xmlHttpReq.readyState == 1){
@@ -222,6 +244,43 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 		}	
 	}		
 }
+
+function httpCallBackFunction_cancelspotAjaxRequest() {
+	console.log("callback!");
+	if (xmlHttpReq.readyState == 1){
+		console.log("1");
+		//updateStatusMessage("<blink>Opening HTTP...</blink>");
+	}else if (xmlHttpReq.readyState == 2){
+		console.log("2");
+		//updateStatusMessage("<blink>Sending query...</blink>");
+	}else if (xmlHttpReq.readyState == 3){ 
+		console.log("3");
+		//updateStatusMessage("<blink>Receiving...</blink>");
+	}else if (xmlHttpReq.readyState == 4){
+		console.log("4");
+		var xmlDoc = null;
+
+		if(xmlHttpReq.responseXML){
+			xmlDoc = xmlHttpReq.responseXML;			
+		}else if(xmlHttpReq.responseText){
+			var parser = new DOMParser();
+		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/html");		 		
+		}
+		
+		if(xmlDoc){				
+			alert("Your spot was successfully registered!");		
+			$("#"+xmlHttpReq.responseText).remove();
+//			${fn:escapeXml(spotID)} ="";
+			
+
+		}else{
+			alert("No data.");
+		}	
+	}		
+}
+
+
+
 
 function httpCallBackFunction_postAjaxRequest() {
 	//alert("httpCallBackFunction_postAjaxRequest");

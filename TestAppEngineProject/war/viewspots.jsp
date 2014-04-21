@@ -10,7 +10,19 @@
 <%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
 <%@ page import="com.google.appengine.api.datastore.Key"%>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="com.google.appengine.api.datastore.Query.FilterPredicate" %>
+<%@ page import="com.google.appengine.api.datastore.Query.Filter" %>
+<%@ page import="com.google.appengine.api.datastore.Query.FilterOperator" %>
+<%@ page import="com.google.appengine.api.datastore.Query.CompositeFilterOperator" %>
+<%@ page import="com.google.appengine.api.datastore.PreparedQuery" %>
+
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.io.IOException"%>
+<%@ page import="java.text.SimpleDateFormat" %> 
+<%@ page import="java.text.ParseException" %> 
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.DateFormat"%> 
+
 
 <!DOCTYPE html>
 <html>
@@ -21,6 +33,7 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <script	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
 <script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -40,13 +53,23 @@
 			<%}%>
 	    }
     
-    $(function() {
-    	$( "#startdate" ).datepicker();
-    });
-    $(function() {
-    	$( "#enddate" ).datepicker();
-    });
-    
+//     $(".cancel-button").click(function(){
+//     	console.log("here");
+//     	alert("click");
+//     	document.getElementByID("spotID").value = $(this).attr('id');
+//     	cancelspotAjaxRequest();
+//     });
+
+	$(function(){
+		$('#Reservation').find('SPAN').click(function(e){
+			$(this).parent().find('UL').toggle();
+	});
+	$(function(){
+		$('#Host').find('SPAN').click(function(e){
+			$(this).parent().find('UL').toggle();
+	});
+	});
+});
     
     </script>
 </head>
@@ -65,58 +88,106 @@
 <div class="container">
    <div class="row">
 	<UL id="Reservation">
-		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Reservation spots&raquo;</span>
+		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span>
          	 <ul class="collapse" >
 				
-  				<li class="list-group-item">North Parkade</li>
-  				<li class="list-group-item">Thunderbird Parkade</li>
-  				<li class="list-group-item">West Parkade</li>
-  				<li class="list-group-item">Fraser River Parkade</li>
-  				<li class="list-group-item">Health Sciences Parkade</li>
- 				<li class="list-group-item">Rose Garden Parkade</li>
+  				<li class="list-group-item">under construction</li>
+  				<li class="list-group-item">under construction</li>
+  				<li class="list-group-item">under construction</li>
+  				<li class="list-group-item">under construction</li>
+  				<li class="list-group-item">under construction</li>
+ 				<li class="list-group-item">under construction</li>
 			</ul>
 		</UL>
 	</UL>
 	</div>
 </div>
-    
 
-
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-				$('#Reservation').find('SPAN').click(function(e){
-					$(this).parent().find('UL').toggle();
-			});
-		});
-</script>
-
+<input type="hidden" id="spotID" value=""/>
 <div class="container">
    <div class="row">
 	<UL id="Host">
-		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Host spots&raquo;</span>
+		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Host spots&raquo;</span>
          	 <ul class="collapse" >
 				
-  				<li class="list-group-item">North Parkade</li>
-  				<li class="list-group-item">Thunderbird Parkade</li>
-  				<li class="list-group-item">West Parkade</li>
-  				<li class="list-group-item">Fraser River Parkade</li>
-  				<li class="list-group-item">Health Sciences Parkade</li>
- 				<li class="list-group-item">Rose Garden Parkade</li>
+ 				<div class="container">
+				<%
+ 					   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  					   Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+ 					   // Run an ancestor query to ensure we see the most up-to-date
+ 					   // view of the Greetings belonging to the selected Guestbook.
+					   //     String location = (String) request.getParameter("location");
+					   //     String startDateStr = (String) request.getParameter("startdate");
+					   //     String endDateStr = (String) request.getParameter("enddate");
+    				   Date startDate = new Date();
+    				   Date endDate = new Date();
+   					   try {
+    						startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("startdate"));
+       						endDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("enddate"));
+   					   } catch(Exception e) {
+    				   }
+						//     System.out.println(location +","+startDateStr+","+endDateStr);
+					
+						Filter startDateFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+    
+   						Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter).addSort("startdate", Query.SortDirection.DESCENDING);;
+						List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
+						List<Entity> spotsList = startDateResults;
+	
+						//	 Query query = new Query("UBCEECE417parkspot", dsKey).addSort("location", Query.SortDirection.DESCENDING);
+						//	 List<Entity> spotsList = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
+		
+						for(Entity spot:spotsList) 
+						{
+							System.out.print(spot.toString());
+							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
+							String sdStr = df.format(spot.getProperty("startdate"));
+							String edStr = df.format(spot.getProperty("enddate"));
+							pageContext.setAttribute("spotID", spot.getKey().getId());
+							pageContext.setAttribute("host", spot.getProperty("user"));
+							pageContext.setAttribute("resultsStartDate", sdStr);
+							pageContext.setAttribute("resultsEndDate", edStr);
+							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
+							pageContext.setAttribute("resultsLocation", spot.getProperty("location")); 
+				%>
+				 <li class="list-group-item" id='${fn:escapeXml(spotID)}'>
+    					 <div class="panel panel-default">
+		 					  <div class="panel-body">
+		  						 <p class="lead">
+		   						   <small>
+		   	     					Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
+		   	   						</small>
+		   						 </p>
+		   						  <p class="lead">
+		    					    <small class="pull-left">
+		     						  Available from <strong>${fn:escapeXml(resultsStartDate)}</strong> to <strong>${fn:escapeXml(resultsEndDate)}</strong>
+		     						</small>
+		     						<small class="pull-right"> @ <strong>$ ${fn:escapeXml(resultsPrice)}</strong> per day</small>
+		    					 </p>
+		   						</div>
+	   							<div class="panel-footer">
+		    				 	<p>
+		      						 <em>Status:  rented / unrented</em>
+<%--     		   <em>Hosted by: ${fn:escapeXml(user.nickname)}</em> --%>
+		       <a class="btn btn-primary pull-right" href="#" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot.</a>
+		     					</p>
+		     
+		   						</div>
+		 				</div>
+				 </li>
+       			<%	
+ 						}
+  				%>
+	 
+			</div>
+ 				
 			</ul>
 		</UL>
 	</UL>
 	</div>
 </div>
 
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-				$('#Host').find('SPAN').click(function(e){
-					$(this).parent().find('UL').toggle();
-			});
-		});
-</script>
+
 
 
 
@@ -133,45 +204,3 @@
 
 
 
-
-
-
-
-
-<!--UNUSED 
-	<div class="container"> -->
-<!--      <div class="row"> -->
-<!--         <div class="span4 collapse-group"> -->
-<!--           <h2>View Your Spots</h2> -->
-<!--             <p><a class="btn" href="#">	View Reservation spots&raquo;</a></p> -->
-<!-- <!--            <p class="collapse">aaaaaaaaaaaaaaaaaaaaaaaaaaa</p> --> -->
-          
-<!--           <ul class="collapse" > -->
-
-<!--   				<li class="list-group-item">North Parkade</li> -->
-<!--   				<li class="list-group-item">Thunderbird Parkade</li> -->
-<!--   				<li class="list-group-item">West Parkade</li> -->
-<!--   				<li class="list-group-item">Fraser River Parkade</li> -->
-<!--   				<li class="list-group-item">Health Sciences Parkade</li> -->
-<!--  				<li class="list-group-item">Rose Garden Parkade</li> -->
-
-<!-- 		</ul> -->
-		
-<!--         </div> -->
-<!--       </div> -->
-<!--       	</div> -->
-      
-<!-- 	<script type="text/javascript"> 
-	
-// 	$('.row .btn').on('click', function(e) {
-// 	    e.preventDefault();
-// 	    var $this = $(this);
-// //	    var $collapse = $this.closest('.collapse-group').find('.collapse');
-	    
-// 	    var $collapse = $this.closest('.collapse-group').find('.collapse');
-	    
-// 	    $collapse.collapse('toggle');
-	    
-// 	});
-	
-<!--     </script> -->

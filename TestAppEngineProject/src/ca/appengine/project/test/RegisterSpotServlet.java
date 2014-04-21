@@ -66,8 +66,11 @@ public class RegisterSpotServlet extends HttpServlet {
         //resp.getWriter().println(htmlString);
         // Test
         resp.setContentType("text/html");
-        resp.getWriter().println(responseString);        
+        resp.getWriter().println(responseString);     
 
+  //    resp.sendRedirect("/viewspots/?user=" + user+"&price="+price +"&location="+location+"&availabilityStartDateStr="+availabilityStartDateStr+"&availabilityEndDateStr="+availabilityEndDateStr);
+
+        
         //resp.sendRedirect("/queryprocessor/?markerID="+markerID+"&guestbookName="+guestbookName);
     }
 }

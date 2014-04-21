@@ -173,11 +173,12 @@
 
 
 	<div class="container">
+	<h1 class="page-header">View Your Spots</h1>
 		<div class="row">
-			<UL id="Host">
+			<ul id="Host">
 				<UL>
 					<span STYLE="color: #5F5FFF; text-decoration: underline">View
-						Your Host spots&raquo;</span>
+						Your Host spots</span>
 					<ul class="collapse">
 
 						<div class="container">
@@ -295,7 +296,7 @@
 			<UL id="Reservation">
 				<UL>
 					<span STYLE="color: #5F5FFF; text-decoration: underline">View
-						Your Reservation spots&raquo;</span>
+						Your Reservation spots</span>
 					<ul class="collapse">
 
 						<div class="container">
@@ -366,6 +367,26 @@
 			</UL>
 		</div>
 	</div>
+
+
+	<div class="container">
+
+		<div class="well">
+			<a id="toggler" href="#" data-toggle="collapse" class="active"
+				data-target="#demo"><i class="glyphicon glyphicon-chevron-up"></i>
+				<i class="glyphicon glyphicon-chevron-down"></i> Folder Items
+			</a>
+
+			<div id="demo" class="collapse in">
+				<ul class="nav nav-list">
+					<li class="dropdown-header">List header</li>
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#">Library</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /container -->
 
 
 

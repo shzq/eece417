@@ -89,13 +89,42 @@ public class QuerySpotServlet extends HttpServlet {
 		    		for(Entity spot : spotsList) {
 		    			String sdStr = df.format(spot.getProperty("startdate"));
 		    			String edStr = df.format(spot.getProperty("enddate"));
+		    			String stNumber = (String) spot.getProperty("stNumber");
+		    			System.out.println("stnum="+stNumber.toString());
+		    			System.out.println(stNumber.toString()=="null");
+	    		        String stName = (String) spot.getProperty("stName");
+	    		        System.out.println("stname="+stName);
+	    		        String nbhood = (String) spot.getProperty("neighborhood");
+	    		        System.out.println("nbh="+nbhood);
+	    		        String locality = (String) spot.getProperty("locality");
+	    		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
+	    		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
+	    		        String adminLevel1 = (String) spot.getProperty("admin_level_1");
+	    		        String country = (String) spot.getProperty("country");
 		    			responseHTMLString += "<div class=\"panel panel-default\">";
 		    			responseHTMLString += "<div class=\"panel-body\">";
-		    			responseHTMLString += "<p class=\"lead\"><small> Location: <strong>"+spot.getProperty("location")+"</strong></small></p>";
+		    			responseHTMLString += "<p class=\"lead\"><small> Location: <strong>";
+		    			if(!stNumber.equals("null")) 
+		    				responseHTMLString += stNumber + ", ";
+		    			if(!stName.equals("null")) 
+		    				responseHTMLString += stName + ", ";
+		    			if(!nbhood.equals("null") && !nbhood.equals(""))
+		    				responseHTMLString += nbhood + ", "; 
+		    			if(!locality.equals("null") && !locality.equals(" "))
+		    				responseHTMLString += locality + ", ";
+		    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
+		    				responseHTMLString += adminLevel3 + ", ";
+		    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
+		    				responseHTMLString += adminLevel2 + ", ";
+		    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
+		    				responseHTMLString += adminLevel1 + " ";
+
+		    			
+		    			responseHTMLString += "</strong></small></p>";
 		    			responseHTMLString += "<p class=\"lead\"><small class=\"pull-left\"> Available from <strong>"+sdStr+"</strong>"
 		    								+ " to <strong>"+edStr+"</strong>"
-		    								+ "</small> <small class=\"pull-right\"> @ <strong>"+spot.getProperty("price")+"</strong> per day</small></p></div>";
-		    			responseHTMLString += "<div class=\"panel-footer\"><p><em>Hosted by:"+spot.getProperty("user")+"</em>"
+		    								+ "</small> <small class=\"pull-right\"> @ <strong>$"+spot.getProperty("price")+"</strong> dollars per day</small></p></div>";
+		    			responseHTMLString += "<div class=\"panel-footer\"><p><em>Hosted by: "+spot.getProperty("user")+"</em>"
 		    								+ "<a class=\"btn btn-primary pull-right\" href=\"/spotdetails?id="+spot.getKey().getId()+"\" id=\"spot-"+spot.getKey().getId()+"\">"
 		    								+ "Reserve This Spot!</a></p></div></div><hr />";
 		    			

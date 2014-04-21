@@ -294,7 +294,6 @@ function newReservationAjaxRequest() {
 	}
 }
 
-
 function httpCallBackFunction_newSpotAjaxRequest() {
 	console.log("callback!");
 	if (xmlHttpReq.readyState == 1){
@@ -314,24 +313,10 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 			xmlDoc = xmlHttpReq.responseXML;			
 		}else if(xmlHttpReq.responseText){
 			var parser = new DOMParser();
-		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/xml");		 		
+		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/html");		 		
 		}
 		
 		if(xmlDoc){				
-<<<<<<< HEAD
-			alert(xmlHttpReq.responseText);			
-			document.getElementById("price").value = "";
-	    	document.getElementById("location").value = "";
-	    	document.getElementById("startdate").value = "";
-	    	document.getElementById("enddate").value = "";
-	    	newSpotMarker.setAnimation(google.maps.Animation.DROP);
-	    	newSpotMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-	    	var content = newSpotInfoWind.getContent().split("<br>")[0];
-	    	newSpotInfoWind.setContent(content);
-			google.maps.event.addListener(newSpotMarker, 'click', function() {
-				newSpotInfoWind.open(map, newSpotMarker);
-			});
-=======
 			console.log(xmlHttpReq.responseText);
 			alert(xmlHttpReq.responseText);	
 
@@ -350,8 +335,13 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 				document.getElementById("startdate").value = "";
 				document.getElementById("enddate").value = "";
 			}
-	    	
->>>>>>> 6225417c8bf270a929f2ade537420a9d7021e4b0
+	    	newSpotMarker.setAnimation(google.maps.Animation.DROP);
+	    	newSpotMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+	    	var content = newSpotInfoWind.getContent().split("<br>")[0];
+	    	newSpotInfoWind.setContent(content);
+			google.maps.event.addListener(newSpotMarker, 'click', function() {
+				newSpotInfoWind.open(map, newSpotMarker);
+			});
 		}else{
 			alert("No data.");
 		}	
@@ -522,12 +512,8 @@ function checkInputAddr() {
 						// set up infoWindow for each marker
 						var infoWindow = new google.maps.InfoWindow();
 						var formAddr = results[i].formatted_address;
-<<<<<<< HEAD
 						var content = "<p>"+formAddr +"</p>"+ '<br/><input class="btn btn-info btn-sm" type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
 						
-=======
-						var content = "<p>"+formAddr +"</p>"+ '<br><input class="btn btn-info btn-sm" type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
->>>>>>> 6225417c8bf270a929f2ade537420a9d7021e4b0
 						infoWindow.setContent(content);
 						infoWindow.open(map, marker);
 						
@@ -624,15 +610,11 @@ function confirmNewSpot(chosenMarkerId) {
 	newSpot.lng = myResult.geometry.location.lng();
 	
 	var content = newSpotInfoWind.getContent().split("<br>")[0];
-<<<<<<< HEAD
-	newSpotInfoWind.setContent(content  + '<br><input type="button" value="Cancel" onClick="cancelNewSpot()"/>');
+	newSpotInfoWind.setContent(content  + '<br><input type="button" class="btn btn-warning btn-sm" value="Cancel" onClick="cancelNewSpot()"/>');
 	
 	google.maps.event.addListener(newSpotMarker, 'click', function() {
 		newSpotInfoWind.open(map, newSpotMarker);
 	});	
-=======
-	newSpotInfoWind.setContent(content  + '<br><input type="button" class="btn btn-warning btn-sm" value="Cancel" onClick="cancelNewSpot()"/>');
->>>>>>> 6225417c8bf270a929f2ade537420a9d7021e4b0
 }
 
 function cancelNewSpot() {

@@ -307,12 +307,38 @@
     			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
     			String sdStr = df.format(spot.getProperty("startdate"));
     			String edStr = df.format(spot.getProperty("enddate"));
+    			String stNumber = (String) spot.getProperty("stNumber");
+    			System.out.println("stnum="+stNumber.toString());
+    			System.out.println(stNumber.toString()=="null");
+		        String stName = (String) spot.getProperty("stName");
+		        System.out.println("stname="+stName);
+		        String nbhood = (String) spot.getProperty("neighborhood");
+		        System.out.println("nbh="+nbhood);
+		        String locality = (String) spot.getProperty("locality");
+		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
+		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
+		        String adminLevel1 = (String) spot.getProperty("admin_level_1");
+				String locationString = "";
+    			if(!stNumber.equals("null")) 
+    				locationString += stNumber + ", ";
+    			if(!stName.equals("null")) 
+    				locationString += stName + ", ";
+    			if(!nbhood.equals("null") && !nbhood.equals(""))
+    				locationString += nbhood + ", "; 
+    			if(!locality.equals("null") && !locality.equals(" "))
+    				locationString += locality + ", ";
+    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
+    				locationString += adminLevel3 + ", ";
+    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
+    				locationString += adminLevel2 + ", ";
+    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
+    				locationString += adminLevel1 + " ";
     			pageContext.setAttribute("spotID", spot.getKey().getId());
     			pageContext.setAttribute("host", spot.getProperty("user"));
     			pageContext.setAttribute("resultsStartDate", sdStr);
     			pageContext.setAttribute("resultsEndDate", edStr);
     			pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
-    			pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
+    			pageContext.setAttribute("resultsLocation", locationString);
    		%>
 		<div class="panel panel-default">
 			<div class="panel-body">

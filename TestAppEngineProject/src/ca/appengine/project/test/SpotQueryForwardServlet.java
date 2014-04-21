@@ -44,6 +44,7 @@ public class SpotQueryForwardServlet extends HttpServlet {
 		req.setAttribute("enddate", df.format(spot.getProperty("enddate")));
 		req.setAttribute("price", spot.getProperty("price"));
 		req.setAttribute("host", spot.getProperty("user"));
+		req.setAttribute("spotID", id);
 		rd.forward(req, resp);
 	}    
 }

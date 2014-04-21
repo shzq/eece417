@@ -189,6 +189,33 @@ function newSpotAjaxRequest() {
 	}
 }
 
+function newReservationAjaxRequest() {
+	try {
+		xmlHttpReq = new XMLHttpRequest();
+		xmlHttpReq.onreadystatechange = httpCallBackFunction_newReservationAjaxRequest;
+		var url = "/reservespot";
+		var price = document.getElementById("price").value;
+		console.log(price);
+
+		var location = document.getElementById("location").value;
+		console.log(location)
+		var startdate = document.getElementById("startdate").value;
+		console.log(startdate);
+		var enddate = document.getElementById("enddate").value
+		var spotID = document.getElementById("spotID").value;
+		console.log(spotID);
+		xmlHttpReq.open("POST", url, true);
+		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
+		
+		xmlHttpReq.send("price="+price+"&location="+location+"&startdate="+startdate+"&enddate="+enddate+"&id="+spotID);
+		
+		//alert();
+		
+	} catch (e) {
+		alert("Error: " + e);
+	}
+}
+
 function httpCallBackFunction_newSpotAjaxRequest() {
 	console.log("callback!");
 	if (xmlHttpReq.readyState == 1){
@@ -208,7 +235,7 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 			xmlDoc = xmlHttpReq.responseXML;			
 		}else if(xmlHttpReq.responseText){
 			var parser = new DOMParser();
-		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/html");		 		
+		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/xml");		 		
 		}
 		
 		if(xmlDoc){				
@@ -217,6 +244,36 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 	    	document.getElementById("location").value = "";
 	    	document.getElementById("startdate").value = "";
 	    	document.getElementById("enddate").value = "";
+		}else{
+			alert("No data.");
+		}	
+	}		
+}
+
+function httpCallBackFunction_newReservationAjaxRequest() {
+	console.log("callback!");
+	if (xmlHttpReq.readyState == 1){
+		console.log("1");
+		//updateStatusMessage("<blink>Opening HTTP...</blink>");
+	}else if (xmlHttpReq.readyState == 2){
+		console.log("2");
+		//updateStatusMessage("<blink>Sending query...</blink>");
+	}else if (xmlHttpReq.readyState == 3){ 
+		console.log("3");
+		//updateStatusMessage("<blink>Receiving...</blink>");
+	}else if (xmlHttpReq.readyState == 4){
+		console.log("4");
+		var xmlDoc = null;
+
+		if(xmlHttpReq.responseXML){
+			xmlDoc = xmlHttpReq.responseXML;			
+		}else if(xmlHttpReq.responseText){
+			var parser = new DOMParser();
+		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/xml");		 		
+		}
+		
+		if(xmlDoc){				
+			alert(xmlHttpReq.responseText);			
 		}else{
 			alert("No data.");
 		}	

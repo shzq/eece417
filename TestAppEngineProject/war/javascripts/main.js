@@ -363,7 +363,9 @@ function httpCallBackFunction_newReservationAjaxRequest() {
 		
 		if(xmlDoc){				
 			alert(xmlHttpReq.responseText);	
-			window.location.replace("/home.jsp");
+			if(xmlHttpReq.responseText.localeCompare("Your reservation was successfully registered!")) {
+				window.location.replace("/home.jsp");
+			}
 		}else{
 			alert("No data.");
 		}	

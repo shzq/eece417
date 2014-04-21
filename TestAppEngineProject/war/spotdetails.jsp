@@ -285,7 +285,7 @@
 								<h3 class="panel-title" style="text-align: left">Price</h3>
 							</div>
 							<div class="panel-body" style="text-align: left">
-								$${fn:escapeXml(price)} per day</div>
+								$ ${fn:escapeXml(price)} per day</div>
 						</div>
 						<button id="back-btn" class="btn btn-success text-center"
 							type="submit"value="Back" onclick="goback()">Back</button>

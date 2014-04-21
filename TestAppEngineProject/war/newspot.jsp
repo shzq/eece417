@@ -22,15 +22,17 @@
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script
+	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
-<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript"
+	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript"> 
     	window.onload = lg;	
     	var daysToAdd = 1; //force the spot to be available for at least a day
@@ -216,10 +218,10 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 %>
-	<%@ include file="navbar" %>
+	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
-	
-	
+
+
 	<div class="container">
 		<h1 class="page-header">List a Spot</h1>
 		<div class="row">
@@ -229,36 +231,36 @@
 			<div class="col-lg-4">
 				<div class="search-container">
 					<div class="well" align="center">
-							<div class="form-group">
-								<input type="text" class="form-control" name="location"
-									id="location" placeholder="Enter a city" onblur="checkInputAddr()">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="startdate" id="startdate"
-									placeholder="From">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-									class="form-control" name="enddate" id="enddate"
-									placeholder="To">
-							</div>
-							<div class="input-group form-group">
-								<span class="input-group-addon">$ </span> <input type="text"
-									class="form-control" name="price" id="price"
-									placeholder="Price">
-							</div>
-							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Submit" onclick="newSpotAjaxRequest()" />
+						<div class="form-group">
+							<input type="text" class="form-control" name="location"
+								id="location" placeholder="Enter a city"
+								onblur="checkInputAddr()">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="startdate" id="startdate"
+								placeholder="From">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="enddate" id="enddate"
+								placeholder="To">
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon">$ </span> <input type="text"
+								class="form-control" name="price" id="price" placeholder="Price">
+						</div>
+						<input id="post-btn" class="btn btn-success text-center"
+							type="submit" value="Submit" onclick="newSpotAjaxRequest()" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 	<!-- Don't insert code below this line -->
 	<%
 	}

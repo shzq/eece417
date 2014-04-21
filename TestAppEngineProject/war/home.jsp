@@ -3,7 +3,8 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page
+	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
@@ -18,12 +19,17 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <meta charset="utf-8">
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="/stylesheets/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
+<script
+	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script
+	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
@@ -34,9 +40,9 @@
    	function lg()
    	{
    		<%UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
+			User user = userService.getCurrentUser();
 
-		if (user == null) {%>
+			if (user == null) {%>
 			alert("Please log in before using ParkSpot");
 			window.location.href = "login.jsp";
 		<%}%>
@@ -103,19 +109,20 @@
 </head>
 <body>
 	<%
-    userService = UserServiceFactory.getUserService();
-    user = userService.getCurrentUser();
-    if (user != null) {
-      pageContext.setAttribute("user", user);
+		userService = UserServiceFactory.getUserService();
+		user = userService.getCurrentUser();
+		if (user != null) {
+			pageContext.setAttribute("user", user);
 	%>
-	<%@ include file="navbar" %>
+	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
-	
-	
+
+
 	<div class="container">
-	    <h1 class="page-header">Welcome</h1>
+		<h1 class="page-header">Welcome</h1>
 		<div class="well" align="center">
-			<form action="/results" method="get" class="form-horizontal home-search-form">
+			<form action="/results" method="get"
+				class="form-horizontal home-search-form">
 				<div class="form-group">
 					<div class="col-sm-4 no-padding">
 						<input type="text" class="form-control" name="location"
@@ -144,8 +151,8 @@
 
 
 	<!-- Don't insert code below this line -->
-	<% 
-	}
+	<%
+		}
 	%>
 </body>
 </html>

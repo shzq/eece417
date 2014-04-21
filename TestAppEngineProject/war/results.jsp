@@ -42,85 +42,136 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
 <script type="text/javascript"> 
-    window.onload = lg;	
-    	function lg()
-    	{
-    		<%
-    		UserService userService = UserServiceFactory.getUserService();
-			User user = userService.getCurrentUser();
-	
-			if (user == null) {%>
-				alert("Please log in before using ParkSpot");
-				window.location.href = "login.jsp";
-			<%
-			}
-			%>
-	    }
+    window.onload = lg;
+    var daysToAdd = 0;
+    	
+   	function lg()
+   	{
+   		<%
+   		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		if (user == null) {%>
+			alert("Please log in before using ParkSpot");
+			window.location.href = "login.jsp";
+		<%
+		}
+		%>
+		
+		var today = new Date();
+		var tdd = today.getDate();
+		var tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		var ty = today.getFullYear();
+		var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		console.log(tmm);
+		console.log(tdformat);
+		$("#startdate").datepicker("option", "minDate", tdformat);
+		//leave line below commented until search can function with a set begin date and all other fields blank
+		//document.getElementById("startdate").value = tdformat;
+		
+		//change date to date+1 for minimum date of the end date
+		today.setDate(today.getDate() + daysToAdd);
+		tdd = today.getDate();
+		tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		ty = today.getFullYear();
+		tdformat = tmm + '/'+ tdd + '/'+ ty;
+		$("#enddate").datepicker("option", "minDate", tdformat);		
+    }    
+   
+   	$(document).ready(function () {
 	    
-	    $(function() {
-	    	$( "#startdate" ).datepicker();
+	    var today = new Date();
+	    var tdd = today.getDate();
+	    var tmm = today.getMonth()+1;
+	    var ty = today.getFullYear();
+	    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+	    $("#startdate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() + daysToAdd); 
+	            var dd = dtMax.getDate();
+	           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            if(dtMax < today)
+	            {
+	            	$("#startdate").datepicker("option", "minDate", tdformat);
+	            }
+            	$("#enddate").datepicker("option", "minDate", dtFormatted);
+	        }
 	    });
-	    $(function() {
-	    	$( "#enddate" ).datepicker();
+	    
+	    $("#enddate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() - daysToAdd); 
+	            var dd = dtMax.getDate();
+	            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+	        }
 	    });
-		function initialize() {
+	});
+    
+	function initialize() {
+				
+		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
+	   
+		var mapOptions = {
+		  center: myLatlng,
+		  zoom: 12
+		};
+		
+		map = new google.maps.Map(document.getElementById("map-canvas"),
+		  mapOptions);		
 					
-			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
-		   
-			var mapOptions = {
-			  center: myLatlng,
-			  zoom: 12
-			};
-			
-			map = new google.maps.Map(document.getElementById("map-canvas"),
-			  mapOptions);		
-						
-			var mrkID = "0";
-			var gstBkNm = guestbookNameString; //"default";
-			var msgbox = "msgbox_" + mrkID;	
-			var msglist = "msglist_" + mrkID;
-									
-			var contentString  = '#' + mrkID + '<div id="content">' +  	
-			  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-			  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-			  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-				"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-			
-			var infowindow = new google.maps.InfoWindow({
-			  content: contentString
-			}); 
-			
-			var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-			var icons = {
-  				parking: {
-    				icon: iconBase + 'parking_lot_maps.png'
-  				},
-  				library: {
-    				icon: iconBase + 'library_maps.png'
-  				},
-  				info: {
-    				icon: iconBase + 'info-i_maps.png'
-  				}
-			};
-						   
-			var marker = new google.maps.Marker({       
-			  position: myLatlng,
-			  map: map,
-			  icon: icons['parking'].icon,			  
-			  title: 'Custom Marker!'
-			});    
-			
-			google.maps.event.addListener(marker, 'click', function() {
-			  selectedMarkerID = mrkID;  	
-			  infowindow.open(map, marker);
-			  getAjaxRequest();   
-			});        
-					
-			// Load the selected markers			
-			loadMarkers();       
-		}      
- 	
-		google.maps.event.addDomListener(window, 'load', initialize);
+		var mrkID = "0";
+		var gstBkNm = guestbookNameString; //"default";
+		var msgbox = "msgbox_" + mrkID;	
+		var msglist = "msglist_" + mrkID;
+								
+		var contentString  = '#' + mrkID + '<div id="content">' +  	
+		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
+		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
+		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
+			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
+		
+		var infowindow = new google.maps.InfoWindow({
+		  content: contentString
+		}); 
+		
+		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+		var icons = {
+ 				parking: {
+   				icon: iconBase + 'parking_lot_maps.png'
+ 				},
+ 				library: {
+   				icon: iconBase + 'library_maps.png'
+ 				},
+ 				info: {
+   				icon: iconBase + 'info-i_maps.png'
+ 				}
+		};
+					   
+		var marker = new google.maps.Marker({       
+		  position: myLatlng,
+		  map: map,
+		  icon: icons['parking'].icon,			  
+		  title: 'Custom Marker!'
+		});    
+		
+		google.maps.event.addListener(marker, 'click', function() {
+		  selectedMarkerID = mrkID;  	
+		  infowindow.open(map, marker);
+		  getAjaxRequest();   
+		});        
+				
+		// Load the selected markers			
+		loadMarkers();       
+	}      
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </head>
 <body>
@@ -175,25 +226,34 @@
     // Run an ancestor query to ensure we see the most up-to-date
     // view of the Greetings belonging to the selected Guestbook.
     String location = (String) request.getParameter("location");
-    String startDateStr = (String) request.getParameter("startdate");
-    String endDateStr = (String) request.getParameter("enddate");
-    Date startDate = new Date();
-    Date endDate = new Date();
+    String startDateStr = (String) request.getAttribute("startdate");
+    String endDateStr = (String) request.getAttribute("enddate");
+    Date startDate = null;
+    Date endDate = null;
     try {
-    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("startdate"));
-        endDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("enddate"));
+    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDateStr);        
     } catch(Exception e) {
-    	
+    	e.printStackTrace();
     }
+    try{
+    	endDate = new SimpleDateFormat("MM/dd/yyyy").parse(endDateStr);
+    } catch(Exception e) {
+    	e.printStackTrace();
+    }
+    System.out.println("startDate="+startDate);
+ 	System.out.println("enddate="+endDate);
    	System.out.println(location +","+startDateStr+","+endDateStr);
+ 
     Filter startDateFilter = new FilterPredicate("startdate",
-    											 FilterOperator.GREATER_THAN_OR_EQUAL,
+    											 FilterOperator.LESS_THAN_OR_EQUAL,
     											 startDate);
 
     Filter endDateFilter = new FilterPredicate("enddate",
-    											 FilterOperator.LESS_THAN_OR_EQUAL,
+    											 FilterOperator.GREATER_THAN_OR_EQUAL,
     											 endDate);
-    Filter queryFilter = CompositeFilterOperator.and(startDateFilter, endDateFilter);
+    Filter isReservedFilter = new FilterPredicate("isReserved",
+    											  FilterOperator.EQUAL,
+    											  false);
     
     Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
 	List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
@@ -201,8 +261,16 @@
 	Query endDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(endDateFilter);
 	List<Entity> endDateResults = datastore.prepare(endDateQuery).asList(FetchOptions.Builder.withDefaults());
 	
-	List<Entity> spotsList = startDateResults;
-	spotsList.retainAll(endDateResults);
+	Query isReservedQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(isReservedFilter);
+	List<Entity> isReservedResults = datastore.prepare(isReservedQuery).asList(FetchOptions.Builder.withDefaults());
+	
+	List<Entity> spotsList = isReservedResults;
+	if(startDate != null) {
+		spotsList.retainAll(startDateResults);
+	}
+	else if(endDate != null){
+		spotsList.retainAll(endDateResults);
+	}
 	
     if(location != null)
     {
@@ -223,6 +291,7 @@
     			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
     			String sdStr = df.format(spot.getProperty("startdate"));
     			String edStr = df.format(spot.getProperty("enddate"));
+    			pageContext.setAttribute("spotID", spot.getKey().getId());
     			pageContext.setAttribute("host", spot.getProperty("user"));
     			pageContext.setAttribute("resultsStartDate", sdStr);
     			pageContext.setAttribute("resultsEndDate", edStr);
@@ -246,7 +315,7 @@
 		   <div class="panel-footer">
 		     <p>
 		       <em>Hosted by: ${fn:escapeXml(user.nickname)}</em>
-		       <a class="btn btn-primary pull-right" href="#" id="spot-${fn:escapeXml(user.nickname)}">Reserve This Spot!</a>
+		       <a class="btn btn-primary pull-right" href="/spotdetails?id=${fn:escapeXml(spotID)}" id="spot-${fn:escapeXml(spotID)}">Reserve This Spot!</a>
 		     </p>
 		     
 		   </div>
@@ -257,9 +326,7 @@
     }
     	
 	%>
-	  <br/>
-	  <br/>
-	  <br/>
+	 
 	  <hr/>
 	</div>
 	

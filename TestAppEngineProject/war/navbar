@@ -15,7 +15,6 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="/newspot.jsp">List A Spot</a></li>
-				<li><a href="/spotdetails?location=Vancouver&startdate=04%2F16%2F2014&endate=04%2F24%2F2014&host=barbrastreisand&price=8">Spot Details</a></li>
 				<li><a href="/results.jsp">Find A Spot</a></li>
 				<li><a href="viewspots.jsp">View Your Spots</a></li>
 				

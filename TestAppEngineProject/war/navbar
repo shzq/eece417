@@ -16,19 +16,19 @@
 			<ul class="nav navbar-nav">
 				<% if(request.getRequestURL().indexOf("newspot") > 0) { %>
 					<li class="active"><a href="/newspot.jsp">List A Spot</a></li>
-					<li><a href="/results.jsp">Find A Spot</a></li>
+					<li><a href="/results.jsp">Find a Spot</a></li>
 					<li><a href="viewspots.jsp">View Your Spots</a></li>
 				<%}else if ((request.getRequestURL().indexOf("results") > 0) || (request.getRequestURL().indexOf("spotdetails") > 0)) {	%>
-					<li><a href="/newspot.jsp">List A Spot</a></li>
+					<li><a href="/newspot.jsp">List a Spot</a></li>
 					<li class="active"><a href="/results.jsp">Find A Spot</a></li>
 					<li><a href="viewspots.jsp">View Your Spots</a></li>
 				<%}else if (request.getRequestURL().indexOf("viewspots") > 0) {	%>
-					<li><a href="/newspot.jsp">List A Spot</a></li>
-					<li><a href="/results.jsp">Find A Spot</a></li>
+					<li><a href="/newspot.jsp">List a Spot</a></li>
+					<li><a href="/results.jsp">Find a Spot</a></li>
 					<li class="active"><a href="viewspots.jsp">View Your Spots</a></li>
 				<%} else { %>
-					<li><a href="/newspot.jsp">List A Spot</a></li>
-					<li><a href="/results.jsp">Find A Spot</a></li>
+					<li><a href="/newspot.jsp">List a Spot</a></li>
+					<li><a href="/results.jsp">Find a Spot</a></li>
 					<li><a href="viewspots.jsp">View Your Spots</a></li>
 				<% } %>
 			</ul>

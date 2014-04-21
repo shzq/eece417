@@ -173,11 +173,12 @@
 
 
 	<div class="container">
+	<h1 class="page-header">View Your Spots</h1>
 		<div class="row">
-			<UL id="Host">
+			<ul id="Host">
 				<UL>
 					<span STYLE="color: #5F5FFF; text-decoration: underline">View
-						Your Host spots&raquo;</span>
+						Your Host spots</span>
 					<ul class="collapse">
 
 						<div class="container">
@@ -283,7 +284,7 @@
 			<UL id="Reservation">
 				<UL>
 					<span STYLE="color: #5F5FFF; text-decoration: underline">View
-						Your Reservation spots&raquo;</span>
+						Your Reservation spots</span>
 					<ul class="collapse">
 
 						<div class="container">

@@ -59,12 +59,14 @@
 	    var globalInfoWind = null;
 	    var newSpotLatLng;
 	    var geocoder;
-	    var geocodeStatusCond = false;
-	    var geocodeStatus;
+		var myGeocodeStat;
 	    var addrMarkers = [];
 	    var addrInfoWindows = [];
-	    var newSpotMarker;
+	    var newSpotMarker = null;
 	    var newSpotInfoWind;
+	    var newSpotResults = [];
+	    var newSpot = null;
+	    var showNewSpots = true;
 	    /** ----------------- **/
 	    
 		function initialize() {
@@ -121,27 +123,20 @@
 			});        
 			
 			// Open info window everywhere we click on the map
-		    var addSpotInfoWind = new google.maps.InfoWindow();
+		    var clickedSpotInfoWind = new google.maps.InfoWindow();
 			geocoder = new google.maps.Geocoder();
 		    google.maps.event.addListener(map, 'click', function(event) {
 										  if (globalInfoWind != null) {
 											  globalInfoWind.close();
 										  }
-										  var newSpotAddr;
 										  newSpotLatLng = event.latLng;
 										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status){
 											  if (status == google.maps.GeocoderStatus.OK) {
-												  if (results[1]) {
-													  newSpotAddr = results[1].formatted_address;
-													  newSpotCity = results[1].address_components[0].long_name + ", " + results[1].address_components[1].long_name;
-													  var chooseNewSpotContent = newSpotAddr + '<br><input type="button" value="Add a Spot Here!" onclick="AddSpotInfo(newSpotCity)""/>';
-					                                  addSpotInfoWind.setContent(chooseNewSpotContent);
-					                                  addSpotInfoWind.setPosition(newSpotLatLng);
-					                                  addSpotInfoWind.open(map);
-					                                  globalInfoWind = addSpotInfoWind;
-												  }
+												  clickedSpotInfoWind.setContent(results[0].formatted_address);
+												  clickedSpotInfoWind.setPosition(newSpotLatLng);
+												  clickedSpotInfoWind.open(map);
+					                              globalInfoWind = clickedSpotInfoWind;
 											  }
-
 		                                  }); 
 		    });
 			
@@ -172,9 +167,10 @@
 			<div class="col-lg-4">
 				<div class="search-container">
 					<div class="well" align="center">
-							<div class="form-group">
+							<div class="input-group form-group">
+							    <span class="input-group-addon">Address</span>
 								<input type="text" class="form-control" name="location"
-									id="location" placeholder="Enter a city" onblur="checkInputAddr()">
+									id="location" placeholder="e.g.123 Broadway St., Vancouver" onblur="checkInputAddr()">
 							</div>
 							<div class="input-group form-group">
 								<span class="input-group-addon"><span

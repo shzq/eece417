@@ -1,13 +1,13 @@
-<!-- Indices written at Sun, 20 Apr 2014 13:57:53 PDT -->
+<!-- Indices written at Sun, 20 Apr 2014 20:40:57 PDT -->
 
 <datastore-indexes>
 
-    <!-- Used 21 times in query history -->
+    <!-- Used 1 time in query history -->
     <datastore-index kind="UBCEECE417parkspot" ancestor="true" source="auto">
         <property name="startdate" direction="asc"/>
     </datastore-index>
 
-    <!-- Used 9 times in query history -->
+    <!-- Used 1 time in query history -->
     <datastore-index kind="UBCEECE417parkspot" ancestor="true" source="auto">
         <property name="enddate" direction="asc"/>
     </datastore-index>

@@ -274,7 +274,7 @@
 	if(startDate != null) {
 		spotsList.retainAll(startDateResults);
 	}
-	else if(endDate != null){
+	if(endDate != null){
 		spotsList.retainAll(endDateResults);
 	}
 	

@@ -3,25 +3,29 @@
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page
+	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
 <%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
 <%@ page import="com.google.appengine.api.datastore.Key"%>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Query.FilterPredicate" %>
-<%@ page import="com.google.appengine.api.datastore.Query.Filter" %>
-<%@ page import="com.google.appengine.api.datastore.Query.FilterOperator" %>
-<%@ page import="com.google.appengine.api.datastore.Query.CompositeFilterOperator" %>
-<%@ page import="com.google.appengine.api.datastore.PreparedQuery" %>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterPredicate"%>
+<%@ page import="com.google.appengine.api.datastore.Query.Filter"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterOperator"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.CompositeFilterOperator"%>
+<%@ page import="com.google.appengine.api.datastore.PreparedQuery"%>
 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.io.IOException"%>
-<%@ page import="java.text.SimpleDateFormat" %> 
-<%@ page import="java.text.ParseException" %> 
-<%@ page import="java.util.Date" %>
-<%@ page import="java.text.DateFormat"%> 
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.text.ParseException"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.text.DateFormat"%>
 
 <!DOCTYPE html>
 <html>
@@ -32,12 +36,14 @@
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script
+	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+<script type="text/javascript"
+	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
@@ -67,7 +73,7 @@
 		console.log(tdformat);
 		$("#startdate").datepicker("option", "minDate", tdformat);
 		//leave line below commented until search can function with a set begin date and all other fields blank
-		//document.getElementById("startdate").value = tdformat;
+		document.getElementById("startdate").value = tdformat;
 		
 		//change date to date+1 for minimum date of the end date
 		today.setDate(today.getDate() + daysToAdd);
@@ -181,11 +187,11 @@
     if (user != null) {
       pageContext.setAttribute("user", user);
 	%>
-	<%@ include file="navbar" %>
+	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
-	
+
 	<div class="container">
-	    <h1 class="page-header">Find a Spot</h1>
+		<h1 class="page-header">Find a Spot</h1>
 		<div class="row">
 			<div class="col-lg-8">
 				<div id="map-canvas"></div>
@@ -212,7 +218,7 @@
 									placeholder="To" value="${fn:escapeXml(enddate)}">
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Search"/>
+								type="submit" value="Search" />
 						</form>
 					</div>
 				</div>
@@ -220,7 +226,7 @@
 		</div>
 	</div>
 	<div class="container">
-	<%
+		<%
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
     // Run an ancestor query to ensure we see the most up-to-date
@@ -274,13 +280,13 @@
     if(location != null)
     {
     %>
-      <h1 class="page-header">Search Results</h1>
-    <%
+		<h1 class="page-header">Search Results</h1>
+		<%
     	if(spotsList.isEmpty())
     	{
     	%>
-    	 <p>Sorry, no matching results were found.</p>
-    	<%
+		<p>Sorry, no matching results were found.</p>
+		<%
     	}
     	else 
     	{
@@ -297,38 +303,40 @@
     			pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
     			pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
    		%>
-       	 <div class="panel panel-default">
-		   <div class="panel-body">
-		   	 <p class="lead">
-		   	   <small>
-		   	     Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
-		   	   </small>
-		   	 </p>
-		     <p class="lead">
-		        <small class="pull-left">
-		     	  Available from <strong>${fn:escapeXml(resultsStartDate)}</strong> to <strong>${fn:escapeXml(resultsEndDate)}</strong>
-		     	</small>
-		     	<small class="pull-right"> @ <strong>$ ${fn:escapeXml(resultsPrice)}</strong> per day</small>
-		     </p>
-		   </div>
-		   <div class="panel-footer">
-		     <p>
-		       <em>Hosted by: ${fn:escapeXml(user.nickname)}</em>
-		       <a class="btn btn-primary pull-right" href="/spotdetails?id=${fn:escapeXml(spotID)}" id="spot-${fn:escapeXml(spotID)}">Reserve This Spot!</a>
-		     </p>
-		     
-		   </div>
-		 </div>
-       	<%	
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<p class="lead">
+					<small> Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
+					</small>
+				</p>
+				<p class="lead">
+					<small class="pull-left"> Available from <strong>${fn:escapeXml(resultsStartDate)}</strong>
+						to <strong>${fn:escapeXml(resultsEndDate)}</strong>
+					</small> <small class="pull-right"> @ <strong>$
+							${fn:escapeXml(resultsPrice)}</strong> per day
+					</small>
+				</p>
+			</div>
+			<div class="panel-footer">
+				<p>
+					<em>Hosted by: ${fn:escapeXml(user.nickname)}</em> <a
+						class="btn btn-primary pull-right"
+						href="/spotdetails?id=${fn:escapeXml(spotID)}"
+						id="spot-${fn:escapeXml(spotID)}">Reserve This Spot!</a>
+				</p>
+
+			</div>
+		</div>
+		<%	
     		}
     	}
     }
     	
 	%>
-	 
-	  <hr/>
+
+		<hr />
 	</div>
-	
+
 	<!-- Don't insert code below this line -->
 	<%
     }

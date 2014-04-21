@@ -22,12 +22,14 @@
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script
+	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+<script type="text/javascript"
+	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
 <script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
@@ -138,6 +140,11 @@
 		else
 			return false;
 	}
+	
+	function goback()
+	{
+		window.history.back();
+	}
     
 	function initialize() {
 				
@@ -223,24 +230,21 @@
 								<h3 class="panel-title" style="text-align: left">Host</h3>
 							</div>
 							<div class="panel-body" style="text-align: left">
-								${fn:escapeXml(host)}
-							</div>
+								${fn:escapeXml(host)}</div>
 						</div>
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title" style="text-align: left">Location</h3>
 							</div>
-							<div class="panel-body" style="text-align: left" >
-								${fn:escapeXml(location)}
-							</div>
+							<div class="panel-body" style="text-align: left">
+								${fn:escapeXml(location)}</div>
 						</div>
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title" style="text-align: left">Availability</h3>
 							</div>
 							<div class="panel-body" style="text-align: left">
-								${fn:escapeXml(startdate)}  to  ${fn:escapeXml(enddate)}
-							</div>
+								${fn:escapeXml(startdate)}  to  ${fn:escapeXml(enddate)}</div>
 						</div>
 						<div class="input-group form-group">
 							<span class="input-group-addon">From:</span> <input type="text"
@@ -250,9 +254,10 @@
 								class="glyphicon glyphicon-calendar"></span></span>
 						</div>
 						<div class="input-group form-group">
-							<span class="input-group-addon">To:&nbsp&nbsp&nbsp&nbsp</span> 
-							<input type="text" class="form-control" name="enddate" id="enddate" placeholder="To" value=""/> 
-							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+							<span class="input-group-addon">To:&nbsp&nbsp&nbsp&nbsp</span> <input
+								type="text" class="form-control" name="enddate" id="enddate"
+								placeholder="To" value="" /> <span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span>
 						</div>
 						<div class="panel panel-default">
 							<div class="panel-heading">
@@ -261,12 +266,14 @@
 							<div class="panel-body" style="text-align: left">
 								$${fn:escapeXml(price)}</div>
 						</div>
-					    <input id="reserve-btn" class="btn btn-primary text-center" 
-					    value="Reserve Spot" onclick="newReservationAjaxRequest()" />
-						<input id="price" type="hidden" value="${fn:escapeXml(price)}" />
-						<input id="spotID" type="hidden" value="${fn:escapeXml(spotID)}" />
-						<input id="location" type="hidden" value="${fn:escapeXml(location)}" />
-						
+						<button id="back-btn" class="btn btn-success text-center"
+							value="Back" onclick="goback()">Back</button>
+						<input id="reserve-btn" class="btn btn-primary text-center"
+							value="Reserve Spot" onclick="newReservationAjaxRequest()" /> <input
+							id="price" type="hidden" value="${fn:escapeXml(price)}" /> <input
+							id="spotID" type="hidden" value="${fn:escapeXml(spotID)}" /> <input
+							id="location" type="hidden" value="${fn:escapeXml(location)}" />
+
 					</div>
 				</div>
 			</div>

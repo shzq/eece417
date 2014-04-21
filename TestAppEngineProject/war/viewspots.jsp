@@ -329,7 +329,7 @@
 										<font color="#428BCA">Location: ${fn:escapeXml(resultsLocation)}</font>
 									</h3>
 									<h4>
-										<div style="float: left">Availability:
+										<div style="float: left">Reserved:
 											${fn:escapeXml(resultsStartDate)} to ${fn:escapeXml(resultsEndDate)}</div>
 
 										<div style="float: right">Price:
@@ -340,13 +340,13 @@
 								<%	
 		      						try{
 		      							if((Boolean)(spot.getProperty("isReserved")) == false) {
-		      						%> <font color="#F0AD4E">Available for reservation</font><button class="btn btn-primary pull-right" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot</button> 
+		      						%> <font color="#F0AD4E">Available for reservation</font> 
 		      						<% 
 		      						} else {
 		      						%> Currently reserved <% 
 		      							}
 		      						}
-		      					  	catch(Exception e){%> <font color="#F0AD4E">Available for reservation</font> <%}
+		      					  	catch(Exception e){%> <font color="#F0AD4E">Reserved</font><button class="btn btn-primary pull-right">Cancel Reservation</button> <%}
 		      						%></h4>
 							</div></li>
 

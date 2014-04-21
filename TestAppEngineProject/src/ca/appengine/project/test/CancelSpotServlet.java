@@ -40,6 +40,8 @@ public class CancelSpotServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+
        
        	System.out.println("spot="+spot);
         datastore.delete(key);

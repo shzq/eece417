@@ -64,11 +64,12 @@ public class RegisterSpotServlet extends HttpServlet {
         	resp.getWriter().println(responseString);        
         	return;
         }
-        // for some reason the code only works with this section below
+        
+        // NOTE: DO NOT DELETE! for some reason the code only works with this section below
         System.out.println("al2=" + adminLevel2);
         System.out.println("al3=" + adminLevel3);
         System.out.println("al1=" + adminLevel1);
-        // ----------------------------------------
+        // ----------------------------------------------------------------
         
         Key key = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
         Entity spot = new Entity("UBCEECE417parkspot", key);

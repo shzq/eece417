@@ -133,10 +133,8 @@ public class QuerySpotServlet extends HttpServlet {
 				System.out.println("country");
 				locationList = nationalityResults;
 			}
-		
-			
-			spotsList.retainAll(locationList);
-		    
+			// combine lists
+			spotsList.retainAll(locationList);    
 			
 			String responseHTMLString = "<h1 class=\"page-header\">Search Results</h1>";
 			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");

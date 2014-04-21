@@ -89,7 +89,7 @@
 		tmm = ('0' + (today.getMonth()+1)).slice(-2);
 		ty = today.getFullYear();
 		tdformat = tmm + '/'+ tdd + '/'+ ty;
-		$("#enddate").datepicker("option", "minDate", tdformat);		
+		$("#enddate").datepicker("option", "minDate", tdformat);
     }    
    
    	$(document).ready(function () {
@@ -134,6 +134,7 @@
 	        		$("#startdate").datepicker("option", "maxDate", null);
 	        }
 	    });
+	    
 	});
     
 	function initialize() {
@@ -158,7 +159,12 @@
  				info: {
    				icon: iconBase + 'info-i_maps.png'
  				}
-		};  	
+		}; 
+		console.log("checking1");
+		if ($("#location").val() != "") {
+   			console.log("search from home page!!!!!");
+   			querySpotsAjaxRequest();
+   		}
 	}
 	
 	function setPosition(obj, type) {
@@ -246,145 +252,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container" id="search-result-container">
-		<%
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
-    // Run an ancestor query to ensure we see the most up-to-date
-    // view of the Greetings belonging to the selected Guestbook.
-    String location = (String) request.getParameter("location");
-    String startDateStr = (String) request.getAttribute("startdate");
-    String endDateStr = (String) request.getAttribute("enddate");
-    Date startDate = null;
-    Date endDate = null;
-    try {
-    	startDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDateStr);        
-    } catch(Exception e) {
-    	e.printStackTrace();
-    }
-    try{
-    	endDate = new SimpleDateFormat("MM/dd/yyyy").parse(endDateStr);
-    } catch(Exception e) {
-    	e.printStackTrace();
-    }
-    System.out.println("startDate="+startDate);
- 	System.out.println("enddate="+endDate);
-   	System.out.println(location +","+startDateStr+","+endDateStr);
- 
-    Filter startDateFilter = new FilterPredicate("startdate",
-    											 FilterOperator.LESS_THAN_OR_EQUAL,
-    											 startDate);
-
-    Filter endDateFilter = new FilterPredicate("enddate",
-    											 FilterOperator.GREATER_THAN_OR_EQUAL,
-    											 endDate);
-    Filter isReservedFilter = new FilterPredicate("isReserved",
-    											  FilterOperator.EQUAL,
-    											  false);
-    
-    Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
-	List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
-	
-	Query endDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(endDateFilter);
-	List<Entity> endDateResults = datastore.prepare(endDateQuery).asList(FetchOptions.Builder.withDefaults());
-	
-	Query isReservedQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(isReservedFilter);
-	List<Entity> isReservedResults = datastore.prepare(isReservedQuery).asList(FetchOptions.Builder.withDefaults());
-	
-	List<Entity> spotsList = isReservedResults;
-	if(startDate != null) {
-		spotsList.retainAll(startDateResults);
-	}
-	if(endDate != null){
-		spotsList.retainAll(endDateResults);
-	}
-	
-    if(location != null)
-    {
-    %>
-		<h1 class="page-header">Search Results</h1>
-		<%
-    	if(spotsList.isEmpty())
-    	{
-    	%>
-		<p>Sorry, no matching results were found.</p>
-		<%
-    	}
-    	else 
-    	{
-    		for(Entity spot:spotsList) 
-    		{
-    			System.out.print(spot.toString());
-    			DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
-    			String sdStr = df.format(spot.getProperty("startdate"));
-    			String edStr = df.format(spot.getProperty("enddate"));
-    			String stNumber = (String) spot.getProperty("stNumber");
-		        String stName = (String) spot.getProperty("stName");
-		        String nbhood = (String) spot.getProperty("neighborhood");
-		        String locality = (String) spot.getProperty("locality");
-		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
-		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
-		        String adminLevel1 = (String) spot.getProperty("admin_level_1");
-		        String country = (String) spot.getProperty("country");
-				String locationString = "";
-    			if(!stNumber.equals("null")) 
-    				locationString += stNumber + ", ";
-    			if(!stName.equals("null")) 
-    				locationString += stName + ", ";
-    			if(!nbhood.equals("null") && !nbhood.equals(""))
-    				locationString += nbhood + ", "; 
-    			if(!locality.equals("null") && !locality.equals(" "))
-    				locationString += locality + ", ";
-    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
-    				locationString += adminLevel3 + ", ";
-    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
-    				locationString += adminLevel2 + ", ";
-    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
-    				locationString += adminLevel1 + ", ";
-    			if(!country.equals("null") && !country.equals(""))
-    				locationString += country + " ";
-    			pageContext.setAttribute("spotID", spot.getKey().getId());
-    			pageContext.setAttribute("host", spot.getProperty("user"));
-    			pageContext.setAttribute("resultsStartDate", sdStr);
-    			pageContext.setAttribute("resultsEndDate", edStr);
-    			pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
-    			pageContext.setAttribute("resultsLocation", locationString);
-   		%>
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<p class="lead">
-					<small> Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
-					</small>
-				</p>
-				<p class="lead">
-					<small class="pull-left"> Available from <strong>${fn:escapeXml(resultsStartDate)}</strong>
-						to <strong>${fn:escapeXml(resultsEndDate)}</strong>
-					</small> <small class="pull-right"> @ <strong>$
-							${fn:escapeXml(resultsPrice)}</strong> per day
-					</small>
-				</p>
-			</div>
-			<div class="panel-footer">
-				<p>
-					<em>Hosted by: ${fn:escapeXml(user.nickname)}</em> <a
-						class="btn btn-primary pull-right"
-						href="/spotdetails?id=${fn:escapeXml(spotID)}"
-						id="spot-${fn:escapeXml(spotID)}" >Reserve This Spot!</a>
-				</p>
-
-			</div>
-		</div>
-		<%	
-    		}
-    	}
-		%>
-		<hr/>
-		<%
-    }
-    	
-	%>
-
-	</div>
+	<div class="container" id="search-result-container"></div>
 
 	<!-- Don't insert code below this line -->
 	<%

@@ -224,7 +224,6 @@ function querySpotsAjaxRequest() {
 		xmlHttpReq = new XMLHttpRequest();
 		xmlHttpReq.onreadystatechange = httpCallBackFunction_querySpotAjaxRequest;
 		var url = "/queryspot";
-		//var price = document.getElementById("price").value;
 		var queryLocation = document.getElementById("location").value;
 		var startdate = document.getElementById("startdate").value;
 		var enddate = document.getElementById("enddate").value
@@ -265,7 +264,6 @@ function querySpotsAjaxRequest() {
 						myCountry = myFirstResult.address_components[i].short_name;
 					}
 				}
-				
 				
 				console.log("myNbhood = " + myNbhood);
 				console.log("myLocality = " + myLocality);
@@ -450,18 +448,17 @@ function httpCallBackFunction_querySpotAjaxRequest() {
 	}else if (xmlHttpReq.readyState == 4){
 		console.log("4");
 		var xmlDoc = null;
-
-		if(xmlHttpReq.responseXML){
+		if(xmlHttpReq.responseXML) {
 			xmlDoc = xmlHttpReq.responseXML;			
-		}else if(xmlHttpReq.responseText){
+		} else if(xmlHttpReq.responseText) {
 			var parser = new DOMParser();
 		 	xmlDoc = parser.parseFromString(xmlHttpReq.responseText,"text/xml");		 		
 		}
 		
-		if(xmlDoc){				
+		if(xmlDoc) {	
 			$("#search-result-container").empty();
 			$("#search-result-container").html(xmlHttpReq.responseText);		
-		}else{
+		} else {
 			alert("No data.");
 		}	
 	}		

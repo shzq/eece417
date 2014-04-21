@@ -54,6 +54,25 @@ public class RegisterSpotServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        if (availabilityStartDate == null) {
+        	System.out.println("startdate null");
+        	String responseString = "Please enter a valid start date!";
+        	resp.getWriter().println(responseString);    
+        	return;
+        }
+        if (availabilityEndDate == null) {
+        	System.out.println("enddate null");
+        	String responseString = "Please select a valid end date!";
+        	resp.getWriter().println(responseString);        
+        	return;
+        }
+        if (price.equals("")) {
+        	System.out.println("enddate null");
+        	String responseString = "Please select a valid price!";
+        	resp.getWriter().println(responseString);        
+        	return;
+        }
+        
         
         Key key = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
         Entity spot = new Entity("UBCEECE417parkspot", key);

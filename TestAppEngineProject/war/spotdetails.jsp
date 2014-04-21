@@ -46,14 +46,100 @@
 			<%
 			}
 			%>
+
+			if(checkOK())
+			{
+				if(istodaylater())
+				{
+					var today = new Date();
+				    var tdd = today.getDate();
+				    var tmm = today.getMonth()+1;
+				    var ty = today.getFullYear();
+				    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+					$("#startdate").datepicker("option", "minDate", "tdformat");
+					$("#enddate").datepicker("option", "minDate", "tdformat");
+					document.getElementById("startdate").value = tdformat;
+				}
+				else
+				{
+					$("#startdate").datepicker("option", "minDate", "${fn:escapeXml(startdate)}");
+					$("#enddate").datepicker("option", "minDate", "${fn:escapeXml(startdate)}");
+					document.getElementById("startdate").value = "${fn:escapeXml(startdate)}";
+				}
+				$("#startdate").datepicker("option", "maxDate", "${fn:escapeXml(enddate)}");
+				$("#enddate").datepicker("option", "maxDate", "${fn:escapeXml(enddate)}");
+				}
+			else
+			{
+				alert("The last reservable date has passed, this spot is unavailable");
+				document.getElementById("reserve-btn").disabled = true;
+				document.getElementById("startdate").disabled = true;
+				document.getElementById("enddate").disabled = true;
+			}
+			
 	    }
+	    $(document).ready(function () {
+	    	console.log("ready function");
+		    var daysToAdd = 0;
+		    var today = new Date();
+		    var tdd = today.getDate();
+		    var tmm = today.getMonth()+1;
+		    var ty = today.getFullYear();
+		    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		    $("#startdate").datepicker({
+		        onSelect: function (selected) {
+		            var dtMax = new Date(selected);
+		            dtMax.setDate(dtMax.getDate() + daysToAdd); 
+		            var dd = dtMax.getDate();
+		            var mm = dtMax.getMonth() + 1;
+		            var y = dtMax.getFullYear();
+		            var dtFormatted = mm + '/'+ dd + '/'+ y;
+		            if(dtMax < today)
+		            {
+		            	$("#startdate").datepicker("option", "minDate", tdformat);
+		            }
+	            	$("#enddate").datepicker("option", "minDate", dtFormatted);
+		        }
+		    });
+		    
+		    $("#enddate").datepicker({
+		        onSelect: function (selected) {
+		            var dtMax = new Date(selected);
+		            dtMax.setDate(dtMax.getDate() - daysToAdd); 
+		            var dd = dtMax.getDate();
+		            var mm = dtMax.getMonth() + 1;
+		            var y = dtMax.getFullYear();
+		            var dtFormatted = mm + '/'+ dd + '/'+ y;
+		            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+		        }
+		    });
+		});
+		
+		// function checks which date is later: today or available start date,
+		// then uses the later date as a minimum threshold for reservations
+		function istodaylater() {
+			var today = new Date();		    
+		    var start = new Date("${fn:escapeXml(startdate)}");
+		    
+		    if(start < today)
+		    	return true;
+		    else
+		    	return false;
+		}
+
+		// checks whether today's date is before the available end date.
+		// returns false if available end date has passed (can't reserve 
+		// a spot whose last available date has ended)
+		function checkOK(){
+			var today = new Date();		    
+		    var end = new Date("${fn:escapeXml(enddate)}");
+		    
+		    if(today <= end)
+				return true;
+			else
+				return false;
+		}
 	    
-	    $(function() {
-	    	$( "#startdate" ).datepicker();
-	    });
-	    $(function() {
-	    	$( "#enddate" ).datepicker();
-	    });
 		function initialize() {
 					
 			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
@@ -148,17 +234,27 @@
 								<div class="panel-body" style="text-align: left">
 									${fn:escapeXml(location)}</div>
 							</div>
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title" style="text-align: left">Availability</h3>
+								</div>
+								<div class="panel-body" style="text-align: left">
+									${fn:escapeXml(startdate)}    to    ${fn:escapeXml(enddate)}</div>
+							</div>
+
 							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								<span class="input-group-addon">From:</span> <input type="text"
 									class="form-control" name="startdate" id="startdate"
-									placeholder="From" value="${fn:escapeXml(startdate)}">
+									placeholder="From" value=""> <span
+									class="input-group-addon"><span
+									class="glyphicon glyphicon-calendar"></span></span>
 							</div>
 							<div class="input-group form-group">
-								<span class="input-group-addon"><span
-									class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								<span class="input-group-addon">To:    </span> <input type="text"
 									class="form-control" name="enddate" id="enddate"
-									placeholder="To" value="${fn:escapeXml(enddate)}">
+									placeholder="To" value=""> <span
+									class="input-group-addon"><span
+									class="glyphicon glyphicon-calendar"></span></span>
 							</div>
 							<div class="panel panel-primary">
 								<div class="panel-heading">
@@ -169,8 +265,10 @@
 							</div>
 
 
-							<input id="post-btn" class="btn btn-success text-center"
-								type="submit" value="Back" />
+							<input id="back-btn" class="btn btn-primary text-center"
+								type="submit" value="Back" /> <input id="reserve-btn"
+								class="btn btn-success text-center" type="submit" value="Reserve Spot" />
+
 						</form>
 					</div>
 				</div>

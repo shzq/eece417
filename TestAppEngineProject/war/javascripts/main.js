@@ -485,6 +485,46 @@ function checkInputAddr() {
 	}
 }
 
+function displayInputAddr() {
+		
+	for (var i = 0; i < addrMarkers.length; i++) {
+		addrMarkers[i].setMap(null);
+	}
+	addrMarkers = [];
+	var inputAddr = document.getElementById("location").value;
+	var bounds = new google.maps.LatLngBounds();
+	geocoder.geocode( { 'address': inputAddr}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+				for (var i = 0; i < results.length; i++) {
+					// set up marker for each result
+					var marker = new google.maps.Marker({
+						map: map,
+						position: results[i].geometry.location,
+						animation: google.maps.Animation.DROP,
+						icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+					});
+					bounds.extend(marker.position); // include marker in bounds
+					// set up infoWindow for each marker
+					var infoWindow = new google.maps.InfoWindow();
+					infoWindow.setOptions({maxWidth:500});
+					var formAddr = results[i].formatted_address;
+					var content = formAddr;
+					infoWindow.setContent(content);
+					infoWindow.open(map, marker);
+					
+					newSpotResults = results;
+					addrMarkers.push(marker);
+					addrInfoWindows.push(infoWindow);
+				}
+			
+			map.fitBounds(bounds);
+			
+		} else {
+			myGeocodeStat = false;
+		}
+	});
+}
+
 function confirmNewSpot(chosenMarkerId) {
 	showNewSpots = false;
 	newSpotMarker = addrMarkers[chosenMarkerId];

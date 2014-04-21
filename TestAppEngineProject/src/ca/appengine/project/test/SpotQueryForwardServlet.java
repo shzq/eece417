@@ -36,10 +36,32 @@ public class SpotQueryForwardServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		String stNumber = (String) spot.getProperty("stNumber");
+        String stName = (String) spot.getProperty("stName");
+        String nbhood = (String) spot.getProperty("neighborhood");
+        String locality = (String) spot.getProperty("locality");
+        String adminLevel3 = (String) spot.getProperty("admin_level_3");
+        String adminLevel2 = (String) spot.getProperty("admin_level_2");
+        String adminLevel1 = (String) spot.getProperty("admin_level_1");
+		String locationString = "";
+		if(!stNumber.equals("null")) 
+			locationString += stNumber + ", ";
+		if(!stName.equals("null")) 
+			locationString += stName + ", ";
+		if(!nbhood.equals("null") && !nbhood.equals(""))
+			locationString += nbhood + ", "; 
+		if(!locality.equals("null") && !locality.equals(" "))
+			locationString += locality + ", ";
+		if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
+			locationString += adminLevel3 + ", ";
+		if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
+			locationString += adminLevel2 + ", ";
+		if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
+			locationString += adminLevel1 + " ";
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		ServletContext sc = getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher("/spotdetails.jsp");
-		req.setAttribute("location", spot.getProperty("location"));
+		req.setAttribute("location", locationString);
 		req.setAttribute("startdate", df.format(spot.getProperty("startdate")));
 		req.setAttribute("enddate", df.format(spot.getProperty("enddate")));
 		req.setAttribute("price", spot.getProperty("price"));

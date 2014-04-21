@@ -129,12 +129,17 @@
 	});
    
    
-    $(function() {
-    	$( "#startdate" ).datepicker();
-    });
-    $(function() {
-    	$( "#enddate" ).datepicker();
-    });
+    function validate(evt) {
+  		var theEvent = evt || window.event;
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode( key );
+		var regex = /[0-9]|\./;
+		if( !regex.test(key) ) {
+	 		theEvent.returnValue = false;
+	    	if(theEvent.preventDefault) 
+	    		theEvent.preventDefault();
+		}
+	}
     
 	    /** Global Variables **/
 	    var globalInfoWind = null;
@@ -160,6 +165,7 @@
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
 		setPosition(map, "map");
 
+<<<<<<< HEAD
 		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 		var icons = {
  				parking: {
@@ -173,6 +179,8 @@
  				}
 		};
 			
+=======
+>>>>>>> 6035c15d298ed0e51d3c81c9ce58747d0d96b615
 		// Open info window everywhere we click on the map
 	    var clickedSpotInfoWind = new google.maps.InfoWindow();
 		geocoder = new google.maps.Geocoder();
@@ -273,9 +281,9 @@
 									placeholder="To">
 							</div>
 							<div class="input-group form-group">
-								<span class="input-group-addon">$</span> <input type="text"
+								<span class="input-group-addon">$</span> <input type="number"
 									class="form-control" name="price" id="price"
-									placeholder="Price">
+									placeholder="Price" onkeypress='validate(event)'>
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
 								type="submit" value="Submit" onclick="newSpotAjaxRequest()" />

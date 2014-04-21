@@ -155,13 +155,13 @@
 		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
 
 		var mapOptions = {
-		  center: myLatlng,
 		  zoom: 12
 		};
 
-		map = new google.maps.Map(document.getElementById("map-canvas"),
-		  mapOptions);		
-
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
+		setPosition(map, "map");
+		
+		
 		var mrkID = "0";
 		var gstBkNm = guestbookNameString; //"default";
 		var msgbox = "msgbox_" + mrkID;	
@@ -189,19 +189,6 @@
    				icon: iconBase + 'info-i_maps.png'
  				}
 		};
-
-		var marker = new google.maps.Marker({       
-		  position: myLatlng,
-		  map: map,
-		  icon: icons['parking'].icon,			  
-		  title: 'Custom Marker!'
-		});    
-
-		google.maps.event.addListener(marker, 'click', function() {
-		  selectedMarkerID = mrkID;  	
-		  infowindow.open(map, marker);
-		  getAjaxRequest();   
-		});        
 			
 		// Open info window everywhere we click on the map
 	    var clickedSpotInfoWind = new google.maps.InfoWindow();
@@ -223,9 +210,50 @@
 		});
 		
 		// Load the selected markers			
-		loadMarkers();       
+		//loadMarkers();       
 	}      
 	
+	function setPosition(obj, type) {
+		console.log("getting location");
+		var pos;
+
+		// Try HTML5 geolocation
+		if(navigator.geolocation) {
+
+			navigator.geolocation.getCurrentPosition(function(position) {
+ 	       	pos = new google.maps.LatLng(position.coords.latitude,
+ 	                                   position.coords.longitude);
+ 	       if(type == "map") {
+ 	    	obj.setCenter(pos);
+ 	       } 
+ 
+ 	       $("#latitude").val((position.coords.latitude));
+ 	       $("#longitude").val((position.coords.longitude));
+ 	    }, function() {
+ 	      console.log("can't detect");
+ 	      pos = handleNoGeolocation(true);
+ 	      obj.setCenter(pos);
+ 	      obj.setZoom(3);
+ 	    });
+ 	  } else {
+ 		console.log("no support");
+ 	    // Browser doesn't support Geolocation
+ 	    pos = handleNoGeolocation(false);
+ 	    obj.setCenter(pos);
+ 	    obj.setZoom(3);
+ 	  }
+	}
+	
+	function handleNoGeolocation(errorFlag) {
+	   	  if (errorFlag) {
+	   	    var content = 'Error: The Geolocation service failed.';
+	   	  } else {
+	   	    var content = 'Error: Your browser doesn\'t support geolocation.';
+	   	  }
+		  var pos = new google.maps.LatLng(48, -100);
+	   	  return pos;
+		}
+    
 	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </head>

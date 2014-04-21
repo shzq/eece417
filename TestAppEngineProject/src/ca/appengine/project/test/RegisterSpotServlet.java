@@ -40,8 +40,9 @@ public class RegisterSpotServlet extends HttpServlet {
         String adminLevel2 = req.getParameter("aL2");
         String adminLevel1 = req.getParameter("aL1");
         String country = req.getParameter("country");
+        String lat = req.getParameter("lat");
+        String lng = req.getParameter("lng");
         String price = req.getParameter("price");
-//        String location = req.getParameter("location");
         String availabilityStartDateStr = req.getParameter("startdate");
         String availabilityEndDateStr = req.getParameter("enddate");
         Date availabilityStartDate = new Date();
@@ -64,8 +65,10 @@ public class RegisterSpotServlet extends HttpServlet {
         spot.setProperty("admin_level_3", adminLevel3);
         spot.setProperty("admin_level_2", adminLevel2);
         spot.setProperty("admin_level_1", adminLevel1);
+        spot.setProperty("country", country);
+        spot.setProperty("lat", lat);
+        spot.setProperty("lng", lng);
         spot.setProperty("price", price);
-   //   spot.setProperty("location", location);
         spot.setProperty("startdate", availabilityStartDate);
         spot.setProperty("enddate", availabilityEndDate);
         spot.setProperty("isReserved", false);
@@ -74,19 +77,15 @@ public class RegisterSpotServlet extends HttpServlet {
         spotdatastore.put(spot);	
         
         // Test
+        System.out.println("lat:");
+        System.out.println(lat);
+        System.out.println("lng:");
+        System.out.println(lng);
         String htmlString = "<div>" + user + " " + stNumber + " " + stName + " " + nbhood + " " + locality + " " + adminLevel3 + " " + adminLevel2 + " " + adminLevel1 + " " + country + " " + price + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";
-  //      String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      
         System.out.println(htmlString); 
         String responseString = "Your spot was successfully registered!";
-        //resp.setContentType("text/html");
-        //resp.getWriter().println(htmlString);
         // Test
         resp.setContentType("text/html");
         resp.getWriter().println(responseString);     
-
-  //    resp.sendRedirect("/viewspots/?user=" + user+"&price="+price +"&location="+location+"&availabilityStartDateStr="+availabilityStartDateStr+"&availabilityEndDateStr="+availabilityEndDateStr);
-
-        
-        //resp.sendRedirect("/queryprocessor/?markerID="+markerID+"&guestbookName="+guestbookName);
     }
 }

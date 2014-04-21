@@ -182,13 +182,15 @@ function newSpotAjaxRequest() {
 			var aL2 = newSpot.admin_level_2;
 			var aL1 = newSpot.admin_level_1;
 			var country = newSpot.country;
+			var lat = newSpot.lat;
+			var lng = newSpot.lng;
 			var price = document.getElementById("price").value;
 			var startdate = document.getElementById("startdate").value;
 			var enddate = document.getElementById("enddate").value
 			xmlHttpReq.open("POST", url, true);
 			xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 			
-			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+"&aL1="+aL1+"&country="+country+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
+			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+"&aL1="+aL1+"&country="+country+"&lat="+lat+"&lng="+lng+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
 			
 			newSpot = null;
 		} catch (e) {
@@ -296,6 +298,7 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 	    	document.getElementById("location").value = "";
 	    	document.getElementById("startdate").value = "";
 	    	document.getElementById("enddate").value = "";
+	    	
 		}else{
 			alert("No data.");
 		}	
@@ -437,6 +440,8 @@ function NewSpot() {
 	this.admin_level_2 = null;
 	this.admin_level_1 = null;
 	this.country = null;
+	this.lat = null;
+	this.lng = null;
 }
 
 function checkInputAddr() {
@@ -516,6 +521,10 @@ function confirmNewSpot(chosenMarkerId) {
 			newSpot.country = myResult.address_components[i].short_name;
 		}
 	}
+	
+	newSpot.lat = myResult.geometry.location.lat();
+	newSpot.lng = myResult.geometry.location.lng();
+	
 	var content = newSpotInfoWind.getContent().split("<br>")[0];
 	newSpotInfoWind.setContent(content  + '<br><input type="button" value="Cancel" onClick="cancelNewSpot()"/>');
 }

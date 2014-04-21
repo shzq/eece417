@@ -25,14 +25,14 @@ public class CancelReservationServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
                 throws IOException {
 
+        UserService userService = UserServiceFactory.getUserService();
+        User user = userService.getCurrentUser();
         
         String reservationId = req.getParameter("id");
-
-        Key reservationKey = KeyFactory.createKey("Reservation", reservationId);
+        Key reservationParentKey = KeyFactory.createKey("Reservation", user.getEmail());
+        Key reservationKey = KeyFactory.createKey(reservationParentKey, "Reservation", Long.parseLong(reservationId));
         Key spotKey = null;
-        System.out.println(">>>>>>>>>>>>>>>>reservationKey=" + reservationKey);
-        
-        
+        System.out.println("reservationKey=" + reservationKey);
      
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
        	Entity reservation = null;
@@ -49,7 +49,7 @@ public class CancelReservationServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       	System.out.println(">>>>>>>>>>>>>>reservation="+reservation);
+       	System.out.println("reservation="+reservation);
         datastore.delete(reservationKey);
  
         String responseString = reservationId;

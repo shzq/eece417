@@ -243,8 +243,7 @@
 		      						} else {
 		      							%>
 		      							Currently reserved
-		      							<button class="btn btn-primary pull-right" disabled
-		      							>Cancel this Spot.</button>
+
 		      							<% 
 		      						}
 		      						%>

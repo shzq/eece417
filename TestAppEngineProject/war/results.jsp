@@ -45,139 +45,133 @@
     window.onload = lg;
     var daysToAdd = 0;
     	
-    	function lg()
-    	{
-    		<%
-    		UserService userService = UserServiceFactory.getUserService();
-			User user = userService.getCurrentUser();
-	
-			if (user == null) {%>
-				alert("Please log in before using ParkSpot");
-				window.location.href = "login.jsp";
-			<%
-			}
-			%>
-	    	
-	    	var today = new Date();
-		    var tdd = today.getDate();
-		    var tmm = ('0' + (today.getMonth()+1)).slice(-2);
-		    var ty = today.getFullYear();
-		    var tdformat = tmm + '/'+ tdd + '/'+ ty;
-			$("#startdate").datepicker("option", "minDate", tdformat);
-			//for finding spots, we don't want a default date for start date
-			//document.getElementById("startdate").value = tdformat; 
-			
-			
-			//change date to date+1 for minimum date of the end date
-			today.setDate(today.getDate() + daysToAdd);
-			tdd = today.getDate();
-		    var tmm = ('0' + (today.getMonth()+1)).slice(-2);
-		    ty = today.getFullYear();
-		    tdformat = tmm + '/'+ tdd + '/'+ ty;
-			$("#enddate").datepicker("option", "minDate", tdformat);
-			
-	    }
-    
-    	$(document).ready(function () {
-		    
-		    var today = new Date();
-		    var tdd = today.getDate();
-		    var tmm = today.getMonth()+1;
-		    var ty = today.getFullYear();
-		    var tdformat = tmm + '/'+ tdd + '/'+ ty;
-		    $("#startdate").datepicker({
-		        onSelect: function (selected) {
-		            var dtMax = new Date(selected);
-		            dtMax.setDate(dtMax.getDate() + daysToAdd); 
-		            var dd = dtMax.getDate();
-		           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
-		            var y = dtMax.getFullYear();
-		            var dtFormatted = mm + '/'+ dd + '/'+ y;
-		            if(dtMax < today)
-		            {
-		            	$("#startdate").datepicker("option", "minDate", tdformat);
-		            }
-	            	$("#enddate").datepicker("option", "minDate", dtFormatted);
-		        }
-		    });
-		    
-		    $("#enddate").datepicker({
-		        onSelect: function (selected) {
-		            var dtMax = new Date(selected);
-		            dtMax.setDate(dtMax.getDate() - daysToAdd); 
-		            var dd = dtMax.getDate();
-		            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
-		            var y = dtMax.getFullYear();
-		            var dtFormatted = mm + '/'+ dd + '/'+ y;
-		            $("#startdate").datepicker("option", "maxDate", dtFormatted)
-		        }
-		    });
-		});
+   	function lg()
+   	{
+   		<%
+   		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		if (user == null) {%>
+			alert("Please log in before using ParkSpot");
+			window.location.href = "login.jsp";
+		<%
+		}
+		%>
+		
+		var today = new Date();
+		var tdd = today.getDate();
+		var tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		var ty = today.getFullYear();
+		var tdformat = tmm + '/'+ tdd + '/'+ ty;
+		console.log(tmm);
+		console.log(tdformat);
+		$("#startdate").datepicker("option", "minDate", tdformat);
+		//leave line below commented until search can function with a set begin date and all other fields blank
+		//document.getElementById("startdate").value = tdformat;
+		
+		//change date to date+1 for minimum date of the end date
+		today.setDate(today.getDate() + daysToAdd);
+		tdd = today.getDate();
+		tmm = ('0' + (today.getMonth()+1)).slice(-2);
+		ty = today.getFullYear();
+		tdformat = tmm + '/'+ tdd + '/'+ ty;
+		$("#enddate").datepicker("option", "minDate", tdformat);		
+    }    
+   
+   	$(document).ready(function () {
 	    
-	    $(function() {
-	    	$( "#startdate" ).datepicker();
+	    var today = new Date();
+	    var tdd = today.getDate();
+	    var tmm = today.getMonth()+1;
+	    var ty = today.getFullYear();
+	    var tdformat = tmm + '/'+ tdd + '/'+ ty;
+	    $("#startdate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() + daysToAdd); 
+	            var dd = dtMax.getDate();
+	           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            if(dtMax < today)
+	            {
+	            	$("#startdate").datepicker("option", "minDate", tdformat);
+	            }
+            	$("#enddate").datepicker("option", "minDate", dtFormatted);
+	        }
 	    });
-	    $(function() {
-	    	$( "#enddate" ).datepicker();
+	    
+	    $("#enddate").datepicker({
+	        onSelect: function (selected) {
+	            var dtMax = new Date(selected);
+	            dtMax.setDate(dtMax.getDate() - daysToAdd); 
+	            var dd = dtMax.getDate();
+	            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
+	            var y = dtMax.getFullYear();
+	            var dtFormatted = mm + '/'+ dd + '/'+ y;
+	            $("#startdate").datepicker("option", "maxDate", dtFormatted)
+	        }
 	    });
-		function initialize() {
+	});
+    
+	function initialize() {
+				
+		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
+	   
+		var mapOptions = {
+		  center: myLatlng,
+		  zoom: 12
+		};
+		
+		map = new google.maps.Map(document.getElementById("map-canvas"),
+		  mapOptions);		
 					
-			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
-		   
-			var mapOptions = {
-			  center: myLatlng,
-			  zoom: 12
-			};
-			
-			map = new google.maps.Map(document.getElementById("map-canvas"),
-			  mapOptions);		
-						
-			var mrkID = "0";
-			var gstBkNm = guestbookNameString; //"default";
-			var msgbox = "msgbox_" + mrkID;	
-			var msglist = "msglist_" + mrkID;
-									
-			var contentString  = '#' + mrkID + '<div id="content">' +  	
-			  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-			  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-			  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-				"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-			
-			var infowindow = new google.maps.InfoWindow({
-			  content: contentString
-			}); 
-			
-			var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-			var icons = {
-  				parking: {
-    				icon: iconBase + 'parking_lot_maps.png'
-  				},
-  				library: {
-    				icon: iconBase + 'library_maps.png'
-  				},
-  				info: {
-    				icon: iconBase + 'info-i_maps.png'
-  				}
-			};
-						   
-			var marker = new google.maps.Marker({       
-			  position: myLatlng,
-			  map: map,
-			  icon: icons['parking'].icon,			  
-			  title: 'Custom Marker!'
-			});    
-			
-			google.maps.event.addListener(marker, 'click', function() {
-			  selectedMarkerID = mrkID;  	
-			  infowindow.open(map, marker);
-			  getAjaxRequest();   
-			});        
-					
-			// Load the selected markers			
-			loadMarkers();       
-		}      
- 	
-		google.maps.event.addDomListener(window, 'load', initialize);
+		var mrkID = "0";
+		var gstBkNm = guestbookNameString; //"default";
+		var msgbox = "msgbox_" + mrkID;	
+		var msglist = "msglist_" + mrkID;
+								
+		var contentString  = '#' + mrkID + '<div id="content">' +  	
+		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
+		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
+		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
+			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
+		
+		var infowindow = new google.maps.InfoWindow({
+		  content: contentString
+		}); 
+		
+		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+		var icons = {
+ 				parking: {
+   				icon: iconBase + 'parking_lot_maps.png'
+ 				},
+ 				library: {
+   				icon: iconBase + 'library_maps.png'
+ 				},
+ 				info: {
+   				icon: iconBase + 'info-i_maps.png'
+ 				}
+		};
+					   
+		var marker = new google.maps.Marker({       
+		  position: myLatlng,
+		  map: map,
+		  icon: icons['parking'].icon,			  
+		  title: 'Custom Marker!'
+		});    
+		
+		google.maps.event.addListener(marker, 'click', function() {
+		  selectedMarkerID = mrkID;  	
+		  infowindow.open(map, marker);
+		  getAjaxRequest();   
+		});        
+				
+		// Load the selected markers			
+		loadMarkers();       
+	}      
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </head>
 <body>

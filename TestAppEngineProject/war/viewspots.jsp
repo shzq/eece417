@@ -11,18 +11,21 @@
 <%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
 <%@ page import="com.google.appengine.api.datastore.Key"%>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
-<%@ page import="com.google.appengine.api.datastore.Query.FilterPredicate" %>
-<%@ page import="com.google.appengine.api.datastore.Query.Filter" %>
-<%@ page import="com.google.appengine.api.datastore.Query.FilterOperator" %>
-<%@ page import="com.google.appengine.api.datastore.Query.CompositeFilterOperator" %>
-<%@ page import="com.google.appengine.api.datastore.PreparedQuery" %>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterPredicate"%>
+<%@ page import="com.google.appengine.api.datastore.Query.Filter"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterOperator"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.CompositeFilterOperator"%>
+<%@ page import="com.google.appengine.api.datastore.PreparedQuery"%>
 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.io.IOException"%>
-<%@ page import="java.text.SimpleDateFormat" %> 
-<%@ page import="java.text.ParseException" %> 
-<%@ page import="java.util.Date" %>
-<%@ page import="java.text.DateFormat"%> 
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.text.ParseException"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.text.DateFormat"%>
 
 
 <!DOCTYPE html>
@@ -33,6 +36,9 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.css" />
+	<style>body {
+        padding-top: 60px;
+    }</style>
 <link rel="stylesheet"
 	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
@@ -147,109 +153,124 @@
 	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 
-	
-<!-- <div class="container"> -->
-<!--    <div class="row"> -->
-<!-- 	<UL id="Reservation"> -->
-<!-- 		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span> -->
-<!--          	 <ul class="collapse" > -->
-				
-<!--   				<li class="list-group-item">under construction</li> -->
-<!--   				<li class="list-group-item">under construction</li> -->
-<!--   				<li class="list-group-item">under construction</li> -->
-<!--   				<li class="list-group-item">under construction</li> -->
-<!--   				<li class="list-group-item">under construction</li> -->
-<!--  				<li class="list-group-item">under construction</li> -->
-<!-- 			</ul> -->
-<!-- 		</UL> -->
-<!-- 	</UL> -->
-<!-- 	</div> -->
-<!-- </div> -->
 
-<input type="hidden" id="spotID" value=""/>
+	<!-- <div class="container"> -->
+	<!--    <div class="row"> -->
+	<!-- 	<UL id="Reservation"> -->
+	<!-- 		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span> -->
+	<!--          	 <ul class="collapse" > -->
+
+	<!--   				<li class="list-group-item">under construction</li> -->
+	<!--   				<li class="list-group-item">under construction</li> -->
+	<!--   				<li class="list-group-item">under construction</li> -->
+	<!--   				<li class="list-group-item">under construction</li> -->
+	<!--   				<li class="list-group-item">under construction</li> -->
+	<!--  				<li class="list-group-item">under construction</li> -->
+	<!-- 			</ul> -->
+	<!-- 		</UL> -->
+	<!-- 	</UL> -->
+	<!-- 	</div> -->
+	<!-- </div> -->
+
+	<input type="hidden" id="spotID" value="" />
 
 
-<div class="container">
-   <div class="row">
-	<UL id="Host">
-		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Host spots&raquo;</span>
-         	 <ul class="collapse" >
-				
- 				<div class="container">
-				<%
- 					   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  					   Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
- 					   // Run an ancestor query to ensure we see the most up-to-date
- 					   // view of the Greetings belonging to the selected Guestbook.
-					   //     String location = (String) request.getParameter("location");
-					   //     String startDateStr = (String) request.getParameter("startdate");
-					   //     String endDateStr = (String) request.getParameter("enddate");
-    				   Date startDate = new Date();
-    				   Date endDate = new Date();
-   					   try {
-    						startDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("startdate"));
-       						endDate = new SimpleDateFormat("MM/dd/yyyy").parse((String) request.getParameter("enddate"));
-   					   } catch(Exception e) {
-    				   }
-						//     System.out.println(location +","+startDateStr+","+endDateStr);
-					
-						Filter startDateFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
-    
-   						Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter).addSort("startdate", Query.SortDirection.DESCENDING);;
-						List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
-						List<Entity> spotsList = startDateResults;
-	
-						//	 Query query = new Query("UBCEECE417parkspot", dsKey).addSort("location", Query.SortDirection.DESCENDING);
-						//	 List<Entity> spotsList = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
-		
-						for(Entity spot:spotsList) 
-						{
-							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
-							String sdStr = df.format(spot.getProperty("startdate"));
-							String edStr = df.format(spot.getProperty("enddate"));
-							pageContext.setAttribute("spotID", spot.getKey().getId());
-							pageContext.setAttribute("host", spot.getProperty("user"));
-							pageContext.setAttribute("resultsStartDate", sdStr);
-							pageContext.setAttribute("resultsEndDate", edStr);
-							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
-							pageContext.setAttribute("resultsLocation", spot.getProperty("location")); 
-				%>
-				 <li class="list-group-item" id='${fn:escapeXml(spotID)}'>
-    					 <div class="panel panel-default">
-		 					  <div class="panel-body">
-		  						 <p class="lead">
-		   						   <small>
-		   	     					Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
-		   	   						</small>
-		   						 </p>
-		   						  <p class="lead">
-		    					    <small class="pull-left">
-		     						  Available from <strong>${fn:escapeXml(resultsStartDate)}</strong> to <strong>${fn:escapeXml(resultsEndDate)}</strong>
-		     						</small>
-		     						<small class="pull-right"> @ <strong>$ ${fn:escapeXml(resultsPrice)}</strong> per day</small>
-		    					 </p>
-		   						</div>
-	   							<div class="panel-footer">
-		    				 	<p>
-		      						 <em>Status:  rented / unrented</em>
-<%--     		   <em>Hosted by: ${fn:escapeXml(user.nickname)}</em> --%>
-		       <a class="btn btn-primary pull-right" href="#" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot.</a>
-		     					</p>
-		     
-		   						</div>
-		 				</div>
-				 </li>
-       			<%	
- 						}
-  				%>
-	 
-			</div>
- 				
-			</ul>
-		</UL>
-	</UL>
+	<div class="container">
+		<div class="row">
+			<UL id="Host">
+				<UL>
+					<span STYLE="color: #5F5FFF; text-decoration: underline">View
+						Your Host spots&raquo;</span>
+					<ul class="collapse">
+
+						<div class="container">
+							<%
+								DatastoreService datastore = DatastoreServiceFactory
+											.getDatastoreService();
+									Key dsKey = KeyFactory.createKey("UBCEECE417parkspot",
+											"parkspot");
+									// Run an ancestor query to ensure we see the most up-to-date
+									// view of the Greetings belonging to the selected Guestbook.
+									//     String location = (String) request.getParameter("location");
+									//     String startDateStr = (String) request.getParameter("startdate");
+									//     String endDateStr = (String) request.getParameter("enddate");
+									Date startDate = new Date();
+									Date endDate = new Date();
+									try {
+										startDate = new SimpleDateFormat("MM/dd/yyyy")
+												.parse((String) request.getParameter("startdate"));
+										endDate = new SimpleDateFormat("MM/dd/yyyy")
+												.parse((String) request.getParameter("enddate"));
+									} catch (Exception e) {
+									}
+									//     System.out.println(location +","+startDateStr+","+endDateStr);
+
+									Filter startDateFilter = new FilterPredicate("user",
+											FilterOperator.EQUAL, user);
+
+									Query startDateQuery = new Query("UBCEECE417parkspot", dsKey)
+											.setFilter(startDateFilter).addSort("startdate",
+													Query.SortDirection.DESCENDING);
+									;
+									List<Entity> startDateResults = datastore.prepare(
+											startDateQuery).asList(
+											FetchOptions.Builder.withDefaults());
+									List<Entity> spotsList = startDateResults;
+
+									//	 Query query = new Query("UBCEECE417parkspot", dsKey).addSort("location", Query.SortDirection.DESCENDING);
+									//	 List<Entity> spotsList = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
+
+									for (Entity spot : spotsList) {
+										DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
+										String sdStr = df.format(spot.getProperty("startdate"));
+										String edStr = df.format(spot.getProperty("enddate"));
+										pageContext.setAttribute("spotID", spot.getKey().getId());
+										pageContext.setAttribute("host", spot.getProperty("user"));
+										pageContext.setAttribute("resultsStartDate", sdStr);
+										pageContext.setAttribute("resultsEndDate", edStr);
+										pageContext.setAttribute("resultsPrice",
+												spot.getProperty("price"));
+										pageContext.setAttribute("resultsLocation",
+												spot.getProperty("location"));
+							%>
+							<li class="list-group-item" id='${fn:escapeXml(spotID)}'>
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<p class="lead">
+											<small> Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
+											</small>
+										</p>
+										<p class="lead">
+											<small class="pull-left"> Available from <strong>${fn:escapeXml(resultsStartDate)}</strong>
+												to <strong>${fn:escapeXml(resultsEndDate)}</strong>
+											</small> <small class="pull-right"> @ <strong>$
+													${fn:escapeXml(resultsPrice)}</strong> per day
+											</small>
+										</p>
+									</div>
+									<div class="panel-footer">
+										<p>
+											<em>Status: rented / unrented</em>
+											<%--     		   <em>Hosted by: ${fn:escapeXml(user.nickname)}</em> --%>
+											<a class="btn btn-primary pull-right" href="#"
+												onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel
+												this Spot.</a>
+										</p>
+
+									</div>
+								</div>
+							</li>
+							<%
+								}
+							%>
+
+						</div>
+
+					</ul>
+				</UL>
+			</UL>
+		</div>
 	</div>
-</div>
 
 
 
@@ -260,75 +281,82 @@
 
 
 
-<div class="container">
-   <div class="row">
-	<UL id="Reservation">
-		<UL><span STYLE="color: #5F5FFF; text-decoration:underline" >View Your Reservation spots&raquo;</span>
-         	 <ul class="collapse" >
-				
- 				<div class="container">
-				<%
-					Key reservationKey = KeyFactory.createKey("Reservation", user.getEmail());
+	<div class="container">
+		<div class="row">
+			<UL id="Reservation">
+				<UL>
+					<span STYLE="color: #5F5FFF; text-decoration: underline">View
+						Your Reservation spots&raquo;</span>
+					<ul class="collapse">
 
-					
- 						 Filter userFilter = new FilterPredicate("guest", FilterOperator.EQUAL, user);
-    
-    					 Query  reservationQuery = new Query("Reservation", reservationKey).setFilter(userFilter).addSort("startdate", Query.SortDirection.DESCENDING);
-    
-    					 List<Entity> spotsList1 = datastore.prepare(reservationQuery).asList(FetchOptions.Builder.withDefaults());
-						
-						if(spotsList1.isEmpty())
-							System.out.println("empty");
-		
-						for(Entity spot:spotsList1) 
-						{
-							System.out.print(spot.toString());
-							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
-							String sdStr = df.format(spot.getProperty("startdate"));
-							String edStr = df.format(spot.getProperty("enddate"));
-							pageContext.setAttribute("spotID", spot.getKey().getId());
-							pageContext.setAttribute("host", spot.getProperty("user"));
-							pageContext.setAttribute("resultsStartDate", sdStr);
-							pageContext.setAttribute("resultsEndDate", edStr);
-							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
-							pageContext.setAttribute("resultsLocation", spot.getProperty("location")); 
-				%>
-				 <li class="list-group-item" id='${fn:escapeXml(spotID)}'>
-    					 <div class="panel panel-default">
-		 					  <div class="panel-body">
-		  						 <p class="lead">
-		   						   <small>
-		   	     					Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
-		   	   						</small>
-		   						 </p>
-		   						  <p class="lead">
-		    					    <small class="pull-left">
-		     						  Available from <strong>${fn:escapeXml(resultsStartDate)}</strong> to <strong>${fn:escapeXml(resultsEndDate)}</strong>
-		     						</small>
-		     						<small class="pull-right"> @ <strong>$ ${fn:escapeXml(resultsPrice)}</strong> per day</small>
-		    					 </p>
-		   						</div>
-	   							<div class="panel-footer">
-		    				 	<p>
-<!-- 		      						 <em>Status:  rented / unrented</em> -->
-<%--     		   <em>Hosted by: ${fn:escapeXml(user.nickname)}</em> --%>
-<%-- 		       <a class="btn btn-primary pull-right" href="#" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot.</a> --%>
-		     					</p>
-		     
-		   						</div>
-		 				</div>
-				 </li>
-       			<%	
- 						}
-  				%>
-	 
-			</div>
- 				
-			</ul>
-		</UL>
-	</UL>
+						<div class="container">
+							<%
+								Key reservationKey = KeyFactory.createKey("Reservation",
+											user.getEmail());
+
+									Filter userFilter = new FilterPredicate("guest",
+											FilterOperator.EQUAL, user);
+
+									Query reservationQuery = new Query("Reservation",
+											reservationKey).setFilter(userFilter).addSort(
+											"startdate", Query.SortDirection.DESCENDING);
+
+									List<Entity> spotsList1 = datastore.prepare(reservationQuery)
+											.asList(FetchOptions.Builder.withDefaults());
+
+									if (spotsList1.isEmpty())
+										System.out.println("empty");
+
+									for (Entity spot : spotsList1) {
+										System.out.print(spot.toString());
+										DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
+										String sdStr = df.format(spot.getProperty("startdate"));
+										String edStr = df.format(spot.getProperty("enddate"));
+										pageContext.setAttribute("spotID", spot.getKey().getId());
+										pageContext.setAttribute("host", spot.getProperty("user"));
+										pageContext.setAttribute("resultsStartDate", sdStr);
+										pageContext.setAttribute("resultsEndDate", edStr);
+										pageContext.setAttribute("resultsPrice",
+												spot.getProperty("price"));
+										pageContext.setAttribute("resultsLocation",
+												spot.getProperty("location"));
+							%>
+							<li class="list-group-item" id='${fn:escapeXml(spotID)}'>
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<p class="lead">
+											<small> Location: <strong>${fn:escapeXml(resultsLocation)}</strong>
+											</small>
+										</p>
+										<p class="lead">
+											<small class="pull-left"> Available from <strong>${fn:escapeXml(resultsStartDate)}</strong>
+												to <strong>${fn:escapeXml(resultsEndDate)}</strong>
+											</small> <small class="pull-right"> @ <strong>$
+													${fn:escapeXml(resultsPrice)}</strong> per day
+											</small>
+										</p>
+									</div>
+									<div class="panel-footer">
+										<p>
+											<!-- 		      						 <em>Status:  rented / unrented</em> -->
+											<%--     		   <em>Hosted by: ${fn:escapeXml(user.nickname)}</em> --%>
+											<%-- 		       <a class="btn btn-primary pull-right" href="#" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot.</a> --%>
+										</p>
+
+									</div>
+								</div>
+							</li>
+							<%
+								}
+							%>
+
+						</div>
+
+					</ul>
+				</UL>
+			</UL>
+		</div>
 	</div>
-</div>
 
 
 

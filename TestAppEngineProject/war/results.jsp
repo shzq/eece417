@@ -34,7 +34,10 @@
 <meta charset="utf-8">
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <link type="text/css" rel="stylesheet"
-	href="/stylesheets/bootstrap/css/bootstrap.min.css" />
+	href="/stylesheets/bootstrap/css/bootstrap.css" />
+	<style>body {
+        padding-top: 60px;
+    }</style>
 <link rel="stylesheet"
 	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script

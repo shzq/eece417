@@ -160,36 +160,7 @@
 
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
 		setPosition(map, "map");
-		
-		
-		var mrkID = "0";
-		var gstBkNm = guestbookNameString; //"default";
-		var msgbox = "msgbox_" + mrkID;	
-		var msglist = "msglist_" + mrkID;
 
-		var contentString  = '#' + mrkID + '<div id="content">' +  	
-		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-
-		var infowindow = new google.maps.InfoWindow({
-		  content: contentString
-		}); 
-
-		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-		var icons = {
- 				parking: {
-   				icon: iconBase + 'parking_lot_maps.png'
- 				},
- 				library: {
-   				icon: iconBase + 'library_maps.png'
- 				},
- 				info: {
-   				icon: iconBase + 'info-i_maps.png'
- 				}
-		};
-			
 		// Open info window everywhere we click on the map
 	    var clickedSpotInfoWind = new google.maps.InfoWindow();
 		geocoder = new google.maps.Geocoder();

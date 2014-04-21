@@ -110,7 +110,7 @@ public class QuerySpotServlet extends HttpServlet {
 		    				responseHTMLString += stName + ", ";
 		    			if(!nbhood.equals("null") && !nbhood.equals(""))
 		    				responseHTMLString += nbhood + ", "; 
-		    			if(!locality.equals("null") && !locality.equals(" "))
+		    			if(!locality.equals("null") && !locality.equals(""))
 		    				responseHTMLString += locality + ", ";
 		    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
 		    				responseHTMLString += adminLevel3 + ", ";

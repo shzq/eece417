@@ -164,62 +164,80 @@
 	}
     
 	function initialize() {
-				
+
 		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
-	   
+
 		var mapOptions = {
-		  center: myLatlng,
 		  zoom: 12
 		};
+
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
+		setPosition(map, "map");
+
+		// Open info window everywhere we click on the map
+	    var clickedSpotInfoWind = new google.maps.InfoWindow();
+		geocoder = new google.maps.Geocoder();
+	    google.maps.event.addListener(map, 'click', function(event) {
+									  if (globalInfoWind != null) {
+										  globalInfoWind.close();
+									  }
+									  var newSpotAddr;
+									  newSpotLatLng = event.latLng;
+										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status) {
+											  if (status == google.maps.GeocoderStatus.OK) {
+												  clickedSpotInfoWind.setContent(results[0].formatted_address);
+												  clickedSpotInfoWind.setPosition(newSpotLatLng);
+												  clickedSpotInfoWind.open(map);
+					                              globalInfoWind = clickedSpotInfoWind;
+											  }
+										  });
+		});
 		
-		map = new google.maps.Map(document.getElementById("map-canvas"),
-		  mapOptions);		
-					
-		var mrkID = "0";
-		var gstBkNm = guestbookNameString; //"default";
-		var msgbox = "msgbox_" + mrkID;	
-		var msglist = "msglist_" + mrkID;
-								
-		var contentString  = '#' + mrkID + '<div id="content">' +  	
-		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-		
-		var infowindow = new google.maps.InfoWindow({
-		  content: contentString
-		}); 
-		
-		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-		var icons = {
- 				parking: {
-   				icon: iconBase + 'parking_lot_maps.png'
- 				},
- 				library: {
-   				icon: iconBase + 'library_maps.png'
- 				},
- 				info: {
-   				icon: iconBase + 'info-i_maps.png'
- 				}
-		};
-					   
-		var marker = new google.maps.Marker({       
-		  position: myLatlng,
-		  map: map,
-		  icon: icons['parking'].icon,			  
-		  title: 'Custom Marker!'
-		});    
-		
-		google.maps.event.addListener(marker, 'click', function() {
-		  selectedMarkerID = mrkID;  	
-		  infowindow.open(map, marker);
-		  getAjaxRequest();   
-		});        
-				
 		// Load the selected markers			
-		loadMarkers();       
+		//loadMarkers();       
 	}      
 	
+	function setPosition(obj, type) {
+		console.log("getting location");
+		var pos;
+
+		// Try HTML5 geolocation
+		if(navigator.geolocation) {
+
+			navigator.geolocation.getCurrentPosition(function(position) {
+ 	       	pos = new google.maps.LatLng(position.coords.latitude,
+ 	                                   position.coords.longitude);
+ 	       if(type == "map") {
+ 	    	obj.setCenter(pos);
+ 	       } 
+ 
+ 	       $("#latitude").val((position.coords.latitude));
+ 	       $("#longitude").val((position.coords.longitude));
+ 	    }, function() {
+ 	      console.log("can't detect");
+ 	      pos = handleNoGeolocation(true);
+ 	      obj.setCenter(pos);
+ 	      obj.setZoom(3);
+ 	    });
+ 	  } else {
+ 		console.log("no support");
+ 	    // Browser doesn't support Geolocation
+ 	    pos = handleNoGeolocation(false);
+ 	    obj.setCenter(pos);
+ 	    obj.setZoom(3);
+ 	  }
+	}
+	
+	function handleNoGeolocation(errorFlag) {
+	   	  if (errorFlag) {
+	   	    var content = 'Error: The Geolocation service failed.';
+	   	  } else {
+	   	    var content = 'Error: Your browser doesn\'t support geolocation.';
+	   	  }
+		  var pos = new google.maps.LatLng(48, -100);
+	   	  return pos;
+		}
+    
 	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 </head>
@@ -281,7 +299,7 @@
 								<h3 class="panel-title" style="text-align: left">Price</h3>
 							</div>
 							<div class="panel-body" style="text-align: left">
-								$${fn:escapeXml(price)}</div>
+								$${fn:escapeXml(price)} per day</div>
 						</div>
 						<button id="back-btn" class="btn btn-success text-center"
 							type="submit"value="Back" onclick="goback()">Back</button>

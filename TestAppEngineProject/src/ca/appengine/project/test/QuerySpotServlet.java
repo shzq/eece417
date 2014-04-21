@@ -90,12 +90,8 @@ public class QuerySpotServlet extends HttpServlet {
 		    			String sdStr = df.format(spot.getProperty("startdate"));
 		    			String edStr = df.format(spot.getProperty("enddate"));
 		    			String stNumber = (String) spot.getProperty("stNumber");
-		    			System.out.println("stnum="+stNumber.toString());
-		    			System.out.println(stNumber.toString()=="null");
 	    		        String stName = (String) spot.getProperty("stName");
-	    		        System.out.println("stname="+stName);
 	    		        String nbhood = (String) spot.getProperty("neighborhood");
-	    		        System.out.println("nbh="+nbhood);
 	    		        String locality = (String) spot.getProperty("locality");
 	    		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
 	    		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
@@ -117,7 +113,9 @@ public class QuerySpotServlet extends HttpServlet {
 		    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
 		    				responseHTMLString += adminLevel2 + ", ";
 		    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
-		    				responseHTMLString += adminLevel1 + " ";
+		    				responseHTMLString += adminLevel1 + ", ";
+		    			if(!country.equals("null") && !country.equals(""))
+		    				responseHTMLString += country + " ";
 
 		    			
 		    			responseHTMLString += "</strong></small></p>";

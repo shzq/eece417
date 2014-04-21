@@ -326,6 +326,7 @@
 		        String adminLevel3 = (String) spot.getProperty("admin_level_3");
 		        String adminLevel2 = (String) spot.getProperty("admin_level_2");
 		        String adminLevel1 = (String) spot.getProperty("admin_level_1");
+		        String country = (String) spot.getProperty("country");
 				String locationString = "";
     			if(!stNumber.equals("null")) 
     				locationString += stNumber + ", ";
@@ -340,7 +341,9 @@
     			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
     				locationString += adminLevel2 + ", ";
     			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
-    				locationString += adminLevel1 + " ";
+    				locationString += adminLevel1 + ", ";
+    			if(!country.equals("null") && !country.equals(""))
+    				locationString += country + " ";
     			pageContext.setAttribute("spotID", spot.getKey().getId());
     			pageContext.setAttribute("host", spot.getProperty("user"));
     			pageContext.setAttribute("resultsStartDate", sdStr);

@@ -214,11 +214,12 @@
 									<font color="#428BCA">Location: ${fn:escapeXml(resultsLocation)}</font>
 								</h3>
 								<h4>
-									<div style="float: left">Availability:
-										${fn:escapeXml(resultsStartDate)}</div>
-
-									<div style="float: right">Price:
-										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font></div>
+									<span style="float: left">Availability:
+										${fn:escapeXml(resultsStartDate)}
+									</span>
+									<span style="float: right">Price:
+										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font>
+									</span>
 								</h4>
 							</div>
 							<div class="panel-footer">
@@ -306,11 +307,13 @@
 									<font color="#428BCA">Location: ${fn:escapeXml(resultsLocation)}</font>
 								</h3>
 								<h4>
-									<div style="float: left">Reserved:
-										${fn:escapeXml(resultsStartDate)} to ${fn:escapeXml(resultsEndDate)}</div>
+									<span style="float: left">Reserved:
+										${fn:escapeXml(resultsStartDate)} to ${fn:escapeXml(resultsEndDate)}
+									</span>
 
-									<div style="float: right">Price:
-										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font></div>
+									<span style="float: right">Price:
+										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font>
+									</span>
 								</h4>
 							</div>
 							<div class="panel-footer">
@@ -335,6 +338,7 @@
 	      					  	<font color="#F0AD4E">Reserved</font><button class="btn btn-primary pull-right">Cancel Reservation</button>
 	      					  </h4>
 							</div>
+						  </div>
 						</li>
 					<%
 						}

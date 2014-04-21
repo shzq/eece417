@@ -3,6 +3,7 @@ package ca.appengine.project.test;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -34,21 +35,15 @@ public class SpotQueryForwardServlet extends HttpServlet {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Key dsKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
 		String id = req.getParameter("id");
-		Key key = KeyFactory.createKey("UBCEECE417parkspot", id);
-		Query query = new Query("UBCEECE417parkspot", dsKey);
-		Filter filter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
-											FilterOperator.GREATER_THAN,
-											key);
-		
-		query.setFilter(filter);
-        List<Entity> result = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
+		Key key = KeyFactory.createKey(dsKey, "UBCEECE417parkspot", Long.parseLong(id));
         Entity spot = null;
-        for(Entity s:result) {
-	       if (s.getKey().getId() == Long.parseLong(id)) {
-	    	   spot = s;
-	    	   break;
-	       }  
-        }
+        
+		try {
+			spot = datastore.get(key);
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		ServletContext sc = getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher("/spotdetails.jsp");

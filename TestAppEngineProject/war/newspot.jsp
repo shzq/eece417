@@ -49,7 +49,7 @@
 		<%
 		}
 		%>
-		
+
 		var today = new Date();
 		var tdd = today.getDate();
 		var tmm = ('0' + (today.getMonth()+1)).slice(-2);
@@ -59,7 +59,7 @@
 		console.log(tdformat);
 		$("#startdate").datepicker("option", "minDate", tdformat);
 		document.getElementById("startdate").value = tdformat;
-		
+
 		//change date to date+1 for minimum date of the end date
 		today.setDate(today.getDate() + daysToAdd);
 		tdd = today.getDate();
@@ -71,7 +71,7 @@
     
     
    	$(document).ready(function () {
-	    
+
 	    var today = new Date();
 	    var tdd = today.getDate();
 	    var tmm = today.getMonth()+1;
@@ -92,7 +92,7 @@
             	$("#enddate").datepicker("option", "minDate", dtFormatted);
 	        }
 	    });
-	    
+
 	    $("#enddate").datepicker({
 	        onSelect: function (selected) {
 	            var dtMax = new Date(selected);
@@ -104,7 +104,16 @@
 	            $("#startdate").datepicker("option", "maxDate", dtFormatted)
 	        }
 	    });
-		
+	});
+   
+   
+    $(function() {
+    	$( "#startdate" ).datepicker();
+    });
+    $(function() {
+    	$( "#enddate" ).datepicker();
+    });
+    
 	    /** Global Variables **/
 	    var globalInfoWind = null;
 	    var newSpotLatLng;
@@ -119,60 +128,58 @@
 	    var showNewSpots = true;
 	    /** ----------------- **/
 	    
-		function initialize() {
+	function initialize() {
+
+		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
+
+		var mapOptions = {
+		  center: myLatlng,
+		  zoom: 12
+		};
+
 		map = new google.maps.Map(document.getElementById("map-canvas"),
 		  mapOptions);		
-					
-			var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
-		   
-			var mapOptions = {
-			  center: myLatlng,
-			  zoom: 12
-			};
-			
-			map = new google.maps.Map(document.getElementById("map-canvas"),
-			  mapOptions);		
-						
-			var mrkID = "0";
-			var gstBkNm = guestbookNameString; //"default";
-			var msgbox = "msgbox_" + mrkID;	
-			var msglist = "msglist_" + mrkID;
-									
-			var contentString  = '#' + mrkID + '<div id="content">' +  	
-			  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-			  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-			  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-				"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-			
-			var infowindow = new google.maps.InfoWindow({
-			  content: contentString
-			}); 
-			
-			var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-			var icons = {
-  				parking: {
-    				icon: iconBase + 'parking_lot_maps.png'
-  				},
-  				library: {
-    				icon: iconBase + 'library_maps.png'
-  				},
-  				info: {
-    				icon: iconBase + 'info-i_maps.png'
-  				}
-			};
-						   
-			var marker = new google.maps.Marker({       
-			  position: myLatlng,
-			  map: map,
-			  icon: icons['parking'].icon,			  
-			  title: 'Custom Marker!'
-			});    
-			
-			google.maps.event.addListener(marker, 'click', function() {
-			  selectedMarkerID = mrkID;  	
-			  infowindow.open(map, marker);
-			  getAjaxRequest();   
-			});        
+
+		var mrkID = "0";
+		var gstBkNm = guestbookNameString; //"default";
+		var msgbox = "msgbox_" + mrkID;	
+		var msglist = "msglist_" + mrkID;
+
+		var contentString  = '#' + mrkID + '<div id="content">' +  	
+		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
+		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
+		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
+			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
+
+		var infowindow = new google.maps.InfoWindow({
+		  content: contentString
+		}); 
+
+		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+		var icons = {
+ 				parking: {
+   				icon: iconBase + 'parking_lot_maps.png'
+ 				},
+ 				library: {
+   				icon: iconBase + 'library_maps.png'
+ 				},
+ 				info: {
+   				icon: iconBase + 'info-i_maps.png'
+ 				}
+		};
+
+		var marker = new google.maps.Marker({       
+		  position: myLatlng,
+		  map: map,
+		  icon: icons['parking'].icon,			  
+		  title: 'Custom Marker!'
+		});    
+
+		google.maps.event.addListener(marker, 'click', function() {
+		  selectedMarkerID = mrkID;  	
+		  infowindow.open(map, marker);
+		  getAjaxRequest();   
+		});        
 			
 		// Open info window everywhere we click on the map
 	    var addSpotInfoWind = new google.maps.InfoWindow();
@@ -183,14 +190,14 @@
 									  }
 									  var newSpotAddr;
 									  newSpotLatLng = event.latLng;
-										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status){
+										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status) {
 											  if (status == google.maps.GeocoderStatus.OK) {
 												  clickedSpotInfoWind.setContent(results[0].formatted_address);
 												  clickedSpotInfoWind.setPosition(newSpotLatLng);
 												  clickedSpotInfoWind.open(map);
 					                              globalInfoWind = clickedSpotInfoWind;
 											  }
-										  }
+										  });
 		});
 		
 		// Load the selected markers			

@@ -220,21 +220,21 @@
 				<div class="container">
 					<div class="well" align="center">
 						<form action="/spotdetails" method="get" class="form">
-							<div class="panel panel-primary">
+							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title" style="text-align: left">Host</h3>
 								</div>
 								<div class="panel-body" style="text-align: left">
 									${fn:escapeXml(host)}</div>
 							</div>
-							<div class="panel panel-primary">
+							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title" style="text-align: left">Location</h3>
 								</div>
 								<div class="panel-body" style="text-align: left">
 									${fn:escapeXml(location)}</div>
 							</div>
-							<div class="panel panel-primary">
+							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title" style="text-align: left">Availability</h3>
 								</div>
@@ -256,7 +256,7 @@
 									class="input-group-addon"><span
 									class="glyphicon glyphicon-calendar"></span></span>
 							</div>
-							<div class="panel panel-primary">
+							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title" style="text-align: left">Price</h3>
 								</div>

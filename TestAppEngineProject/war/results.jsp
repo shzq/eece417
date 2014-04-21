@@ -260,8 +260,6 @@
     Filter isReservedFilter = new FilterPredicate("isReserved",
     											  FilterOperator.EQUAL,
     											  false);
-    startDateFilter = CompositeFilterOperator.and(endDateFilter, isReservedFilter);
-    endDateFilter = CompositeFilterOperator.and(startDateFilter, isReservedFilter);
     
     Query startDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(startDateFilter);
 	List<Entity> startDateResults = datastore.prepare(startDateQuery).asList(FetchOptions.Builder.withDefaults());
@@ -269,9 +267,12 @@
 	Query endDateQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(endDateFilter);
 	List<Entity> endDateResults = datastore.prepare(endDateQuery).asList(FetchOptions.Builder.withDefaults());
 	
-	List<Entity> spotsList = startDateResults;
-	if(startDate == null) {
-		spotsList = endDateResults;
+	Query isReservedQuery = new Query("UBCEECE417parkspot", dsKey).setFilter(isReservedFilter);
+	List<Entity> isReservedResults = datastore.prepare(isReservedQuery).asList(FetchOptions.Builder.withDefaults());
+	
+	List<Entity> spotsList = isReservedResults;
+	if(startDate != null) {
+		spotsList.retainAll(startDateResults);
 	}
 	else if(endDate != null){
 		spotsList.retainAll(endDateResults);

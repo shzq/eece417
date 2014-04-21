@@ -266,7 +266,7 @@
 									placeholder="To">
 							</div>
 							<div class="input-group form-group">
-								<span class="input-group-addon">$</span> <input type="text"
+								<span class="input-group-addon">$</span> <input type="number"
 									class="form-control" name="price" id="price"
 									placeholder="Price">
 							</div>

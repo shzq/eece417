@@ -206,36 +206,49 @@
 							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
 							pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
 					%>
-						<li class="dropdown-header" id='${fn:escapeXml(spotID)}'><div class="panel panel-default">
-								<!-- Default panel contents -->
-								<div class="panel-body">
-									<h3 class="list-group-item-heading">
-										<font color="#428BCA">Location: ${fn:escapeXml(resultsLocation)}</font>
-									</h3>
-									<h4>
-										<div style="float: left">Availability:
-											${fn:escapeXml(resultsStartDate)}</div>
+						<li class="dropdown-header" id='host-${fn:escapeXml(spotID)}'>
+						  <div class="panel panel-default">
+							<!-- Default panel contents -->
+							<div class="panel-body">
+								<h3 class="list-group-item-heading">
+									<font color="#428BCA">Location: ${fn:escapeXml(resultsLocation)}</font>
+								</h3>
+								<h4>
+									<div style="float: left">Availability:
+										${fn:escapeXml(resultsStartDate)}</div>
 
-										<div style="float: right">Price:
-											<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font></div>
-									</h4>
-								</div>
-								<div class="panel-footer"><h4>Status: 
+									<div style="float: right">Price:
+										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font></div>
+								</h4>
+							</div>
+							<div class="panel-footer">
+							  	<h4>
+							  	  Status: 
 								<%	
 		      						try{
 		      							if((Boolean)(spot.getProperty("isReserved")) == false) {
-		      						%> <font color="#F0AD4E">Available for reservation</font><button class="btn btn-primary pull-right" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot</button> 
-		      						<% 
-		      						} else {
-		      						%> Currently reserved <% 
+		      					%> 
+		      						<font color="#F0AD4E">Available for reservation</font>
+		      						<button class="btn btn-primary pull-right" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot</button> 
+		      					<% 
+		      							} else {
+		      					%> 
+		      						Currently reserved 
+		      					<% 
 		      							}
 		      						}
-		      					  	catch(Exception e){%> <font color="#F0AD4E">Available for reservation</font> <%}
-		      						%></h4>
-							</div></li>
-							<%
-								}
-							%>
+		      					  	catch(Exception e){
+		      					  		
+		      					  	}
+		      					 %> 
+		      					 	<font color="#F0AD4E">Available for reservation</font> 
+		      					</h4>
+							</div>
+						  </div>
+						</li>
+					<%
+						}
+					%>
 					</ul>
 				</div>
 			</div> <!-- container for list items end here -->
@@ -285,7 +298,7 @@
 							pageContext.setAttribute("resultsLocation",
 									spot.getProperty("location"));
 					%>
-						<li class="dropdown-header">
+						<li class="dropdown-header" id='guest-${fn:escapeXml(spotID)}'>
 						  	<div class="panel panel-default">
 							<!-- Default panel contents -->
 							<div class="panel-body">

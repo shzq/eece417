@@ -403,8 +403,7 @@ function httpCallBackFunction_cancelspotAjaxRequest() {
 		
 		if(xmlDoc){				
 			alert("Your spot was successfully removed!");		
-			$("#"+xmlHttpReq.responseText).remove();
-			console.log(xmlHttpReq.responseText);
+			$("#host-"+xmlHttpReq.responseText).remove();
 			
 
 		}else{
@@ -436,9 +435,7 @@ function httpCallBackFunction_cancelReservationAjaxRequest() {
 		
 		if(xmlDoc){				
 			alert("Your spot was successfully removed!");		
-			$("#"+xmlHttpReq.responseText).remove();
-			console.log(xmlHttpReq.responseText);
-			
+			$("#guest"+xmlHttpReq.responseText).remove();			
 
 		}else{
 			alert("No data.");

@@ -129,12 +129,17 @@
 	});
    
    
-    $(function() {
-    	$( "#startdate" ).datepicker();
-    });
-    $(function() {
-    	$( "#enddate" ).datepicker();
-    });
+    function validate(evt) {
+  		var theEvent = evt || window.event;
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode( key );
+		var regex = /[0-9]|\./;
+		if( !regex.test(key) ) {
+	 		theEvent.returnValue = false;
+	    	if(theEvent.preventDefault) 
+	    		theEvent.preventDefault();
+		}
+	}
     
 	    /** Global Variables **/
 	    var globalInfoWind = null;
@@ -268,7 +273,7 @@
 							<div class="input-group form-group">
 								<span class="input-group-addon">$</span> <input type="number"
 									class="form-control" name="price" id="price"
-									placeholder="Price">
+									placeholder="Price" onkeypress='validate(event)'>
 							</div>
 							<input id="post-btn" class="btn btn-success text-center"
 								type="submit" value="Submit" onclick="newSpotAjaxRequest()" />

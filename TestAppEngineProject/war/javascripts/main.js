@@ -328,9 +328,9 @@ function httpCallBackFunction_cancelspotAjaxRequest() {
 		}
 		
 		if(xmlDoc){				
-			alert("Your spot was successfully registered!");		
+			alert("Your spot was successfully removed!");		
 			$("#"+xmlHttpReq.responseText).remove();
-//			${fn:escapeXml(spotID)} ="";
+			console.log(xmlHttpReq.responseText);
 			
 
 		}else{

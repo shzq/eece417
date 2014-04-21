@@ -268,6 +268,8 @@
 				<div id="demo2" class="collapse">
 					<ul class="nav nav-list">
 					<%
+						Date today = new Date();
+						System.out.println("today="+today);
 						datastore = DatastoreServiceFactory.getDatastoreService();
 						Key reservationKey = KeyFactory.createKey("Reservation",
 									user.getEmail());
@@ -287,6 +289,7 @@
 
 						for (Entity spot : spotsList1) {
 							System.out.print(spot.toString());
+							Date reservationStartDate = (Date) spot.getProperty("startdate");
 							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
 							String sdStr = df.format(spot.getProperty("startdate"));
 							String edStr = df.format(spot.getProperty("enddate"));
@@ -294,10 +297,8 @@
 							pageContext.setAttribute("host", spot.getProperty("user"));
 							pageContext.setAttribute("resultsStartDate", sdStr);
 							pageContext.setAttribute("resultsEndDate", edStr);
-							pageContext.setAttribute("resultsPrice",
-									spot.getProperty("price"));
-							pageContext.setAttribute("resultsLocation",
-									spot.getProperty("location"));
+							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
+							pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
 					%>
 						<li class="dropdown-header" id='guest-${fn:escapeXml(spotID)}'>
 						  	<div class="panel panel-default">
@@ -320,23 +321,17 @@
 							  <h4>
 							    Status:
 							<%	
-	      						try{
-	      							if((Boolean)(spot.getProperty("isReserved")) == false) {
+								if(today.after(reservationStartDate)) {
 	      					%>
-	      					    <font color="#F0AD4E">Available for reservation</font> 
+	      					    <font color="#F0AD4E">Has started</font> 
 	      					<% 
 	      							} else {
 	      					%> 
-	      						Currently reserved 
+	      						<font color="#F0AD4E">Yet to start</font>
+	      					  	<button class="btn btn-primary pull-right" onclick="cancelReservationAjaxRequest('${fn:escapeXml(spotID)}')">Cancel Reservation</button>
 	      					<% 
 	      							}
-	      						}
-	      					  	catch(Exception e){
-	      					  		
-	      					  	}
 	      					%> 
-	      					  	<font color="#F0AD4E">Reserved</font>
-	      					  	<button class="btn btn-primary pull-right" onclick="cancelReservationAjaxRequest('${fn:escapeXml(spotID)}')">Cancel Reservation</button>
 	      					  </h4>
 							</div>
 						  </div>

@@ -36,18 +36,31 @@ public class ReserveSpotServlet extends HttpServlet {
         String price = req.getParameter("price");
         String spotID = req.getParameter("id");
         String location = req.getParameter("location");
-        String availabilityStartDateStr = req.getParameter("startdate");
-        String availabilityEndDateStr = req.getParameter("enddate");
-        Date availabilityStartDate = new Date();
-        Date availabilityEndDate = new Date();
+        String startDateStr = req.getParameter("startdate");
+        String endDateStr = req.getParameter("enddate");
+        Date startDate = null;
+        Date endDate = null;
         try {
-        	availabilityStartDate = new SimpleDateFormat("MM/dd/yyyy").parse(availabilityStartDateStr);
-        	availabilityEndDate = new SimpleDateFormat("MM/dd/yyyy").parse(availabilityEndDateStr);
+        	startDate = new SimpleDateFormat("MM/dd/yyyy").parse(startDateStr);
+        	endDate = new SimpleDateFormat("MM/dd/yyyy").parse(endDateStr);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+        System.out.println("sdstr=" + startDateStr);
+        System.out.println("edstr="+ endDateStr);
+        if (startDate == null) {
+        	System.out.println("startdate null");
+        	String responseString = "Please enter a valid start date!";
+        	resp.getWriter().println(responseString);    
+        	return;
+        }
+        if (endDate == null) {
+        	System.out.println("enddate null");
+        	String responseString = "Please select a valid end date!";
+        	resp.getWriter().println(responseString);        
+        	return;
+        }
         Key reservationKey = KeyFactory.createKey("Reservation", user.getEmail());
         Key spotParentKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
         Key spotKey = KeyFactory.createKey(spotParentKey, "UBCEECE417parkspot", Long.parseLong(spotID));
@@ -56,8 +69,8 @@ public class ReserveSpotServlet extends HttpServlet {
         reservation.setProperty("guest", user);
         reservation.setProperty("price", price);
         reservation.setProperty("location", location);
-        reservation.setProperty("startdate", availabilityStartDate);
-        reservation.setProperty("enddate", availabilityEndDate);
+        reservation.setProperty("startdate", startDate);
+        reservation.setProperty("enddate", endDate);
         reservation.setProperty("spotID", spotID);
        
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -74,7 +87,7 @@ public class ReserveSpotServlet extends HttpServlet {
 		}
         
         // Test
-        String htmlString = "<div>" + user + " " + price + " " + location + " " + availabilityStartDateStr + " " + availabilityEndDateStr + " " + "</div>";      
+        String htmlString = "<div>" + user + " " + price + " " + location + " " + startDateStr + " " + endDateStr + " " + "</div>";      
         System.out.println(htmlString); 
         String responseString = "Your reservation was successfully registered!";
         //resp.setContentType("text/html");

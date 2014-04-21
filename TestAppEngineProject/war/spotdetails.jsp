@@ -39,6 +39,19 @@
 </script>
 <script type="text/javascript"> 
     window.onload = lg;	
+    /** Global Variables **/
+    var globalInfoWind = null;
+    var newSpotLatLng;
+    var geocoder;
+	var myGeocodeStat;
+    var addrMarkers = [];
+    var addrInfoWindows = [];
+    var newSpotMarker = null;
+    var newSpotInfoWind;
+    var newSpotResults = [];
+    var newSpot = null;
+    var showNewSpots = true;
+    
     var daysToAdd = 0;
     
    	function lg()
@@ -164,37 +177,19 @@
 	}
     
 	function initialize() {
-
-		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
-
+		
 		var mapOptions = {
 		  zoom: 12
 		};
 
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
-		setPosition(map, "map");
 
 		// Open info window everywhere we click on the map
 	    var clickedSpotInfoWind = new google.maps.InfoWindow();
 		geocoder = new google.maps.Geocoder();
-	    google.maps.event.addListener(map, 'click', function(event) {
-									  if (globalInfoWind != null) {
-										  globalInfoWind.close();
-									  }
-									  var newSpotAddr;
-									  newSpotLatLng = event.latLng;
-										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status) {
-											  if (status == google.maps.GeocoderStatus.OK) {
-												  clickedSpotInfoWind.setContent(results[0].formatted_address);
-												  clickedSpotInfoWind.setPosition(newSpotLatLng);
-												  clickedSpotInfoWind.open(map);
-					                              globalInfoWind = clickedSpotInfoWind;
-											  }
-										  });
-		});
-		
-		// Load the selected markers			
-		//loadMarkers();       
+  
+		displayInputAddr();
+
 	}      
 	
 	function setPosition(obj, type) {
@@ -217,26 +212,17 @@
  	      console.log("can't detect");
  	      pos = handleNoGeolocation(true);
  	      obj.setCenter(pos);
- 	      obj.setZoom(3);
+ 	      obj.setZoom(4);
  	    });
  	  } else {
  		console.log("no support");
  	    // Browser doesn't support Geolocation
  	    pos = handleNoGeolocation(false);
  	    obj.setCenter(pos);
- 	    obj.setZoom(3);
+ 	    obj.setZoom(4);
  	  }
 	}
-	
-	function handleNoGeolocation(errorFlag) {
-	   	  if (errorFlag) {
-	   	    var content = 'Error: The Geolocation service failed.';
-	   	  } else {
-	   	    var content = 'Error: Your browser doesn\'t support geolocation.';
-	   	  }
-		  var pos = new google.maps.LatLng(48, -100);
-	   	  return pos;
-		}
+
     
 	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
@@ -299,7 +285,7 @@
 								<h3 class="panel-title" style="text-align: left">Price</h3>
 							</div>
 							<div class="panel-body" style="text-align: left">
-								$${fn:escapeXml(price)} per day</div>
+								$ ${fn:escapeXml(price)} per day</div>
 						</div>
 						<button id="back-btn" class="btn btn-success text-center"
 							type="submit"value="Back" onclick="goback()">Back</button>

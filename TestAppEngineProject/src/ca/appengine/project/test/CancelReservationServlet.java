@@ -26,38 +26,36 @@ public class CancelReservationServlet extends HttpServlet {
                 throws IOException {
 
         
-        String id = req.getParameter("id");
-        System.out.println("id="+ id);
+        String reservationId = req.getParameter("id");
 
+        Key reservationKey = KeyFactory.createKey("Reservation", reservationId);
+        Key spotKey = null;
+        System.out.println(">>>>>>>>>>>>>>>>reservationKey=" + reservationKey);
         
-        Key parentKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
-        Key key = KeyFactory.createKey(parentKey, "UBCEECE417parkspot", Long.parseLong(id));
+        
+     
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-       	Entity spot = null;
+       	Entity reservation = null;
+        Entity spot = null;
 		try {
-			spot = datastore.get(key);
+			reservation = datastore.get(reservationKey);
+			String spotId = (String) reservation.getProperty("spotID");
+		    Key spotParentKey = KeyFactory.createKey("UBCEECE417parkspot", "parkspot");
+		    spotKey = KeyFactory.createKey(spotParentKey, "UBCEECE417parkspot", Long.parseLong(spotId));
+			spot = datastore.get(spotKey);
+			spot.setProperty("isReserved", false);
+			datastore.put(spot);
 		} catch (EntityNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
-       
-       	System.out.println("spot="+spot);
-        datastore.delete(key);
+       	System.out.println(">>>>>>>>>>>>>>reservation="+reservation);
+        datastore.delete(reservationKey);
  
-        // Test
-        String htmlString = "<div>" + id + " " + "</div>";      
-        System.out.println(htmlString); 
-        String responseString = id;
+        String responseString = reservationId;
 
-        // Test
         resp.setContentType("text/html");
         resp.getWriter().println(responseString);     
 
-  //    resp.sendRedirect("/viewspots/?user=" + user+"&price="+price +"&location="+location+"&availabilityStartDateStr="+availabilityStartDateStr+"&availabilityEndDateStr="+availabilityEndDateStr);
-
-        
-        //resp.sendRedirect("/queryprocessor/?markerID="+markerID+"&guestbookName="+guestbookName);
     }
 }

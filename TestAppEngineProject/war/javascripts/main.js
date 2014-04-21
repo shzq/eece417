@@ -435,7 +435,7 @@ function httpCallBackFunction_cancelReservationAjaxRequest() {
 		
 		if(xmlDoc){				
 			alert("Your spot was successfully removed!");		
-			$("#guest"+xmlHttpReq.responseText).remove();			
+			$("#guest-"+xmlHttpReq.responseText).remove();			
 
 		}else{
 			alert("No data.");

@@ -335,7 +335,8 @@
 	      					  		
 	      					  	}
 	      					%> 
-	      					  	<font color="#F0AD4E">Reserved</font><button class="btn btn-primary pull-right">Cancel Reservation</button>
+	      					  	<font color="#F0AD4E">Reserved</font>
+	      					  	<button class="btn btn-primary pull-right" onclick="cancelReservationAjaxRequest('${fn:escapeXml(spotID)}')">Cancel Reservation</button>
 	      					  </h4>
 							</div>
 						  </div>

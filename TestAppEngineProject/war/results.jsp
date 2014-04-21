@@ -50,9 +50,13 @@
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
     </script>
-<script type="text/javascript"> 
+<script type="text/javascript">
+
+	/** Global Variables for results.jsp **/
     window.onload = lg;
     var daysToAdd = 0;
+    var querySpotGeocoder;
+    /** -------------------------------- **/
     	
    	function lg()
    	{
@@ -132,32 +136,17 @@
 	});
     
 	function initialize() {
-				
-		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
 	   
+		querySpotGeocoder = new google.maps.Geocoder();
+		
 		var mapOptions = {
-		  center: myLatlng,
-		  zoom: 12
+			center: new google.maps.LatLng(48, -100),
+	  		zoom: 12
 		};
 		
-		map = new google.maps.Map(document.getElementById("map-canvas"),
-		  mapOptions);		
-					
-		var mrkID = "0";
-		var gstBkNm = guestbookNameString; //"default";
-		var msgbox = "msgbox_" + mrkID;	
-		var msglist = "msglist_" + mrkID;
-								
-		var contentString  = '#' + mrkID + '<div id="content">' +  	
-		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-		
-		var infowindow = new google.maps.InfoWindow({
-		  content: contentString
-		}); 
-		
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+		setPosition(map, "map");
+
 		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 		var icons = {
  				parking: {
@@ -169,24 +158,47 @@
  				info: {
    				icon: iconBase + 'info-i_maps.png'
  				}
-		};
-					   
-		var marker = new google.maps.Marker({       
-		  position: myLatlng,
-		  map: map,
-		  icon: icons['parking'].icon,			  
-		  title: 'Custom Marker!'
-		});    
-		
-		google.maps.event.addListener(marker, 'click', function() {
-		  selectedMarkerID = mrkID;  	
-		  infowindow.open(map, marker);
-		  getAjaxRequest();   
-		});        
-				
-		// Load the selected markers			
-		loadMarkers();       
-	}      
+		};  	
+	}
+	
+	function setPosition(obj, type) {
+		console.log("getting location");
+		var pos;
+
+		// Try HTML5 geolocation
+		if(navigator.geolocation) {
+
+			navigator.geolocation.getCurrentPosition(function(position) {
+ 	       	pos = new google.maps.LatLng(position.coords.latitude,
+ 	                                   position.coords.longitude);
+ 	       if(type == "map") {
+ 	    	obj.setCenter(pos);
+ 	       } 
+ 
+ 	       $("#latitude").val((position.coords.latitude));
+ 	       $("#longitude").val((position.coords.longitude));
+ 	    }, function() {
+ 	      pos = handleNoGeolocation(true);
+ 	      obj.setCenter(pos);
+ 	      obj.setZoom(3);
+ 	    });
+ 	  } else {
+ 	    // Browser doesn't support Geolocation
+ 	    pos = handleNoGeolocation(false);
+ 	    obj.setCenter(pos);
+ 	    obj.setZoom(3);
+ 	  }
+	}
+	
+	function handleNoGeolocation(errorFlag) {
+	   	  if (errorFlag) {
+	   	    var content = 'Error: The Geolocation service failed.';
+	   	  } else {
+	   	    var content = 'Error: Your browser doesn\'t support geolocation.';
+	   	  }
+		  var pos = new google.maps.LatLng(48, -100);
+	   	  return pos;
+		}
 	
 	google.maps.event.addDomListener(window, 'load', initialize);
     </script>

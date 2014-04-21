@@ -3,23 +3,6 @@ var xmlHttpReq = null;
 var selectedMarkerID;
 var guestbookNameString = "";
 
-function loadMarkers() {
-	//alert("loadMarkers");
-	try {
-		xmlHttpReq = new XMLHttpRequest();
-		xmlHttpReq.onreadystatechange = httpCallBackFunction_loadMarkers;
-		var url = "/resources/markers.xml";
-	
-		xmlHttpReq.open('GET', url, true);
-    	xmlHttpReq.send(null);
-    	
-    	//alert();
-    	
-	} catch (e) {
-    	alert("Error: " + e);
-	}	
-}
-
 function httpCallBackFunction_loadMarkers() {
 	//alert("httpCallBackFunction_loadMarkers");
 	
@@ -223,21 +206,62 @@ function cancelspotAjaxRequest(spotID) {
 }
 
 function querySpotsAjaxRequest() {
+	var myNbhood = null;
+	var myLocality = null;
+	var myAdmin_level_2 = null;
+	var myCountry = null;
 	try {
 		xmlHttpReq = new XMLHttpRequest();
 		xmlHttpReq.onreadystatechange = httpCallBackFunction_querySpotAjaxRequest;
 		var url = "/queryspot";
 		//var price = document.getElementById("price").value;
-		var location = document.getElementById("location").value;
+		var queryLocation = document.getElementById("location").value;
 		var startdate = document.getElementById("startdate").value;
 		var enddate = document.getElementById("enddate").value
-		xmlHttpReq.open("POST", url, true);
-		xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
-		
-		xmlHttpReq.send("location="+location+"&startdate="+startdate+"&enddate="+enddate);
-		
-		//alert();
-		
+
+		querySpotGeocoder.geocode( { 'address': queryLocation}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				console.log("results:");
+				console.log(results);
+				var myFirstResult = results[0];
+				var addrCompLength = myFirstResult.address_components.length;
+				console.log(myFirstResult);
+				for (var i = 0; i < addrCompLength; i++) {
+					if ($.inArray("neighborhood", myFirstResult.address_components[i].types) >= 0) {
+						myNbhood = myFirstResult.address_components[i].short_name;
+					}
+				}
+				for (var i = 0; i < addrCompLength; i++) {
+					if ($.inArray("locality", myFirstResult.address_components[i].types) >= 0) {
+						mylocality = myFirstResult.address_components[i].short_name;
+					}
+				}
+				for (var i = 0; i < addrCompLength; i++) {
+					if ($.inArray("administrative_area_level_2", myFirstResult.address_components[i].types) >= 0) {
+						myAdmin_level_2 = myFirstResult.address_components[i].short_name;
+					}
+				}
+				for (var i = 0; i < addrCompLength; i++) {
+					if ($.inArray("country", myFirstResult.address_components[i].types) >= 0) {
+						myCountry = myFirstResult.address_components[i].short_name;
+					}
+				}
+				
+				console.log("myNbhood = " + myNbhood);
+				console.log("myLocality = " + myLocality);
+				console.log("myAdmin_level_2 = " + myAdmin_level_2);
+				console.log("myCountry = " + myCountry);
+				
+				xmlHttpReq.open("POST", url, true);
+				xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
+				
+				console.log("neighborhood="+myNbhood+"&locality="+myLocality+"&aL2="+myAdmin_level_2+"&country="+myCountry+"&startdate="+startdate+"&enddate="+enddate);
+				xmlHttpReq.send("neighborhood="+myNbhood+"&locality="+myLocality+"&aL2="+myAdmin_level_2+"&country="+myCountry+"&startdate="+startdate+"&enddate="+enddate);
+				
+			} else {
+				alert("Sorry, we could not find the location. Please check that you enter the right location.");
+			}
+		});
 	} catch (e) {
 		alert("Error: " + e);
 	}
@@ -298,7 +322,13 @@ function httpCallBackFunction_newSpotAjaxRequest() {
 	    	document.getElementById("location").value = "";
 	    	document.getElementById("startdate").value = "";
 	    	document.getElementById("enddate").value = "";
-	    	
+	    	newSpotMarker.setAnimation(google.maps.Animation.DROP);
+	    	newSpotMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+	    	var content = newSpotInfoWind.getContent().split("<br>")[0];
+	    	newSpotInfoWind.setContent(content);
+			google.maps.event.addListener(newSpotMarker, 'click', function() {
+				newSpotInfoWind.open(map, newSpotMarker);
+			});
 		}else{
 			alert("No data.");
 		}	
@@ -468,16 +498,15 @@ function checkInputAddr() {
 						var infoWindow = new google.maps.InfoWindow();
 						var formAddr = results[i].formatted_address;
 						var content = formAddr + '<br><input type="button" value="Confirm Location" onClick="confirmNewSpot('+ i + ')"/>';
+						
 						infoWindow.setContent(content);
 						infoWindow.open(map, marker);
 						
-						newSpotResults = results;
 						addrMarkers.push(marker);
 						addrInfoWindows.push(infoWindow);
 					}
-				
+				newSpotResults = results;
 				map.fitBounds(bounds);
-				
 			} else {
 				myGeocodeStat = false;
 			}
@@ -527,6 +556,10 @@ function confirmNewSpot(chosenMarkerId) {
 	
 	var content = newSpotInfoWind.getContent().split("<br>")[0];
 	newSpotInfoWind.setContent(content  + '<br><input type="button" value="Cancel" onClick="cancelNewSpot()"/>');
+	
+	google.maps.event.addListener(newSpotMarker, 'click', function() {
+		newSpotInfoWind.open(map, newSpotMarker);
+	});	
 }
 
 function cancelNewSpot() {

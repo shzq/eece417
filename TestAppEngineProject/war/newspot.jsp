@@ -152,30 +152,13 @@
 	    
 	function initialize() {
 
-		var myLatlng = new google.maps.LatLng(37.33152141760375,-122.04732071026367);   
-
 		var mapOptions = {
-		  zoom: 12
+			center: new google.maps.LatLng(48, -100),	
+			zoom: 12
 		};
 
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
 		setPosition(map, "map");
-		
-		
-		var mrkID = "0";
-		var gstBkNm = guestbookNameString; //"default";
-		var msgbox = "msgbox_" + mrkID;	
-		var msglist = "msglist_" + mrkID;
-
-		var contentString  = '#' + mrkID + '<div id="content">' +  	
-		  '<div class="msglist" id="'+ msglist +'"></div>' + '</div>' +
-		  '<textarea class="msgbox" id="'+ msgbox +'" rows="2" cols="20"></textarea>' +			  
-		  '<input type="button" value="Post" onclick="postAjaxRequest('+ 
-			"'" + msgbox + "', '" + mrkID + "', '" + gstBkNm + "', '" + msglist + "'" +')"/>';  
-
-		var infowindow = new google.maps.InfoWindow({
-		  content: contentString
-		}); 
 
 		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 		var icons = {
@@ -208,9 +191,6 @@
 											  }
 										  });
 		});
-		
-		// Load the selected markers			
-		//loadMarkers();       
 	}      
 	
 	function setPosition(obj, type) {
@@ -230,13 +210,11 @@
  	       $("#latitude").val((position.coords.latitude));
  	       $("#longitude").val((position.coords.longitude));
  	    }, function() {
- 	      console.log("can't detect");
  	      pos = handleNoGeolocation(true);
  	      obj.setCenter(pos);
  	      obj.setZoom(3);
  	    });
  	  } else {
- 		console.log("no support");
  	    // Browser doesn't support Geolocation
  	    pos = handleNoGeolocation(false);
  	    obj.setCenter(pos);

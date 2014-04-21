@@ -158,33 +158,52 @@ public class QuerySpotServlet extends HttpServlet {
 	    			responseHTMLString += "<div class=\"panel panel-default\">";
 	    			responseHTMLString += "<div class=\"panel-body\">";
 	    			responseHTMLString += "<p class=\"lead\"><font color=\"#428BCA\">Location: <strong>";
-	    			if(!stNumber.equals("null")) 
+	    			String addrString = "";
+	    			if(!stNumber.equals("null")) {
 	    				responseHTMLString += stNumber + ", ";
-	    			if(!stName.equals("null")) 
+	    				addrString += stNumber + ", ";
+	    			}
+	    			if(!stName.equals("null"))  {
 	    				responseHTMLString += stName + ", ";
-	    			if(!nbhood.equals("null") && !nbhood.equals(""))
+	    				addrString += stName + ", ";
+	    			}
+	    			if(!nbhood.equals("null") && !nbhood.equals("")) {
 	    				responseHTMLString += nbhood + ", "; 
-	    			if(!loc.equals("null") && !loc.equals(""))
+    					addrString += nbhood + ", ";
+	    			}
+	    			if(!loc.equals("null") && !loc.equals("")) {
 	    				responseHTMLString += loc + ", ";
-	    			if(!adminLevel3.equals("null") && !adminLevel3.equals(""))
+    					addrString += loc + ", ";
+	    			}
+	    			if(!adminLevel3.equals("null") && !adminLevel3.equals("")) {
 	    				responseHTMLString += adminLevel3 + ", ";
-	    			if(!adminLevel2.equals("null") && !adminLevel2.equals(""))
+	    				addrString += adminLevel3 + ", ";
+	    			}
+	    			if(!adminLevel2.equals("null") && !adminLevel2.equals("")) {
 	    				responseHTMLString += adminLevel2 + ", ";
-	    			if(!adminLevel1.equals("null") && !adminLevel1.equals(""))
+	    				addrString += adminLevel2 + ", ";
+	    			}
+	    			if(!adminLevel1.equals("null") && !adminLevel1.equals("")) {
 	    				responseHTMLString += adminLevel1 + ", ";
-	    			if(!country.equals("null") && !country.equals(""))
+	    				addrString += adminLevel1 + ", ";
+	    			}
+	    			if(!country.equals("null") && !country.equals("")) {
 	    				responseHTMLString += country + " ";
+	    				addrString += country + " ";
+	    			}
 
-	    			
 	    			responseHTMLString += "</strong></font></p>";
 	    			responseHTMLString += "<p class=\"lead\"><small class=\"pull-left\"> Available from <strong>"+sdStr+"</strong>"
 	    								+ " to <strong>"+edStr+"</strong>"
 	    								+ "</small> <small class=\"pull-right\"> @ <font color=\"#5CB65C\"><strong>$"+spot.getProperty("price")+"</strong> per day</font></small></p></div>";
 	    			responseHTMLString += "<div class=\"panel-footer\"><p><em>Hosted by: "+spot.getProperty("user")+"</em>"
 	    								+ "<a class=\"btn btn-primary pull-right\" href=\"/spotdetails?id="+spot.getKey().getId()+"\" id=\"spot-"+spot.getKey().getId()+"\">"
-	    								+ "Reserve This Spot!</a></p></div></div><hr />";
+	    								+ "Reserve This Spot!</a></p></div></div>";
 	    			
+	    			responseHTMLString += "<input type=\"hidden\" class=\"result-address\" value=\""+addrString+"\">";
+
 	    		}
+	    		responseHTMLString += "<hr/>";
 	    	}
 		    
 	        resp.setContentType("text/html");

@@ -498,7 +498,9 @@ function httpCallBackFunction_querySpotAjaxRequest() {
 		
 		if(xmlDoc) {	
 			$("#search-result-container").empty();
-			$("#search-result-container").html(xmlHttpReq.responseText);		
+			$("#search-result-container").html(xmlHttpReq.responseText);
+			
+			displayQueryResults();
 		} else {
 			alert("No data.");
 		}	
@@ -639,6 +641,53 @@ function displayInputAddr() {
 			myGeocodeStat = false;
 		}
 	});
+}
+
+function displayQueryResults() {
+	for (var i = 0; i < addrMarkers.length; i++) {
+		addrMarkers[i].setMap(null);
+	}
+	addrMarkers = [];
+	var bounds = new google.maps.LatLngBounds();
+
+	var resultAddrList = document.getElementsByClassName("result-address");
+	var resultAddrListSize = resultAddrList.length;
+	for(var i = 0; i < resultAddrListSize; i++) {
+		bounds = displayAddressOnMap(resultAddrList[i].value, bounds);
+	}
+}
+
+function displayAddressOnMap(inputAddr, bounds) {
+	
+	querySpotGeocoder.geocode( { 'address': inputAddr}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			myGeocodeStat = true;
+			for (var i = 0; i < results.length; i++) {
+				// set up marker for each result
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[i].geometry.location,
+					animation: google.maps.Animation.DROP,
+					icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+				});
+				bounds.extend(marker.position); // include marker in bounds
+				// set up infoWindow for each marker
+				var formAddr = results[i].formatted_address;
+				var contentString = "<p>"+formAddr+"&nbsp&nbsp&nbsp</p>";
+
+				var infoWindow = new google.maps.InfoWindow({content:contentString});
+				infoWindow.open(map, marker);
+				
+				newSpotResults = results;
+				addrMarkers.push(marker);
+				addrInfoWindows.push(infoWindow);
+			}
+			map.fitBounds(bounds);
+		} else {
+			myGeocodeStat = false;
+		}
+	});
+	return bounds;
 }
 
 function confirmNewSpot(chosenMarkerId) {

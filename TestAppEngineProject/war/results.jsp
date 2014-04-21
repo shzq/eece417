@@ -57,6 +57,15 @@
     window.onload = lg;
     var daysToAdd = 0;
     var querySpotGeocoder;
+    var globalInfoWind = null;
+    var newSpotLatLng;
+	var myGeocodeStat;
+    var addrMarkers = [];
+    var addrInfoWindows = [];
+    var newSpotMarker = null;
+    var newSpotInfoWind;
+    var newSpotResults = [];
+    var newSpot = null;
     /** -------------------------------- **/
     	
    	function lg()
@@ -160,9 +169,7 @@
    				icon: iconBase + 'info-i_maps.png'
  				}
 		}; 
-		console.log("checking1");
 		if ($("#location").val() != "") {
-   			console.log("search from home page!!!!!");
    			querySpotsAjaxRequest();
    		}
 	}

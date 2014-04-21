@@ -247,25 +247,22 @@
 										</p>
 									</div>
 									<div class="panel-footer">
-		    				 	<p>
-		      					  <em>
-		      						Status: 
-		      						<%
-		      						if((Boolean) spot.getProperty("isReserved") == false) {
-		      							%>
-		      							Available for reservation
-		      							<button class="btn btn-primary pull-right" 
-		      							onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot.</button>
-		      							<% 
+										<p>
+											<em> Status: <%	
+		      						try{
+		      							if((Boolean)(spot.getProperty("isReserved")) == false) {
+		      						%> Available for reservation.
+												<button class="btn btn-primary pull-right"
+													onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel
+													this Spot.</button> <% 
 		      						} else {
-		      							%>
-		      							Currently reserved
-
-		      							<% 
+		      						%> Currently reserved. <% 
+		      							}
 		      						}
+		      					  	catch(Exception e){}
 		      						%>
-		      					  </em>
-		     					</p>
+											</em>
+										</p>
 
 									</div>
 								</div>

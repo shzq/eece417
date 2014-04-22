@@ -169,7 +169,7 @@
 								</h3>
 								<h4>
 									<span style="float: left">Availability:
-										${fn:escapeXml(resultsStartDate)}
+										${fn:escapeXml(resultsStartDate)} to ${fn:escapeXml(resultsEndDate)}
 									</span>
 									<span style="float: right">Price:
 										<font color="#5CB65C">$${fn:escapeXml(resultsPrice)} per day</font>

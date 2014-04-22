@@ -33,7 +33,8 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.css" />
-	<style>body { padding-top: 60px; padding-bottom: 100px; }
+	<style>
+	body { padding-top: 60px; padding-bottom: 100px; }
     html { min-height: 100%; margin-bottom: 1px; }
     </style>
 <link rel="stylesheet"
@@ -156,46 +157,61 @@
 
 	<div class="container"> <!-- Container for View Your Host Spots starts here -->
 		<div class="well">
+			<% 
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
+			Key dsKey = KeyFactory.createKey("UBCEECE417parkspot",
+									"parkspot");
+	
+			Date startDate = new Date();
+			Date endDate = new Date();
+			try{
+				startDate = new SimpleDateFormat("MM/dd/yyyy")
+						.parse((String) request.getParameter("startdate"));
+				endDate = new SimpleDateFormat("MM/dd/yyyy")
+						.parse((String) request.getParameter("enddate"));
+			} catch (Exception e) {
+			}
+			//     System.out.println(location +","+startDateStr+","+endDateStr);
+	
+			Filter startDateFilter = new FilterPredicate("user",
+					FilterOperator.EQUAL, user);
+	
+			Query startDateQuery = new Query("UBCEECE417parkspot", dsKey)
+					.setFilter(startDateFilter).addSort("startdate",
+							Query.SortDirection.DESCENDING);
+			;
+			List<Entity> startDateResults = datastore.prepare(
+					startDateQuery).asList(
+					FetchOptions.Builder.withDefaults());
+			List<Entity> spotsList = startDateResults;
+
+			if(spotsList.isEmpty())	{ 
+				System.out.println("empty");
+		%>
+			<h4><span id="toggler1"><font color="#787880"><i
+					class="glyphicon glyphicon-chevron-down"></i> Your Host Spots
+				</font></span>
+			</h4>
+			<%
+				} else {
+					
+					pageContext.setAttribute("hostspotsize", spotsList.size());
+			%>
 			<h4>
-				<a id="toggler1" href="#" data-toggle="collapse" class="active"data-target="#demo1"> 
-					<i class="glyphicon glyphicon-chevron-down"></i>
-					Your Host Spots
+				<div class="container-fluid"><a id="toggler1" href="#" data-toggle="collapse" class="active"
+					data-target="#demo1"> <i class="glyphicon glyphicon-chevron-down"></i> Your Host Spots <div class="pull-right"><span class="badge pull-right">${fn:escapeXml(hostspotsize)}</span></div>
 				</a>
 			</h4>
+			<%
+				}
+			%>
+
 			<div class="container"> <!-- container for list items begin here -->
 				<div id="demo1" class="collapse">
 					<ul class="nav nav-list">
 					<%
-						DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-						
-						Key dsKey = KeyFactory.createKey("UBCEECE417parkspot",
-												"parkspot");
-
-						Date startDate = new Date();
-						Date endDate = new Date();
-						try{
-							startDate = new SimpleDateFormat("MM/dd/yyyy")
-									.parse((String) request.getParameter("startdate"));
-							endDate = new SimpleDateFormat("MM/dd/yyyy")
-									.parse((String) request.getParameter("enddate"));
-						} catch (Exception e) {
-						}
-						//     System.out.println(location +","+startDateStr+","+endDateStr);
-
-						Filter startDateFilter = new FilterPredicate("user",
-								FilterOperator.EQUAL, user);
-
-						Query startDateQuery = new Query("UBCEECE417parkspot", dsKey)
-								.setFilter(startDateFilter).addSort("startdate",
-										Query.SortDirection.DESCENDING);
-						;
-						List<Entity> startDateResults = datastore.prepare(
-								startDateQuery).asList(
-								FetchOptions.Builder.withDefaults());
-						List<Entity> spotsList = startDateResults;
-
-
-						for (Entity spot : spotsList) {
+							for (Entity spot : spotsList) {
 							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
 							String sdStr = df.format(spot.getProperty("startdate"));
 							String edStr = df.format(spot.getProperty("enddate"));
@@ -224,25 +240,30 @@
 							</div>
 							<div class="panel-footer">
 							  	<h4>
+							  	<div class="container-fluid">
 							  	  Status: 
 								<%	
 		      						try{
 		      							if((Boolean)(spot.getProperty("isReserved")) == false) {
-		      					%> 
-		      						<font color="#F0AD4E">Available for reservation</font>
-		      						<button class="btn btn-primary pull-right" onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel this Spot</button> 
-		      					<% 
+		      					%>
+										
+											<font color="#F0AD4E">Available for reservation</font>
+											<div class="pull-right"><button class="btn btn-primary pull-right"
+												onclick="cancelspotAjaxRequest('${fn:escapeXml(spotID)}')">Cancel
+												this Spot</button></div>
+										<% 
 		      							} else {
 		      					%> 
-		      						Currently reserved 
+		      						Currently reserved
+		      						 
 		      					<% 
 		      							}
 		      						}
-		      					  	catch(Exception e){
+		      					  	catch(Exception e){ System.out.println("exception");
 		      					  		
 		      					  	}
 		      					 %> 
-		      					 	<font color="#F0AD4E">Available for reservation</font> 
+		      					 </div>
 		      					</h4>
 							</div>
 						  </div>
@@ -259,37 +280,53 @@
 	
 	<div class="container"> <!-- Container for Reservation Spots starts here -->
 		<div class="well">
-			<h4><a id="toggler2" href="#" data-toggle="collapse" class="active"
-				data-target="#demo2"> 
-				<i class="glyphicon glyphicon-chevron-down"></i>
+		<%
+			Date today = new Date();
+			System.out.println("today=" + today);
+			datastore = DatastoreServiceFactory.getDatastoreService();
+			Key reservationKey = KeyFactory.createKey("Reservation",
+					user.getEmail());
+
+			Filter userFilter = new FilterPredicate("guest",
+					FilterOperator.EQUAL, user);
+
+			Query reservationQuery = new Query("Reservation",
+					reservationKey).setFilter(userFilter).addSort(
+					"startdate", Query.SortDirection.DESCENDING);
+
+			List<Entity> spotsList1 = datastore.prepare(reservationQuery)
+					.asList(FetchOptions.Builder.withDefaults());
+
+			if (spotsList1.isEmpty()){
+				System.out.println("empty");
+		%>
+			<h4><span id="toggler2"><font color="#787880"> 
+			<i class="glyphicon glyphicon-chevron-down"></i>
 				Your Current Reservations
-			</a></h4>
+			</font></span></h4>
+			
+			<%} else{
+				pageContext.setAttribute("reservationsize", spotsList1.size());
+			%>
+			
+			<h4>
+				<div class="container-fluid"><a id="toggler2" href="#" data-toggle="collapse" class="active"
+					data-target="#demo2"> <i
+					class="glyphicon glyphicon-chevron-down"></i> Your Current Reservations<div class="pull-right"><span class="badge pull-right">${fn:escapeXml(reservationsize)}</span></div>
+				</a></div>
+			</h4>
+			
+			<% } %>
+			
 			<div class="container"> <!-- container for list items begin here -->
 				<div id="demo2" class="collapse">
 					<ul class="nav nav-list">
 					<%
-						Date today = new Date();
-						System.out.println("today="+today);
-						datastore = DatastoreServiceFactory.getDatastoreService();
-						Key reservationKey = KeyFactory.createKey("Reservation",
-									user.getEmail());
-
-						Filter userFilter = new FilterPredicate("guest",
-								FilterOperator.EQUAL, user);
-
-						Query reservationQuery = new Query("Reservation",
-								reservationKey).setFilter(userFilter).addSort(
-								"startdate", Query.SortDirection.DESCENDING);
-
-						List<Entity> spotsList1 = datastore.prepare(reservationQuery)
-								.asList(FetchOptions.Builder.withDefaults());
-
-						if (spotsList1.isEmpty())
-							System.out.println("empty");
 
 						for (Entity spot : spotsList1) {
 							System.out.print(spot.toString());
 							Date reservationStartDate = (Date) spot.getProperty("startdate");
+							Date reservationEndDate = (Date) spot.getProperty("enddate");
 							DateFormat df = new SimpleDateFormat("EEEE MM/dd/yyyy");
 							String sdStr = df.format(spot.getProperty("startdate"));
 							String edStr = df.format(spot.getProperty("enddate"));
@@ -322,10 +359,16 @@
 							    Status:
 							<%	
 								if(today.after(reservationStartDate)) {
+									if(today.after(reservationEndDate)) {
+								%>
+			      					 <font color="#F0AD4E">Past</font> 
+			      				<%		
+									}else{
 	      					%>
 	      					    <font color="#F0AD4E">Has started</font> 
 	      					<% 
-	      							} else {
+	      							}
+								} else {
 	      					%> 
 	      						<font color="#F0AD4E">Yet to start</font>
 	      					  	<button class="btn btn-primary pull-right" onclick="cancelReservationAjaxRequest('${fn:escapeXml(spotID)}')">Cancel Reservation</button>
@@ -338,6 +381,7 @@
 						</li>
 					<%
 						}
+						System.out.println("total reservation count: " + spotsList1.size());
 					%>
 					</ul>
 				</div>

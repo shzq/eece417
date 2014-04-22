@@ -83,7 +83,7 @@ public class ReserveSpotServlet extends HttpServlet {
         // Test
         String htmlString = "<div>" + user + " " + price + " " + location + " " + startDateStr + " " + endDateStr + " " + "</div>";      
         System.out.println(htmlString); 
-        String responseString = "Your reservation was successfully registered!";
+        String responseString = "Your reservation was successfully reserved!";
         //resp.setContentType("text/html");
         //resp.getWriter().println(htmlString);
         // Test

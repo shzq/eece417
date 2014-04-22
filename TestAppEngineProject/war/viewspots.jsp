@@ -62,24 +62,6 @@
 			alert("Please log in before using ParkSpot");
 			window.location.href = "login.jsp";
 		<%}%>
-		
-		var today = new Date();
-		var tdd = today.getDate();
-		var tmm = ('0' + (today.getMonth()+1)).slice(-2);
-		var ty = today.getFullYear();
-		var tdformat = tmm + '/'+ tdd + '/'+ ty;
-		console.log(tmm);
-		console.log(tdformat);
-		$("#startdate").datepicker("option", "minDate", tdformat);
-		document.getElementById("startdate").value = tdformat;
-		
-		//change date to date+1 for minimum date of the end date
-		today.setDate(today.getDate() + daysToAdd);
-		tdd = today.getDate();
-		tmm = ('0' + (today.getMonth()+1)).slice(-2);
-		ty = today.getFullYear();
-		tdformat = tmm + '/'+ tdd + '/'+ ty;
-		$("#enddate").datepicker("option", "minDate", tdformat);
     }
 	
 	$(document).ready(function(){
@@ -96,51 +78,6 @@
 		});
 	});
 
-    $(document).ready(function () {
-		    
-	    var today = new Date();
-	    var tdd = today.getDate();
-	    var tmm = today.getMonth()+1;
-	    var ty = today.getFullYear();
-	    var tdformat = tmm + '/'+ tdd + '/'+ ty;
-	    $("#startdate").datepicker({
-	        onSelect: function (selected) {
-	            var dtMax = new Date(selected);
-	            dtMax.setDate(dtMax.getDate() + daysToAdd); 
-	            var dd = dtMax.getDate();
-	            var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
-	            var y = dtMax.getFullYear();
-	            var dtFormatted = mm + '/'+ dd + '/'+ y;
-	            if(dtMax < today)
-	            {
-	            	$("#startdate").datepicker("option", "minDate", tdformat);
-	            }
-            	$("#enddate").datepicker("option", "minDate", dtFormatted);
-	        },
-			onClose: function (selected) {
-	        	if(selected=="")
-					$("#enddate").datepicker("option", "minDate", tdformat);
-	        }
-	    });
-	    
-	    $("#enddate").datepicker({
-	        onSelect: function (selected) {
-	            var dtMax = new Date(selected);
-	            dtMax.setDate(dtMax.getDate() - daysToAdd); 
-	            var dd = dtMax.getDate();
-	           	var mm = ('0' + (dtMax.getMonth()+1)).slice(-2);
-	            var y = dtMax.getFullYear();
-	            var dtFormatted = mm + '/'+ dd + '/'+ y;
-	            $("#startdate").datepicker("option", "maxDate", dtFormatted);
-	            console.log(dtFormatted);
-	        },
-	        onClose: function (selected) {
-	        	if(selected=="")
-	        		$("#startdate").datepicker("option", "maxDate", null);
-	        }
-	    });
-	});
-    
     </script>
 </head>
 <body>
@@ -221,6 +158,7 @@
 							pageContext.setAttribute("resultsEndDate", edStr);
 							pageContext.setAttribute("resultsPrice", spot.getProperty("price"));
 							pageContext.setAttribute("resultsLocation", spot.getProperty("location"));
+							System.out.println("Location: " + spot.getProperty("location"));
 					%>
 						<li class="dropdown-header" id='host-${fn:escapeXml(spotID)}'>
 						  <div class="panel panel-default">

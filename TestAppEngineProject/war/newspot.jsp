@@ -156,12 +156,40 @@
 	    /** ----------------- **/
 	    
 	function initialize() {
-
+		
+	    // Remove google maps POIs
+	    var noPOI = [
+			{
+				featureType: "poi",
+				elementType: "labels",
+				stylers: [ {visibility: "off"} ]
+			}
+		];
+	    
+	    var noPOIMapType = new google.maps.StyledMapType(noPOI, {name: "ParkSpot"} ); // name will be shown in the control
+	    
 		var mapOptions = {
-			zoom: 12
+			zoom: 12,
+			zoomControl:true,
+		    zoomControlOptions: {
+		      style:google.maps.ZoomControlStyle.SMALL
+		    },
+			mapTypeControl: true,
+			mapTypeControlOptions: {
+				mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'ParkSpot', google.maps.MapTypeId.SATELLITE], // add map type to control
+				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+			}
 		};
 
-		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);		
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+		
+		// Add our map type to the ParkSpot id
+		map.mapTypes.set('ParkSpot', noPOIMapType);
+		// Set our map type to be the initial map. 
+		// The default google map will still be in the control. Cannot remove it. 
+		map.setMapTypeId('ParkSpot');
+		
+		// Set map initial position to browser's location. If not, set to Canada and US viewport
 		setPosition(map, "map");
 			
 		// Open info window everywhere we click on the map
@@ -182,15 +210,13 @@
 											  }
 										  });
 		});
+	    
 	}      
 	
 	function setPosition(obj, type) {
-		console.log("getting location");
 		var pos;
-
 		// Try HTML5 geolocation
 		if(navigator.geolocation) {
-
 			navigator.geolocation.getCurrentPosition(function(position) {
  	       	pos = new google.maps.LatLng(position.coords.latitude,
  	                                   position.coords.longitude);
@@ -214,14 +240,15 @@
 	}
 	
 	function handleNoGeolocation(errorFlag) {
-	   	  if (errorFlag) {
-	   	    var content = 'Error: The Geolocation service failed.';
-	   	  } else {
-	   	    var content = 'Error: Your browser doesn\'t support geolocation.';
-	   	  }
-		  var pos = new google.maps.LatLng(48, -100);
-	   	  return pos;
-		}
+   	  if (errorFlag) {
+   	    var content = 'Error: The Geolocation service failed.';
+   	  } else {
+   	    var content = 'Error: Your browser doesn\'t support geolocation.';
+   	  }
+   	  // mid Canada and US
+	  var pos = new google.maps.LatLng(48, -100);
+   	  return pos;
+	}
     
 	google.maps.event.addDomListener(window, 'load', initialize);
     </script>

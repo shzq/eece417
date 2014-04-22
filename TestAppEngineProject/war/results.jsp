@@ -150,68 +150,102 @@
 	   
 		querySpotGeocoder = new google.maps.Geocoder();
 		
-		var mapOptions = {
-	  		zoom: 12
-		};
+		// Remove google maps POIs
+	    var noPOI = [
+			{
+				featureType: "poi",
+				elementType: "labels",
+				stylers: [ {visibility: "off"} ]
+			}
+		];
+	    
+	    var noPOIMapType = new google.maps.StyledMapType(noPOI, {name: "ParkSpot"} ); // name will be shown in the control
+		
+	    var mapOptions = {
+				zoom: 12,
+				zoomControl:true,
+			    zoomControlOptions: {
+			      style:google.maps.ZoomControlStyle.SMALL
+			    },
+				mapTypeControl: true,
+				mapTypeControlOptions: {
+					mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'ParkSpot', google.maps.MapTypeId.SATELLITE], // add map type to control
+					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+				}
+			};
 		
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-		setPosition(map, "map");
 
-		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-		var icons = {
- 				parking: {
-   				icon: iconBase + 'parking_lot_maps.png'
- 				},
- 				library: {
-   				icon: iconBase + 'library_maps.png'
- 				},
- 				info: {
-   				icon: iconBase + 'info-i_maps.png'
- 				}
-		}; 
+		// Add our map type to the ParkSpot id
+		map.mapTypes.set('ParkSpot', noPOIMapType);
+		// Set our map type to be the initial map. 
+		// The default google map will still be in the control. Cannot remove it. 
+		map.setMapTypeId('ParkSpot');
+		
+		// Set map initial position to browser's location. If not, set to Canada and US viewport
+		setPosition(map, "map");
+		
+		// Open info window everywhere we click on the map
+	    var clickedSpotInfoWind = new google.maps.InfoWindow();
+		geocoder = new google.maps.Geocoder();
+	    google.maps.event.addListener(map, 'click', function(event) {
+									  if (globalInfoWind != null) {
+										  globalInfoWind.close();
+									  }
+									  var newSpotAddr;
+									  newSpotLatLng = event.latLng;
+										  geocoder.geocode({'latLng': newSpotLatLng}, function(results, status) {
+											  if (status == google.maps.GeocoderStatus.OK) {
+												  clickedSpotInfoWind.setContent(results[0].formatted_address);
+												  clickedSpotInfoWind.setPosition(newSpotLatLng);
+												  clickedSpotInfoWind.open(map);
+					                              globalInfoWind = clickedSpotInfoWind;
+											  }
+										  });
+		});
+		
 		if ($("#location").val() != "") {
    			querySpotsAjaxRequest();
    		}
+		
 	}
 	
 	function setPosition(obj, type) {
-		console.log("getting location");
 		var pos;
 
 		// Try HTML5 geolocation
 		if(navigator.geolocation) {
-
 			navigator.geolocation.getCurrentPosition(function(position) {
- 	       	pos = new google.maps.LatLng(position.coords.latitude,
- 	                                   position.coords.longitude);
- 	       if(type == "map") {
- 	    	obj.setCenter(pos);
- 	       } 
- 
- 	       $("#latitude").val((position.coords.latitude));
- 	       $("#longitude").val((position.coords.longitude));
- 	    }, function() {
- 	      pos = handleNoGeolocation(true);
- 	      obj.setCenter(pos);
- 	      obj.setZoom(3);
- 	    });
- 	  } else {
- 	    // Browser doesn't support Geolocation
- 	    pos = handleNoGeolocation(false);
- 	    obj.setCenter(pos);
- 	    obj.setZoom(3);
- 	  }
+	       	pos = new google.maps.LatLng(position.coords.latitude,
+	                                   position.coords.longitude);
+	       if(type == "map") {
+	    	obj.setCenter(pos);
+	       } 
+
+	       $("#latitude").val((position.coords.latitude));
+	       $("#longitude").val((position.coords.longitude));
+	    }, function() {
+	      pos = handleNoGeolocation(true);
+	      obj.setCenter(pos);
+	      obj.setZoom(3);
+	    });
+	  } else {
+	    // Browser doesn't support Geolocation
+	    pos = handleNoGeolocation(false);
+	    obj.setCenter(pos);
+	    obj.setZoom(3);
+	  }
 	}
 	
 	function handleNoGeolocation(errorFlag) {
-	   	  if (errorFlag) {
-	   	    var content = 'Error: The Geolocation service failed.';
-	   	  } else {
-	   	    var content = 'Error: Your browser doesn\'t support geolocation.';
-	   	  }
-		  var pos = new google.maps.LatLng(48, -100);
-	   	  return pos;
-		}
+   	  if (errorFlag) {
+   	    var content = 'Error: The Geolocation service failed.';
+   	  } else {
+   	    var content = 'Error: Your browser doesn\'t support geolocation.';
+   	  }
+	  var pos = new google.maps.LatLng(48, -100);
+   	  return pos;
+	}
 	
 	google.maps.event.addDomListener(window, 'load', initialize);
     </script>

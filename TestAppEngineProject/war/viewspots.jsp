@@ -43,6 +43,8 @@ html {
 	min-height: 100%;
 	margin-bottom: 1px;
 }
+
+#backtotop{ position: absolute; top:800px; left:0; display:none }
 </style>
 <link rel="stylesheet"
 	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
@@ -79,7 +81,7 @@ html {
 	  				$(iconSpan).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
 	            } else {
 	                $(iconSpan).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-	  			}	
+	  			}
 			});
 		});
 		
@@ -90,10 +92,21 @@ html {
 	  				$(iconSpan).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
 	            } else {
 	                $(iconSpan).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-	  			}	
+	                
+	                var scrollY = $('body').scrollTop()?$('body').scrollTop():$('html').scrollTop();
+	            	$('html, body').animate({
+	                	//scrollTop: scrollY + $(this).outerHeight() + 400
+	                	scrollTop: $(this).offset().top - 100
+	                });
+	  			}
 			});
+			return false;
 		});
 	});
+	
+	function scroller(){
+		$("body,html").animate({scrollTop: "0px"});
+	}
 	
 
     </script>
@@ -251,6 +264,7 @@ html {
 					<%
 						}
 					%>
+						<li><a href="#" onclick="scroller()"><font color="#428BCA">Back to top</font></a></li>
 					</ul>
 				</div>
 			</div> <!-- container for list items end here -->
@@ -290,7 +304,7 @@ html {
 			%>
 			
 			<h4>
-				<div class="container-fluid"><a id="toggler2" href="#" data-toggle="collapse" class="toggler2"
+				<div class="container-fluid"><a id="toggler2" href="#toggler2" data-toggle="collapse" class="toggler2"
 					data-target="#demo2"> <i
 					class="glyphicon glyphicon-chevron-down"></i> Your Current Reservations<div class="pull-right"><span class="badge pull-right">${fn:escapeXml(reservationsize)}</span></div>
 				</a></div>
@@ -363,6 +377,7 @@ html {
 						}
 						System.out.println("total reservation count: " + spotsList1.size());
 					%>
+						<li><a href="#" onclick="scroller()"><font color="#428BCA">Back to top</font></a></li>
 					</ul>
 				</div>
 			</div> <!-- container for list items end here -->

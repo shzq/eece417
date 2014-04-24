@@ -43,7 +43,6 @@
 					%>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${fn:escapeXml(user.nickname)} <b class="caret"></b></a>
           			<ul class="dropdown-menu">
-          				<li role="presentation" class="divider"></li>
           				<li><a href="<%=userService.createLogoutURL("/login.jsp")%>">Sign out</a></li>
 					</ul>
 					<%	} %> 

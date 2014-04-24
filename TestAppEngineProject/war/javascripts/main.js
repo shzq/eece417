@@ -567,6 +567,7 @@ function checkInputAddr() {
 		var bounds = new google.maps.LatLngBounds();
 		geocoder.geocode( { 'address': inputAddr}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
+				console.log(results);
 				myGeocodeStat = true;
 				for (var i = 0; i < results.length; i++) {
 					// set up marker for each result
@@ -592,6 +593,8 @@ function checkInputAddr() {
 				}
 				newSpotResults = results;
 				map.fitBounds(bounds);
+				if (map.getZoom() >= 20)
+					map.setZoom(16);
 			} else {
 				myGeocodeStat = false;
 			}

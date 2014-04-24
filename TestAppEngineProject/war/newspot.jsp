@@ -170,10 +170,6 @@
 	    
 		var mapOptions = {
 			zoom: 12,
-			zoomControl:true,
-		    zoomControlOptions: {
-		      style:google.maps.ZoomControlStyle.SMALL
-		    },
 			mapTypeControl: true,
 			mapTypeControlOptions: {
 				mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'ParkSpot', google.maps.MapTypeId.SATELLITE], // add map type to control
@@ -222,8 +218,8 @@
  	                                   position.coords.longitude);
  	       if(type == "map") {
  	    	obj.setCenter(pos);
- 	       } 
- 
+ 	       }
+
  	       $("#latitude").val((position.coords.latitude));
  	       $("#longitude").val((position.coords.longitude));
  	    }, function() {

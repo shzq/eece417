@@ -33,10 +33,17 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.css" />
-	<style>
-	body { padding-top: 60px; padding-bottom: 100px; }
-    html { min-height: 100%; margin-bottom: 1px; }
-    </style>
+<style>
+body {
+	padding-top: 60px;
+	padding-bottom: 100px;
+}
+
+html {
+	min-height: 100%;
+	margin-bottom: 1px;
+}
+</style>
 <link rel="stylesheet"
 	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
@@ -64,19 +71,30 @@
 		<%}%>
     }
 	
-	$(document).ready(function(){
-		$("#toggler1").click(function(){
-			console.log("t1");
-  			$(this).toggleClass('active, inactive');
+	jQuery(document).ready(function($) {
+		$(document).on('click', '.toggler1', function() {  
+			$(".toggler1").each(function() {
+	  			var iconSpan = $(this).find('.glyphicon');
+	  			if ($(this).hasClass('collapsed')){
+	  				$(iconSpan).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+	            } else {
+	                $(iconSpan).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+	  			}	
+			});
+		});
+		
+		$(document).on('click', '.toggler2', function() {  
+			$(".toggler2").each(function() {
+	  			var iconSpan = $(this).find('.glyphicon');
+	  			if ($(this).hasClass('collapsed')){
+	  				$(iconSpan).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+	            } else {
+	                $(iconSpan).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+	  			}	
+			});
 		});
 	});
 	
-	$(document).ready(function(){
-		$("#toggler2").click(function(){
-			console.log("t2");
-  			$(this).toggleClass('active, inactive');
-		});
-	});
 
     </script>
 </head>
@@ -136,8 +154,8 @@
 					pageContext.setAttribute("hostspotsize", spotsList.size());
 			%>
 			<h4>
-				<div class="container-fluid"><a id="toggler1" href="#" data-toggle="collapse" class="active"
-					data-target="#demo1"> <i class="glyphicon glyphicon-chevron-down"></i> Your Host Spots <div class="pull-right"><span class="badge pull-right">${fn:escapeXml(hostspotsize)}</span></div>
+				<div class="container-fluid"><a id="toggler1" href="#" data-toggle="collapse" class="toggler1"
+					data-target="#demo1"> <span class="glyphicon glyphicon-chevron-down"></span> Your Host Spots <div class="pull-right"><span class="badge pull-right">${fn:escapeXml(hostspotsize)}</span></div>
 				</a>
 			</h4>
 			<%
@@ -272,7 +290,7 @@
 			%>
 			
 			<h4>
-				<div class="container-fluid"><a id="toggler2" href="#" data-toggle="collapse" class="active"
+				<div class="container-fluid"><a id="toggler2" href="#" data-toggle="collapse" class="toggler2"
 					data-target="#demo2"> <i
 					class="glyphicon glyphicon-chevron-down"></i> Your Current Reservations<div class="pull-right"><span class="badge pull-right">${fn:escapeXml(reservationsize)}</span></div>
 				</a></div>

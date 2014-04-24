@@ -53,3 +53,44 @@ body {
 .inline {
 	display: inline;
 }
+
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+  margin-bottom: 0px;
+
+  margin-top: -122.5px;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 825px;
+  background-color: #777;
+}
+.carousel-inner > .item > img {
+  position: relative;
+  top: 0;
+  left: 0;
+  min-width: 1450px;
+  min-height: 825px;
+  height: 825px;
+}
+
+.home-search-area {
+	position: relative;
+	margin-top: -490px;
+
+}
+
+.arrow {
+	margin-top: 100px;	
+}
+
+

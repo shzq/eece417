@@ -29,13 +29,9 @@
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/main.js"></script>
-<script type="text/javascript"
-	src="/stylesheets/bootstrap/js/bootstrap.js"></script>
-<script
-	src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
-<script type="text/javascript"
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true">
-    </script>
+<script type="text/javascript" src="/stylesheets/bootstrap/js/bootstrap.js"></script>
+<script src="/stylesheets/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQGlrb5YtgGtV96Hi5efMuc5z7osDvSeY&sensor=true"></script>
 <script type="text/javascript">
     window.onload = lg;    
     var daysToAdd = 0;
@@ -113,6 +109,8 @@
 	        		$("#startdate").datepicker("option", "maxDate", null);
 	        }
 	    });
+	    
+	    $('#myCarousel').carousel();
 	});
     
     
@@ -128,38 +126,59 @@
 	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
 
-
-	<div class="container">
-		<h1 class="page-header">Welcome</h1>
-		<div class="well" align="center">
-			<form action="/results" method="get"
-				class="form-horizontal home-search-form">
-				<div class="form-group">
-					<div class="col-sm-4 no-padding">
-						<input type="text" class="form-control" name="location"
-							id="location" placeholder="Enter a city">
-					</div>
-					<div class="input-group col-sm-3 no-padding">
-						<span class="input-group-addon"><span
-							class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-							class="form-control" name="startdate" id="startdate"
-							placeholder="From">
-					</div>
-					<div class="input-group col-sm-3 no-padding">
-						<span class="input-group-addon"><span
-							class="glyphicon glyphicon-calendar"></span></span> <input type="text"
-							class="form-control" name="enddate" id="enddate" placeholder="To">
-					</div>
-					<div class="col-sm-2 no-padding">
-						<input id="post-btn" class="btn btn-success" type="submit"
-							value="Search" />
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
+      
+	<div id="myCarousel" class="carousel slide">
+        <ol class="carousel-indicators">
+            <li class="" data-slide-to="0" data-target="#myCarousel"></li>
+            <li class="active" data-slide-to="1" data-target="#myCarousel"></li>
+            <li class="" data-slide-to="2" data-target="#myCarousel"></li>
+        </ol>
+    
+        <div class="carousel-inner">
+          	<div class="item active">
+                <img alt="" src="http://www.whatcanipaint.com/wp-content/uploads/2010/09/IMG_0184.jpg"></img>
+            </div>
+            <div class="item">
+                <img alt="" src="http://media.merchantcircle.com/21687765/Asphalt%20Parking%20Lot_full.jpeg"></img>
+            </div>
+             <div class="item">
+                <img alt="" src="http://3.bp.blogspot.com/-1ky8-w4v1RY/T5WhcKj9qDI/AAAAAAAABEE/eQPVCofDaPg/s1600/DSCF6406.JPG"></img>
+            </div>
+        </div>
+	  <a class="left carousel-control arrow" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control arrow" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
 	<!-- container end -->
-
+    <div class="container home-search-area">
+		<h1><font color="white"><strong>Welcome to ParkSpot.</strong></font></h1>
+		<h4 class="lead"><font color="white">&nbsp&nbsp&nbspFind a place for you to park today!</font></h4>
+			<div class="well" align="center">
+				<form action="/results" method="get"
+					class="form-horizontal home-search-form">
+					<div class="form-group">
+						<div class="col-sm-4">
+							<input type="text" class="form-control" name="location"
+								id="location" placeholder="Enter a city">
+						</div>
+						<div class="input-group col-sm-3">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="startdate" id="startdate"
+								placeholder="From">
+						</div>
+						<div class="input-group col-sm-3">
+							<span class="input-group-addon"><span
+								class="glyphicon glyphicon-calendar"></span></span> <input type="text"
+								class="form-control" name="enddate" id="enddate" placeholder="To">
+						</div>
+						<div class="col-sm-2">
+							<input id="post-btn" class="btn btn-success" type="submit"
+								value="Search" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
 	<!-- Don't insert code below this line -->
 	<%

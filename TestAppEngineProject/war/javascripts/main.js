@@ -248,41 +248,47 @@ function querySpotsAjaxRequest() {
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("neighborhood", myFirstResult.address_components[i].types) >= 0) {
 						myNbhood = myFirstResult.address_components[i].short_name;
+						break;
 					}
 				}
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("locality", myFirstResult.address_components[i].types) >= 0) {
 						mylocality = myFirstResult.address_components[i].short_name;
+						break;
 					}
 				}
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("administrative_area_level_1", myFirstResult.address_components[i].types) >= 0) {
 						myAdmin_level_1 = myFirstResult.address_components[i].short_name;
+						break;
 					}
 				}
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("administrative_area_level_2", myFirstResult.address_components[i].types) >= 0) {
 						myAdmin_level_2 = myFirstResult.address_components[i].short_name;
+						break;
 					}
 				}
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("administrative_area_level_3", myFirstResult.address_components[i].types) >= 0) {
 						myAdmin_level_3 = myFirstResult.address_components[i].short_name;
+						break;
 					}
 				} 
 				for (var i = 0; i < addrCompLength; i++) {
 					if ($.inArray("country", myFirstResult.address_components[i].types) >= 0) {
 						myCountry = myFirstResult.address_components[i].short_name;
+						break;
 					}
 				}
 				
-				console.log("myNbhood = " + myNbhood);
+/*				console.log("myNbhood = " + myNbhood);
 				console.log("myLocality = " + myLocality);
 				console.log("myAdmin_level_1 = " + myAdmin_level_1);
 				console.log("myAdmin_level_2 = " + myAdmin_level_2);
 				console.log("myAdmin_level_3 = " + myAdmin_level_3);
 				console.log("myCountry = " + myCountry);
-				
+*/				
 				xmlHttpReq.open("POST", url, true);
 				xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 				

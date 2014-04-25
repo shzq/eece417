@@ -152,7 +152,7 @@ body {
     </div>
 	<!-- container end -->
     <div class="container home-search-area">
-		<h1><font color="white"><strong>Welcome to ParkSpot.</strong></font></h1>
+		<h1><font color="white"><strong>Welcome to ParkSpot</strong></font></h1>
 		<h4 class="lead"><font color="white">&nbsp&nbsp&nbspFind a place to park today!</font></h4>
 			<div class="well" align="center">
 				<form action="/results" method="get"

@@ -151,8 +151,12 @@ function newSpotAjaxRequest() {
 		alert("Sorry, we could not find your location. Please check that you input the right address.");
 	} else if (newSpot == null){
 		if (showNewSpots == true)
-			checkInputAddr();
-		alert("Please confirm your new spot location before you proceed.");
+			if ( checkInputAddr() == false)
+				return;
+		if (myGeocodeStat == false) {
+			alert("Sorry, we could not find your location. Please check that you input the right address.");
+		} else
+			alert("Please confirm your new spot location before you proceed.");
 		return;
 	} else {
 		try {
@@ -175,12 +179,12 @@ function newSpotAjaxRequest() {
 			xmlHttpReq.open("POST", url, true);
 			xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');		
 			
-			console.log("nbhood= " + nbhood);
+/*			console.log("nbhood= " + nbhood);
 			console.log("locality= " + locality);
 			console.log("aL1= " + aL1);
 			console.log("aL2= " + aL2);
 			console.log("aL3= " + aL3);
-			
+*/			
 			xmlHttpReq.send("stNumber="+st_number+"&stName="+st_name+"&nbhood="+nbhood+"&locality="+locality+"&aL3="+aL3+"&aL2="+aL2+"&aL1="+aL1+"&country="+country+"&lat="+lat+"&lng="+lng+"&price="+price+"&startdate="+startdate+"&enddate="+enddate);
 			
 			newSpot = null;
@@ -569,7 +573,11 @@ function checkInputAddr() {
 		// set addrMarkers and addrInfoWindows back to empty array
 		addrMarkers = []; 
 		addrInfoWindows = [];
-		var inputAddr = document.getElementById("location").value.replace(/'/g, "\\'");
+		var inputAddr = document.getElementById("location").value.replace(/^\s+|\s+$/g,"");
+		if (inputAddr === "") {
+		//	alert("Please input an address");
+			return false;
+		}
 		var bounds = new google.maps.LatLngBounds();
 		geocoder.geocode( { 'address': inputAddr, 'bounds': map.getBounds()}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
@@ -600,8 +608,10 @@ function checkInputAddr() {
 				map.fitBounds(bounds);
 				if (map.getZoom() >= 20)
 					map.setZoom(16);
+				return true;
 			} else {
 				myGeocodeStat = false;
+				return true;
 			}
 		});
 	}

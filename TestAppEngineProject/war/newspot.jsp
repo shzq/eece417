@@ -145,7 +145,7 @@
 	    var globalInfoWind = null;
 	    var newSpotLatLng;
 	    var geocoder;
-		var myGeocodeStat = false;
+		var myGeocodeStat = true;
 	    var addrMarkers = [];
 	    var addrInfoWindows = [];
 	    var newSpotMarker = null;

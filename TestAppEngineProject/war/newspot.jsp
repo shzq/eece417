@@ -237,9 +237,9 @@
 	
 	function handleNoGeolocation(errorFlag) {
    	  if (errorFlag) {
-   	    var content = 'Error: The Geolocation service failed.';
+   	    var content = 'Sorry, we cannot get your current location. Our geolocaation service has failed. But you can still continue using ParkSpot as usual.';
    	  } else {
-   	    var content = 'Error: Your browser doesn\'t support geolocation.';
+   	    var content = 'Sorry, it seems like your browser doesn\'t support geolocation or you might have disabled it. You can still continue using ParkSpot as usual.';
    	  }
    	  // mid Canada and US
 	  var pos = new google.maps.LatLng(48, -100);

@@ -563,11 +563,10 @@ function checkInputAddr() {
 		// set addrMarkers and addrInfoWindows back to empty array
 		addrMarkers = []; 
 		addrInfoWindows = [];
-		var inputAddr = document.getElementById("location").value;
+		var inputAddr = document.getElementById("location").value.replace(/'/g, "\\'");
 		var bounds = new google.maps.LatLngBounds();
-		geocoder.geocode( { 'address': inputAddr}, function(results, status) {
+		geocoder.geocode( { 'address': inputAddr, 'bounds': map.getBounds()}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log(results);
 				myGeocodeStat = true;
 				for (var i = 0; i < results.length; i++) {
 					// set up marker for each result

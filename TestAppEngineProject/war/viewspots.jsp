@@ -120,10 +120,13 @@ html {
 	%>
 	<%@ include file="navbar"%>
 	<!-- Don't insert code above this line (unless it's Javascript or imports etc)-->
+	
+	
 
 	<input type="hidden" id="spotID" value="" />
 
 	<div class="container"> <!-- Container for View Your Host Spots starts here -->
+	<h1 class="page-header">View Your Spots</h1>
 		<div class="well">
 			<% 
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

@@ -21,9 +21,13 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <link type="text/css" rel="stylesheet"
 	href="/stylesheets/bootstrap/css/bootstrap.css" />
-	<style>body {
-        padding-top: 60px;
-    }</style>
+<style>
+body {
+	padding-top: 60px;
+}
+
+
+</style>
 <link rel="stylesheet"
 	href="/stylesheets/jquery-ui-1.10.4.custom/css/flick/jquery-ui-1.10.4.custom.css">
 <script
@@ -67,7 +71,7 @@
     
    
    $(document).ready(function () {
-	    
+   	    
 	    var today = new Date();
 	    var tdd = today.getDate();
 	    var tmm = today.getMonth()+1;
@@ -110,10 +114,10 @@
 	        }
 	    });
 	    
-	    $('#myCarousel').carousel();
+	   	$('#myCarousel').carousel({interval:5000});
 	});
     
-    
+   	
     </script>
 </head>
 <body>
@@ -129,29 +133,27 @@
       
 	<div id="myCarousel" class="carousel slide">
         <ol class="carousel-indicators">
-            <li class="" data-slide-to="0" data-target="#myCarousel"></li>
-            <li class="active" data-slide-to="1" data-target="#myCarousel"></li>
+            <li class="active" data-slide-to="0" data-target="#myCarousel"></li>
+            <li class="" data-slide-to="1" data-target="#myCarousel"></li>
             <li class="" data-slide-to="2" data-target="#myCarousel"></li>
         </ol>
     
         <div class="carousel-inner">
           	<div class="item active">
-                <img alt="" src="http://www.whatcanipaint.com/wp-content/uploads/2010/09/IMG_0184.jpg"></img>
+                <img alt="" src="http://www.whatcanipaint.com/wp-content/uploads/2010/09/IMG_0184.jpg" width="100%"></img>
             </div>
             <div class="item">
-                <img alt="" src="http://media.merchantcircle.com/21687765/Asphalt%20Parking%20Lot_full.jpeg"></img>
+                <img alt="" src="http://media.merchantcircle.com/21687765/Asphalt%20Parking%20Lot_full.jpeg" width="100%"></img>
             </div>
              <div class="item">
-                <img alt="" src="http://3.bp.blogspot.com/-1ky8-w4v1RY/T5WhcKj9qDI/AAAAAAAABEE/eQPVCofDaPg/s1600/DSCF6406.JPG"></img>
+                <img alt="" src="http://3.bp.blogspot.com/-1ky8-w4v1RY/T5WhcKj9qDI/AAAAAAAABEE/eQPVCofDaPg/s1600/DSCF6406.JPG" width="100%"></img>
             </div>
         </div>
-	  <a class="left carousel-control arrow" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-      <a class="right carousel-control arrow" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
     </div>
 	<!-- container end -->
     <div class="container home-search-area">
 		<h1><font color="white"><strong>Welcome to ParkSpot.</strong></font></h1>
-		<h4 class="lead"><font color="white">&nbsp&nbsp&nbspFind a place for you to park today!</font></h4>
+		<h4 class="lead"><font color="white">&nbsp&nbsp&nbspFind a place to park today!</font></h4>
 			<div class="well" align="center">
 				<form action="/results" method="get"
 					class="form-horizontal home-search-form">
